@@ -1,0 +1,140 @@
+{
+    "common": {
+        "name": "imap",
+        "version": "0.0.1",
+        "news": {
+            "0.0.1": {
+                "en": "initial release",
+                "de": "Erstveröffentlichung",
+                "ru": "Начальная версия",
+                "pt": "lançamento inicial",
+                "nl": "Eerste uitgave",
+                "fr": "Première version",
+                "it": "Versione iniziale",
+                "es": "Versión inicial",
+                "pl": "Pierwsze wydanie",
+                "zh-cn": "首次出版",
+                "uk": "початковий випуск"
+            }
+        },
+        "title": "imap",
+        "titleLang": {
+            "en": "imap",
+            "de": "imap",
+            "ru": "имап",
+            "pt": "imap",
+            "nl": "imap",
+            "fr": "imap",
+            "it": "imap",
+            "es": "imágen",
+            "pl": "mapa",
+            "zh-cn": "地图",
+            "uk": "imap"
+        },
+        "desc": {
+            "en": "imap to receive your emails",
+            "de": "IMAP, um Ihre E-Mails zu empfangen",
+            "ru": "imap для получения ваших писем",
+            "pt": "imap para receber seus e-mails",
+            "nl": "imap om je e-mails te ontvangen",
+            "fr": "imap pour recevoir vos emails",
+            "it": "imap per ricevere le tue email",
+            "es": "imap para recibir tus correos",
+            "pl": "imap, aby otrzymywać e-maile",
+            "zh-cn": "imap 接收您的电子邮件",
+            "uk": "imap для отримання ваших електронних листів"
+        },
+        "authors": [
+            "Lucky-ESA <github@luckyskills.de>"
+        ],
+        "keywords": [
+            "imap",
+            "mail",
+            "email",
+            "receive"
+        ],
+        "license": "MIT",
+        "platform": "Javascript/Node.js",
+        "main": "main.js",
+        "icon": "imap.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/Lucky-ESA/ioBroker.imap/master/admin/imap.png",
+        "readme": "https://github.com/Lucky-ESA/ioBroker.imap/blob/master/README.md",
+        "loglevel": "info",
+        "mode": "daemon",
+        "type": "messaging",
+        "compact": true,
+        "connectionType": "cloud",
+        "dataSource": "push",
+        "adminUI": {
+            "config": "json"
+        },
+        "dependencies": [
+            {
+                "js-controller": ">=3.3.22"
+            }
+        ],
+        "globalDependencies": [
+            {
+                "admin": ">=5.1.13"
+            }
+        ]
+    },
+    "native": {
+        "hosts": []
+    },
+    "encryptedNative": [
+        "password"
+    ],
+    "protectedNative": [
+        "password"
+    ],
+    "objects": [],
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": {
+                    "en": "Information",
+                    "de": "Informationen",
+                    "ru": "Информация",
+                    "pt": "Informação",
+                    "nl": "Informatie",
+                    "fr": "Information",
+                    "it": "Informazioni",
+                    "es": "Información",
+                    "pl": "Informacja",
+                    "uk": "Інформація",
+                    "zh-cn": "信息"
+                }
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": {
+                    "en": "Device or service connected",
+                    "de": "Geräte- oder Serviceanschluss",
+                    "ru": "Устройство или сервис подключены",
+                    "pt": "Dispositivo ou serviço conectado",
+                    "nl": "Device of dienst verbonden",
+                    "fr": "Appareil ou service connecté",
+                    "it": "Dispositivo o servizio collegato",
+                    "es": "Dispositivo o servicio conectado",
+                    "pl": "Urządzenie lub usługa połączona",
+                    "uk": "Пристрої або послуги підключені",
+                    "zh-cn": "证人或有关服务"
+                },
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        }
+    ]
+}
