@@ -39,5 +39,12 @@
     "UNFLAGGED": "unflagged",
     "UNSEEN": "unseen",
     "inbox": "Inbox",
-    "INBOX": "Choose Inbox"
+    "INBOX": "Choose Inbox",
+    "Tab icons": "Create icons",
+    "Info icons": "Upload folder icon.",
+    "iconname": "Icon name",
+    "ICONNAME": "Icon name (e.g. gmail)",
+    "Tab Hosts": "Create IMAP`S",
+    "icon64": "Choose icon",
+    "ICON64": "Choose icon"
 }

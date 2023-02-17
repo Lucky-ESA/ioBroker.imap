@@ -39,5 +39,12 @@
     "UNFLAGGED": "niet gemarkeerd",
     "UNSEEN": "ongezien",
     "inbox": "Postvak IN",
-    "INBOX": "Kies Postvak IN"
+    "INBOX": "Kies Postvak IN",
+    "Tab icons": "Pictogrammen maken",
+    "Info icons": "Mappictogram uploaden.",
+    "iconname": "Icoon naam",
+    "ICONNAME": "Pictogramnaam (bijv. Gmail)",
+    "Tab Hosts": "IMAP`S maken",
+    "icon64": "Kies icon",
+    "ICON64": "Kies icon"
 }

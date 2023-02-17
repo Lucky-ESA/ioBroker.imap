@@ -39,5 +39,12 @@
     "UNFLAGGED": "sin marcar",
     "UNSEEN": "invisible",
     "inbox": "Bandeja de entrada",
-    "INBOX": "Elija Bandeja de entrada"
+    "INBOX": "Elija Bandeja de entrada",
+    "Tab icons": "Crear iconos",
+    "Info icons": "Cargar icono de carpeta.",
+    "iconname": "Nombre icónico",
+    "ICONNAME": "Nombre del icono (por ejemplo, gmail)",
+    "Tab Hosts": "Crear IMAP`S",
+    "icon64": "Elija icono",
+    "ICON64": "Elija icono"
 }

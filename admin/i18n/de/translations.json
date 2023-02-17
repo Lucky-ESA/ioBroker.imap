@@ -39,5 +39,12 @@
     "UNFLAGGED": "ungekennzeichnet",
     "UNSEEN": "ungesehen",
     "inbox": "Posteingang",
-    "INBOX": "Wählen Sie Posteingang"
+    "INBOX": "Wählen Sie Posteingang",
+    "Tab icons": "Symbole erstellen",
+    "Info icons": "Ordnersymbol hochladen.",
+    "iconname": "Symbolname",
+    "ICONNAME": "Name des Symbols (z. B. Google Mail)",
+    "Tab Hosts": "IMAPs erstellen",
+    "icon64": "Symbol auswählen",
+    "ICON64": "Symbol auswählen"
 }

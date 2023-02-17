@@ -39,5 +39,12 @@
     "UNFLAGGED": "未标记",
     "UNSEEN": "看不见",
     "inbox": "收件箱",
-    "INBOX": "选择收件箱"
+    "INBOX": "选择收件箱",
+    "Tab icons": "创建图标",
+    "Info icons": "上传文件夹图标。",
+    "iconname": "图标名称",
+    "ICONNAME": "图标名称（例如 gmail）",
+    "Tab Hosts": "创建 IMAP`S",
+    "icon64": "评 注",
+    "ICON64": "评 注"
 }

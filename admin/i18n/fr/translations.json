@@ -39,5 +39,12 @@
     "UNFLAGGED": "non signalé",
     "UNSEEN": "invisible",
     "inbox": "Boîte de réception",
-    "INBOX": "Choisissez la boîte de réception"
+    "INBOX": "Choisissez la boîte de réception",
+    "Tab icons": "Créer des icônes",
+    "Info icons": "Télécharger l'icône du dossier.",
+    "iconname": "Nom de l'icône",
+    "ICONNAME": "Nom de l'icône (par exemple, gmail)",
+    "Tab Hosts": "Créer des IMAP",
+    "icon64": "Choisissez l'icône",
+    "ICON64": "Choisissez l'icône"
 }

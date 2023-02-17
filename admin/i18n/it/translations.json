@@ -39,5 +39,12 @@
     "UNFLAGGED": "senza bandiera",
     "UNSEEN": "invisibile",
     "inbox": "Posta in arrivo",
-    "INBOX": "Scegli Posta in arrivo"
+    "INBOX": "Scegli Posta in arrivo",
+    "Tab icons": "Crea icone",
+    "Info icons": "Carica l'icona della cartella.",
+    "iconname": "Nome dell'icona",
+    "ICONNAME": "Nome dell'icona (ad es. gmail)",
+    "Tab Hosts": "Crea IMAP`S",
+    "icon64": "Scegli l'icona",
+    "ICON64": "Scegli l'icona"
 }

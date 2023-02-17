@@ -23,9 +23,7 @@
   },
   "dependencies": {
     "@iobroker/adapter-core": "^2.6.7",
-    "async": "^3.2.4",
-    "imap": "^0.8.19",
-    "mail-listener5": "^2.1.2",
+    "mailparser": "^3.6.3",
     "node-imap": "^0.9.6"
   },
   "devDependencies": {

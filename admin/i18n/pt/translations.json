@@ -39,5 +39,12 @@
     "UNFLAGGED": "não sinalizado",
     "UNSEEN": "despercebidas",
     "inbox": "caixa de entrada",
-    "INBOX": "Escolha a caixa de entrada"
+    "INBOX": "Escolha a caixa de entrada",
+    "Tab icons": "Criar ícones",
+    "Info icons": "Carregar ícone de pasta.",
+    "iconname": "Nome do ícone",
+    "ICONNAME": "Nome do ícone (por exemplo, gmail)",
+    "Tab Hosts": "Criar IMAP`S",
+    "icon64": "Escolha o ícone",
+    "ICON64": "Escolha o ícone"
 }

@@ -1,181 +1,252 @@
 {
     "i18n": true,
-    "type": "panel",
+    "type": "tabs",
     "items": {
-        "_headerAdapter": {
-            "type": "header",
-            "text": "imap adapter settings",
-            "size": 2
-        },
-        "hosts": {
-            "newLine": true,
-            "sm": 12,
-            "noDelete": false,
-            "type": "table",
-            "items": [
-                {
-                    "type": "checkbox",
-                    "attr": "activ",
-                    "width": "20px",
-                    "title": "activ",
-                    "tooltip": "ACTIV",
-                    "filter": true,
-                    "sort": true,
-                    "default": false,
-                    "style": {
-                        "textAlign": "center"
-                    }
+        "tab1": {
+            "type": "panel",
+            "label": "Tab Hosts",
+            "items": {
+                "_headerAdapter": {
+                    "type": "header",
+                    "text": "imap adapter settings",
+                    "size": 2
                 },
-                {
-                    "type": "text",
-                    "attr": "host",
-                    "width": "80px",
-                    "title": "host",
-                    "tooltip": "HOST",
-                    "filter": false,
-                    "sort": false,
-                    "default": ""
-                },
-                {
-                    "type": "text",
-                    "attr": "inbox",
-                    "width": "80px",
-                    "title": "inbox",
-                    "tooltip": "INBOX",
-                    "filter": false,
-                    "sort": false,
-                    "default": "INBOX"
-                },
-                {
-                    "type": "number",
-                    "attr": "port",
-                    "width": "20px",
-                    "title": "port",
-                    "tooltip": "PORT",
-                    "filter": false,
-                    "sort": false,
-                    "default": 993
-                },
-                {
-                    "type": "text",
-                    "attr": "user",
-                    "width": "80px",
-                    "title": "username",
-                    "tooltip": "USERNAME",
-                    "filter": false,
-                    "sort": false,
-                    "default": ""
-                },
-                {
-                    "type": "password",
-                    "attr": "password",
-                    "width": "80px",
-                    "title": "password",
-                    "tooltip": "PASSWORD",
-                    "filter": false,
-                    "visible": true,
-                    "sort": false,
-                    "default": ""
-                },
-                {
-                    "type": "number",
-                    "attr": "maxi",
-                    "width": "20px",
-                    "title": "max",
-                    "tooltip": "MAX",
-                    "min": 0,
-                    "max": 99,
-                    "filter": false,
-                    "sort": false,
-                    "default": 10,
-                    "style": {
-                        "textAlign": "center"
-                    }
-                },
-                {
-                    "type": "number",
-                    "attr": "maxi_html",
-                    "width": "20px",
-                    "title": "max_html",
-                    "tooltip": "MAX_HTML",
-                    "min": 0,
-                    "max": 99,
-                    "filter": false,
-                    "sort": false,
-                    "default": 10,
-                    "style": {
-                        "textAlign": "center"
-                    }
-                },
-                {
-                    "type": "checkbox",
-                    "attr": "tls",
-                    "width": "20px",
-                    "title": "tls",
-                    "tooltip": "TLS",
-                    "filter": false,
-                    "sort": false,
-                    "default": false,
-                    "style": {
-                        "textAlign": "center"
-                    }
-                },
-                {
-                    "type": "select",
-                    "attr": "flag",
-                    "width": "50px",
-                    "title": "flag",
-                    "tooltip": "FLAG",
-                    "options": [
-                        { "label": "ALL", "value": "[\"ALL\"]" },
-                        { "label": "ANSWERED", "value": "[\"ANSWERED\"]" },
-                        { "label": "UNANSWERED", "value": "[\"UNANSWERED\"]" },
-                        { "label": "DELETED", "value": "[\"DELETED\"]" },
-                        { "label": "UNDELETED", "value": "[\"UNDELETED\"]" },
-                        { "label": "DRAFT", "value": "[\"DRAFT\"]" },
-                        { "label": "UNDRAFT", "value": "[\"UNDRAFT\"]" },
-                        { "label": "FLAGGED", "value": "[\"FLAGGED\"]" },
-                        { "label": "UNFLAGGED", "value": "[\"UNFLAGGED\"]" },
-                        { "label": "NEW", "value": "[\"NEW\"]" },
-                        { "label": "OLD", "value": "[\"OLD\"]" },
-                        { "label": "SEEN", "value": "[\"SEEN\"]" },
-                        { "label": "UNSEEN", "value": "[\"UNSEEN\"]" },
-                        { "label": "RECENT", "value": "[\"RECENT\"]" }
-                    ],
-                    "filter": false,
-                    "sort": false,
-                    "default": false,
-                    "style": {
-                        "textAlign": "center"
-                    }
-                },
-                {
-                    "type": "image",
-                    "attr": "picture",
-                    "width": "20px",
-                    "title": "upload",
-                    "tooltip": "UPLOAD",
-                    "filter": false,
-                    "sort": false,
-                    "base64": true,
-                    "style": {
-                        "width": "10",
-                        "height": 50,
-                        "marginTop": 0,
-                        "position": "relative"
-                    }
-                },
-                {
-                    "type": "text",
-                    "attr": "token",
-                    "width": "80px",
-                    "title": "token",
-                    "tooltip": "TOKEN",
-                    "filter": false,
-                    "sort": false,
-                    "default": ""
+                "hosts": {
+                    "newLine": true,
+                    "sm": 12,
+                    "noDelete": false,
+                    "type": "table",
+                    "items": [
+                        {
+                            "type": "checkbox",
+                            "attr": "activ",
+                            "width": 60,
+                            "title": "activ",
+                            "tooltip": "ACTIV",
+                            "filter": true,
+                            "sort": true,
+                            "default": false,
+                            "style": {
+                                "textAlign": "center",
+                                "width": 60
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "attr": "host",
+                            "width": 200,
+                            "title": "host",
+                            "tooltip": "HOST",
+                            "filter": false,
+                            "sort": false,
+                            "default": "",
+                            "style": {
+                                "width": 200
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "attr": "inbox",
+                            "width": 100,
+                            "title": "inbox",
+                            "tooltip": "INBOX",
+                            "filter": false,
+                            "sort": false,
+                            "default": "INBOX",
+                            "style": {
+                                "width": 100
+                            }
+                        },
+                        {
+                            "type": "number",
+                            "attr": "port",
+                            "width": 60,
+                            "title": "port",
+                            "tooltip": "PORT",
+                            "filter": false,
+                            "sort": false,
+                            "default": 993,
+                            "style": {
+                                "width": 60
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "attr": "user",
+                            "width": 200,
+                            "title": "username",
+                            "tooltip": "USERNAME",
+                            "filter": false,
+                            "sort": false,
+                            "default": "",
+                            "style": {
+                                "width": 200
+                            }
+                        },
+                        {
+                            "type": "password",
+                            "attr": "password",
+                            "width": 200,
+                            "title": "password",
+                            "tooltip": "PASSWORD",
+                            "filter": false,
+                            "visible": true,
+                            "sort": false,
+                            "default": "",
+                            "style": {
+                                "width": 200
+                            }
+                        },
+                        {
+                            "type": "number",
+                            "attr": "maxi",
+                            "width": 60,
+                            "title": "max",
+                            "tooltip": "MAX",
+                            "min": 0,
+                            "max": 99,
+                            "filter": false,
+                            "sort": false,
+                            "default": 10,
+                            "style": {
+                                "textAlign": "center",
+                                "width": 60
+                            }
+                        },
+                        {
+                            "type": "number",
+                            "attr": "maxi_html",
+                            "width": 60,
+                            "title": "max_html",
+                            "tooltip": "MAX_HTML",
+                            "min": 0,
+                            "max": 99,
+                            "filter": false,
+                            "sort": false,
+                            "default": 10,
+                            "style": {
+                                "textAlign": "center",
+                                "width": 60
+                            }
+                        },
+                        {
+                            "type": "checkbox",
+                            "attr": "tls",
+                            "width": 30,
+                            "title": "tls",
+                            "tooltip": "TLS",
+                            "filter": false,
+                            "sort": false,
+                            "default": true,
+                            "style": {
+                                "textAlign": "center",
+                                "width": 30
+                            }
+                        },
+                        {
+                            "type": "select",
+                            "attr": "flag",
+                            "width": 200,
+                            "title": "flag",
+                            "tooltip": "FLAG",
+                            "options": [
+                                { "label": "ALL", "value": "[\"ALL\"]" },
+                                { "label": "ANSWERED", "value": "[\"ANSWERED\"]" },
+                                { "label": "UNANSWERED", "value": "[\"UNANSWERED\"]" },
+                                { "label": "DELETED", "value": "[\"DELETED\"]" },
+                                { "label": "UNDELETED", "value": "[\"UNDELETED\"]" },
+                                { "label": "DRAFT", "value": "[\"DRAFT\"]" },
+                                { "label": "UNDRAFT", "value": "[\"UNDRAFT\"]" },
+                                { "label": "FLAGGED", "value": "[\"FLAGGED\"]" },
+                                { "label": "UNFLAGGED", "value": "[\"UNFLAGGED\"]" },
+                                { "label": "NEW", "value": "[\"NEW\"]" },
+                                { "label": "OLD", "value": "[\"OLD\"]" },
+                                { "label": "SEEN", "value": "[\"SEEN\"]" },
+                                { "label": "UNSEEN", "value": "[\"UNSEEN\"]" },
+                                { "label": "RECENT", "value": "[\"RECENT\"]" }
+                            ],
+                            "filter": false,
+                            "sort": false,
+                            "default": "[\"ALL\"]",
+                            "style": {
+                                "textAlign": "center",
+                                "width": 200
+                            }
+                        },
+                        {
+                            "type": "selectSendTo",
+                            "title": "icon64",
+                            "tooltip": "ICON64",
+                            "attr": "picture",
+                            "disabled": "!data.activ",
+                            "jsonData": "{\"icon\":{\"icons\":${JSON.stringify(globalData.icons)}}}",
+                            "command": "getIconList",
+                            "width": 200,
+                            "alsoDependsOn": ["icons"],
+                            "style": {
+                                "textAlign": "center",
+                                "width": 200
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "attr": "token",
+                            "width": 200,
+                            "title": "token",
+                            "tooltip": "TOKEN",
+                            "filter": false,
+                            "sort": false,
+                            "default": "",
+                            "style": {
+                                "width": 200
+                            }
+                        }
+                    ]
                 }
-            ]
+            }
+        },
+        "tab2": {
+            "type": "panel",
+            "label": "Tab icons",
+            "items": {
+                "_headerAlexa": {
+                    "type": "header",
+                    "text": "Info icons",
+                    "size": 2
+                },
+                "icons": {
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "noDelete": false,
+                    "type": "table",
+                    "style": {
+                        "textAlign": "center"
+                    },
+                    "items": [
+                        {
+                            "type": "text",
+                            "attr": "iconname",
+                            "width": "50%",
+                            "title": "iconname",
+                            "tooltip": "ICONNAME",
+                            "filter": true,
+                            "sort": true,
+                            "default": ""
+                        },
+                        {
+                            "type": "image",
+                            "attr": "picture",
+                            "width": "50%",
+                            "title": "upload",
+                            "tooltip": "UPLOAD",
+                            "accept": "image/*",
+                            "base64": true,
+                            "crop": true
+                        }
+                    ]
+                }
+            }
         }
     }
 }

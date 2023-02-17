@@ -14,7 +14,7 @@ const helper = require("./lib/helper");
 const tl = require("./lib/translator.js");
 const util = require("node:util");
 const FORBIDDEN_CHARS = /[\][züäöÜÄÖ$@ß€*:.,;'"`<>\\\s?]/g;
-const lucky = false;
+const lucky = true;
 
 class Imap extends utils.Adapter {
     /**
@@ -27,14 +27,14 @@ class Imap extends utils.Adapter {
         });
         this.on("ready", this.onReady.bind(this));
         this.on("stateChange", this.onStateChange.bind(this));
-        // this.on("objectChange", this.onObjectChange.bind(this));
-        // this.on("message", this.onMessage.bind(this));
         this.on("unload", this.onUnload.bind(this));
+        this.on("message", this.onMessage.bind(this));
         this.createDataPoint = helper.createDataPoint;
         this.createHost = helper.createHost;
         this.createMails = helper.createMails;
         this.createRemote = helper.createRemote;
         this.qualityInterval = null;
+        this.double_call = {};
         this.clients = {};
         this.clientsRaw = {};
         this.imap_client = {};
@@ -53,7 +53,7 @@ class Imap extends utils.Adapter {
         // Initialize your adapter here
         const devices = {};
         if (Object.keys(this.config.hosts).length === 0) {
-            this.log_translator("info", "No device");
+            this.log_translator("info", "No imap");
             return;
         }
         const isChange = await this.configcheck();
@@ -118,12 +118,12 @@ class Imap extends utils.Adapter {
             await this.imap_connection(dev);
             this.subscribeStates(`${dev.user}.remote.*`);
             this.cleanupQuality();
-            this.qualityInterval = this.setInterval(() => {
-                this.cleanupQuality();
-            }, 60 * 60 * 24 * 1000);
         }
         this.log_translator("info", "IMAP check start");
         await this.checkDeviceFolder();
+        this.qualityInterval = this.setInterval(() => {
+            this.cleanupQuality();
+        }, 60 * 60 * 24 * 1000);
     }
 
     async readHTML(dev) {
@@ -259,11 +259,27 @@ class Imap extends utils.Adapter {
         });
 
         this.clients[dev.user].on("update", (seqno, info, clientID) => {
-            this.log_translator("error", "Start Update", clientID, JSON.stringify(info), seqno);
+            this.log_translator("info", "Start Update", clientID, JSON.stringify(info), seqno);
+            this.setState(`${clientID}.last_activity`, {
+                val: this.helper_translator("update"),
+                ack: true,
+            });
+            this.setState(`${clientID}.last_activity_timestamp`, {
+                val: Date.now(),
+                ack: true,
+            });
         });
 
         this.clients[dev.user].on("mailevent", (seqno, clientID) => {
-            this.log_translator("error", "Start new Mail", clientID, seqno);
+            this.log_translator("info", "Start new Mail", clientID, seqno);
+            this.setState(`${clientID}.last_activity`, {
+                val: this.helper_translator("new mail"),
+                ack: true,
+            });
+            this.setState(`${clientID}.last_activity_timestamp`, {
+                val: Date.now(),
+                ack: true,
+            });
         });
 
         this.clients[dev.user].on("mailbox", (mailbox, clientID) => {
@@ -300,7 +316,7 @@ class Imap extends utils.Adapter {
             this.log.info("ALERT: " + err + " - " + clientID);
         });
         this.clients[dev.user].on("mail", (mail, seqno, attrs, info, clientID, count, all) => {
-            if (this.clientsRaw[clientID].maxi < count && this.clientsRaw[clientID].maxi == count) {
+            if (count < this.clientsRaw[clientID].maxi || this.clientsRaw[clientID].maxi == count) {
                 this.setStatesValue(mail, seqno, clientID, count, attrs);
             }
             this.createHTMLRows(this.clientsHTML[clientID], mail, seqno, clientID, count, all, attrs);
@@ -312,58 +328,166 @@ class Imap extends utils.Adapter {
     }
 
     async setStatesValue(mail, seqno, clientID, count, attrs) {
-        await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.subject`, {
-            val: mail.subject != null ? mail.subject : "",
-            ack: true,
-        });
-        //const receive_date = mail.date.toISOString().replace("T", " ").replace(/\..+/, "");
-        await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.receive`, {
-            val: mail.date != null ? mail.date.toString() : "",
-            ack: true,
-        });
-        await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.content`, {
-            val: mail.html != null && mail.html ? mail.html : "",
-            ack: true,
-        });
-        await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.text`, {
-            val: mail.text != null ? mail.text : "",
-            ack: true,
-        });
-        await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.texthtml`, {
-            val: mail.textAsHtml != null ? mail.textAsHtml : "",
-            ack: true,
-        });
-        let add = [];
-        for (const address of mail.to.value) {
-            if (address.address != null) {
-                add.push(address.address);
+        try {
+            await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.subject`, {
+                val: mail.subject != null ? mail.subject : "",
+                ack: true,
+            });
+            //const receive_date = mail.date.toISOString().replace("T", " ").replace(/\..+/, "");
+            await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.receive`, {
+                val: mail.date != null ? mail.date.toString() : "",
+                ack: true,
+            });
+            await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.content`, {
+                val: mail.html != null && mail.html ? mail.html : "",
+                ack: true,
+            });
+            await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.text`, {
+                val: mail.text != null ? mail.text : "",
+                ack: true,
+            });
+            await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.texthtml`, {
+                val: mail.textAsHtml != null ? mail.textAsHtml : "",
+                ack: true,
+            });
+            let add = [];
+            if (mail.to && mail.to.value != undefined) {
+                for (const address of mail.to.value) {
+                    if (address.address != null) {
+                        add.push(address.address);
+                    }
+                }
             }
-        }
-        await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.to`, {
-            val: JSON.stringify(add),
-            ack: true,
-        });
-        add = [];
-        for (const address of mail.from.value) {
-            if (address.address != null) {
-                add.push(address.address);
+            await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.to`, {
+                val: JSON.stringify(add),
+                ack: true,
+            });
+            add = [];
+            if (mail.from && mail.from.value != undefined) {
+                for (const address of mail.from.value) {
+                    if (address.address != null) {
+                        add.push(address.address);
+                    }
+                }
             }
+            await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.from`, {
+                val: JSON.stringify(add),
+                ack: true,
+            });
+            await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.flag`, {
+                val: attrs.flags != null ? JSON.stringify(attrs.flags) : "",
+                ack: true,
+            });
+            await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.uid`, {
+                val: attrs.uid != null ? attrs.uid : "",
+                ack: true,
+            });
+            await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.seq`, {
+                val: seqno != null ? seqno : "",
+                ack: true,
+            });
+        } catch (e) {
+            this.log_translator("error", "try", `setStatesValue: ${e}`);
         }
-        await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.from`, {
-            val: JSON.stringify(add),
+    }
+
+    /**
+     * @param {ioBroker.Message} obj
+     */
+    async onMessage(obj) {
+        if (this.double_call[obj._id] != null) {
+            return;
+        }
+        this.double_call[obj._id] = true;
+        this.log_translator("debug", "Message", JSON.stringify(obj));
+        let adapterconfigs = {};
+        let _obj = {};
+        try {
+            // @ts-ignore
+            adapterconfigs = this.adapterConfig;
+            _obj = JSON.parse(JSON.stringify(obj));
+        } catch (error) {
+            this.log_translator("error", "catch", `onMessage: ${error}`);
+            this.sendTo(obj.from, obj.command, [], obj.callback);
+            delete this.double_call[obj._id];
+            return;
+        }
+        let icon_array = [];
+        const icons = [];
+        switch (obj.command) {
+            case "getIconList":
+                if (obj.callback) {
+                    try {
+                        if (_obj && _obj.message && _obj.message.icon && _obj.message.icon.icons) {
+                            icon_array = _obj.message.icon.icons;
+                        } else if (adapterconfigs && adapterconfigs.native && adapterconfigs.native.icons) {
+                            icon_array = adapterconfigs.native.icons;
+                        }
+                        if (icon_array && Object.keys(icon_array).length > 0) {
+                            for (const icon of icon_array) {
+                                const label = icon.iconname;
+                                icons.push({ label: label, value: icon.picture });
+                            }
+                            icons.sort((a, b) => (a.label > b.label ? 1 : b.label > a.label ? -1 : 0));
+                            this.sendTo(obj.from, obj.command, icons, obj.callback);
+                        } else {
+                            this.sendTo(obj.from, obj.command, [], obj.callback);
+                        }
+                    } catch (error) {
+                        delete this.double_call[obj._id];
+                        this.log_translator("error", "catch", `onMessage: ${error}`);
+                        this.sendTo(obj.from, obj.command, [], obj.callback);
+                    }
+                }
+                delete this.double_call[obj._id];
+                break;
+            case "getBlockly":
+                if (
+                    obj.message &&
+                    obj.message["search"] != "" &&
+                    obj.message["device"] != "" &&
+                    obj.message["max"] > 0 &&
+                    obj.message["max"] < 100
+                ) {
+                    if (obj.message["device"] === "all") {
+                        for (const dev in this.clientsRaw) {
+                            const userdev = this.clientsRaw[dev];
+                            if (userdev.activ) {
+                                this.setStateSearch(userdev.user, obj.message["search"], obj.message["max"]);
+                            }
+                        }
+                    } else {
+                        const user = obj.message["device"].replace(FORBIDDEN_CHARS, "_");
+                        if (this.clientsRaw[user]) {
+                            if (this.clientsRaw[user].activ) {
+                                this.setStateSearch(user, obj.message["search"], obj.message["max"]);
+                            } else {
+                                this.log_translator("info", "IMAP disabled", `${user} - ${obj.message["device"]}`);
+                            }
+                        } else {
+                            this.log_translator("info", "not found imap", `${user} - ${obj.message["device"]}`);
+                        }
+                    }
+                }
+                break;
+            default:
+                this.sendTo(obj.from, obj.command, [], obj.callback);
+                delete this.double_call[obj._id];
+        }
+    }
+
+    async setStateSearch(id, user, max) {
+        await this.setStateAsync(`${id}.remote.criteria`, {
+            val: user,
             ack: true,
         });
-        await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.flag`, {
-            val: attrs.flags != null ? JSON.stringify(attrs.flags) : "",
+        await this.setStateAsync(`${id}.remote.show_mails`, {
+            val: max,
             ack: true,
         });
-        await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.uid`, {
-            val: attrs.uid != null ? attrs.uid : "",
-            ack: true,
-        });
-        await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.seq`, {
-            val: seqno != null ? seqno : "",
-            ack: true,
+        await this.setStateAsync(`${id}.remote.search_start`, {
+            val: true,
+            ack: false,
         });
     }
 
@@ -383,23 +507,6 @@ class Imap extends utils.Adapter {
             callback();
         }
     }
-
-    // If you need to react to object changes, uncomment the following block and the corresponding line in the constructor.
-    // You also need to subscribe to the objects with `this.subscribeObjects`, similar to `this.subscribeStates`.
-    // /**
-    //  * Is called if a subscribed object changes
-    //  * @param {string} id
-    //  * @param {ioBroker.Object | null | undefined} obj
-    //  */
-    // onObjectChange(id, obj) {
-    //     if (obj) {
-    //         // The object was changed
-    //         this.log.info(`object ${id} changed: ${JSON.stringify(obj)}`);
-    //     } else {
-    //         // The object was deleted
-    //         this.log.info(`object ${id} deleted`);
-    //     }
-    // }
 
     /**
      * Is called if a subscribed state changes
@@ -481,13 +588,15 @@ class Imap extends utils.Adapter {
         }
     }
 
-    helper_translator(text, merge_array) {
+    helper_translator(text, merge_array, merge_array1) {
         try {
             if (tl.trans[text][this.lang]) {
-                if (!merge_array) {
-                    return tl.trans[text][this.lang];
-                } else {
+                if (merge_array1) {
+                    return util.format(tl.trans[text][this.lang], merge_array, merge_array1);
+                } else if (merge_array) {
                     return util.format(tl.trans[text][this.lang], merge_array);
+                } else {
+                    return tl.trans[text][this.lang];
                 }
             } else {
                 return tl.trans["Unknown"][this.lang];
@@ -498,7 +607,7 @@ class Imap extends utils.Adapter {
     }
 
     async createHTMLRows(id, mail, seqno, clientID, count, all, attrs) {
-        if (count === 1) {
+        if (count == 1) {
             this.clientsRows[clientID] = "";
         }
         const isEven = count % 2 != 0 ? id["mails_even_color"] : id["mails_odd_color"];
@@ -513,9 +622,25 @@ class Imap extends utils.Adapter {
         const today = isToday(new Date(mail.date)) ? id["mails_today_color"] : id["header_text_color"];
         const weight = attrs.flags != "" ? "normal" : "bold";
         let from = this.helper_translator("Unknown");
-        if (mail.from && mail.from.value && mail.from.value[0].name != null) from = mail.from.value[0].name;
-        const subject = mail.subject.substring(0, id["short_subject"]);
-        const content = mail.text.substring(0, id["short_content"]);
+        if (mail.from && mail.from.value && mail.from.value[0].name != null && mail.from.value[0].name != "") {
+            from = mail.from.value[0].name;
+        } else if (
+            mail.from &&
+            mail.from.value &&
+            mail.from.value[0].address != null &&
+            mail.from.value[0].address != ""
+        ) {
+            from = mail.from.value[0].address;
+        }
+        let subject = mail.subject;
+        let content = mail.text;
+        if (mail.subject && mail.subject.toString().length > id["short_subject"]) {
+            subject = mail.subject.substring(0, id["short_subject"]);
+        }
+        if (mail.text && mail.text.toString().length > id["short_content"]) {
+            content = mail.text.substring(0, id["short_content"]);
+        }
+        attrs.flags = attrs.flags != "" ? attrs.flags.toString().replace(/\\/, "") : "unseen";
         this.clientsRows[clientID] += `
         <tr style="background-color:${isEven}; 
         color:${today};
@@ -529,14 +654,16 @@ class Imap extends utils.Adapter {
         ${this.formatDate(new Date(mail.date).getTime(), "TT.MM.JJ - SS:mm")}</td>
         <td class="tooltip" style="text-align:${id["headline_align_column_5"]}">${content}
         <span class="tooltiptext">${mail.text}</span></td>
-        <td style="text-align:${id["headline_align_column_6"]};">${seqno}</td>
+        <td style="text-align:${id["headline_align_column_6"]}">${seqno}</td>
+        <td style="text-align:${id["headline_align_column_7"]}">${attrs.flags}</td>
         </tr>`;
         if (count == all || this.clientsRaw[clientID].maxi_html == count) {
-            await this.createHTML(id, clientID, this.clientsRows[clientID]);
+            await this.createHTML(id, clientID, this.clientsRows[clientID], count, all);
+            this.clientsRows[clientID] = "";
         }
     }
 
-    async createHTML(id, ident, htmltext) {
+    async createHTML(id, ident, htmltext, count, all) {
         try {
             const htmlStart = `
             <!DOCTYPE html>
@@ -582,10 +709,9 @@ class Imap extends utils.Adapter {
                 display: inline-block;
                 border-bottom: 1px dotted black;
               }
-              
               .tooltip .tooltiptext {
                 visibility: hidden;
-                width: 120px;
+                width: 320px;
                 background-color: #555;
                 color: #fff;
                 text-align: center;
@@ -599,7 +725,6 @@ class Imap extends utils.Adapter {
                 opacity: 0;
                 transition: opacity 0.3s;
               }
-              
               .tooltip .tooltiptext::after {
                 content: "";
                 position: absolute;
@@ -610,7 +735,6 @@ class Imap extends utils.Adapter {
                 border-style: solid;
                 border-color: #555 transparent transparent transparent;
               }
-              
               .tooltip:hover .tooltiptext {
                 visibility: visible;
                 opacity: 1;
@@ -636,7 +760,7 @@ class Imap extends utils.Adapter {
             ${id["header_linear_color_1"]});">
             <thead>
             <tr>
-            <th colspan="6" scope="colgroup">
+            <th colspan="7" scope="colgroup">
             <p style="color:${id["top_text_color"]}; font-family:${id["top_font"]}; 
             font-size:${id["top_font_size"]}px; font-weight:${id["top_font_weight"]}">
             ${id["top_text"]}&ensp;&ensp;${this.helper_translator("top_last_update")} 
@@ -663,15 +787,17 @@ class Imap extends utils.Adapter {
             <th style="text-align:${id["headline_align_column_6"]}; width:${id["headline_column_width_6"]}">
             &ensp;${this.helper_translator("Header_SEQ")}&ensp;
             </th>
+            <th style="text-align:${id["headline_align_column_7"]}; width:${id["headline_column_width_7"]}">
+            &ensp;${this.helper_translator("Flag")}&ensp;
+            </th>
             </tr>
             </thead>
             <tfoot>
             <tr>
-            <th colspan="6" scope="colgroup">
+            <th colspan="7" scope="colgroup">
             <p style="color:${id["top_text_color"]}; font-family:${id["top_font"]}; 
             font-size:${id["top_font_size"]}px; font-weight:${id["top_font_weight"]}">
-            ${id["top_text"]}&ensp;&ensp;${this.helper_translator("top_last_update")} 
-            ${this.formatDate(new Date(), "TT.MM.JJJJ hh:mm:ss")}</p></th>
+            ${this.helper_translator("footer", count, all)}</p></th>
             </tr>
             </tfoot>
             <tbody>
@@ -680,7 +806,7 @@ class Imap extends utils.Adapter {
             `;
             const htmlEnd = `</table></div></body></html>`;
             await this.setStateAsync(`${ident}.html`, {
-                val: htmlStart + htmltext + htmlEnd,
+                val: htmlStart + htmlEnd,
                 ack: true,
             });
         } catch (e) {

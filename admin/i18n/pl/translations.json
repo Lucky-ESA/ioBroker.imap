@@ -39,5 +39,12 @@
     "UNFLAGGED": "nieoflagowany",
     "UNSEEN": "niewidzialny",
     "inbox": "W pudełku",
-    "INBOX": "Wybierz skrzynkę odbiorczą"
+    "INBOX": "Wybierz skrzynkę odbiorczą",
+    "Tab icons": "Twórz ikony",
+    "Info icons": "Prześlij ikonę folderu.",
+    "iconname": "Nazwa ikony",
+    "ICONNAME": "Nazwa ikony (np. gmail)",
+    "Tab Hosts": "Utwórz IMAP",
+    "icon64": "Ikony Choose",
+    "ICON64": "Ikony Choose"
 }
