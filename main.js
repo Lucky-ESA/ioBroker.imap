@@ -313,7 +313,7 @@ class Imap extends utils.Adapter {
         });
 
         this.clients[dev.user].on("alert", (err, clientID) => {
-            this.log.info("ALERT: " + err + " - " + clientID);
+            this.log_translator("info", "Alert", clientID, err);
         });
         this.clients[dev.user].on("mail", (mail, seqno, attrs, info, clientID, count, all) => {
             if (count < this.clientsRaw[clientID].maxi || this.clientsRaw[clientID].maxi == count) {
@@ -337,28 +337,28 @@ class Imap extends utils.Adapter {
     async setStatesValue(mail, seqno, clientID, count, attrs) {
         try {
             await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.subject`, {
-                val: mail.subject != null ? mail.subject : "",
+                val: mail.subject != null ? mail.subject : this.helper_translator("Unknown"),
                 ack: true,
             });
             //const receive_date = mail.date.toISOString().replace("T", " ").replace(/\..+/, "");
             await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.receive`, {
-                val: mail.date != null ? mail.date.toString() : "",
+                val: mail.date != null ? mail.date.toString() : this.helper_translator("Unknown"),
                 ack: true,
             });
             await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.content`, {
-                val: mail.html != null && mail.html ? mail.html : "",
+                val: mail.html != null && mail.html ? mail.html : this.helper_translator("Unknown"),
                 ack: true,
             });
             await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.text`, {
-                val: mail.text != null ? mail.text : "",
+                val: mail.text != null ? mail.text : this.helper_translator("Unknown"),
                 ack: true,
             });
             await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.texthtml`, {
-                val: mail.textAsHtml != null ? mail.textAsHtml : "",
+                val: mail.textAsHtml != null ? mail.textAsHtml : this.helper_translator("Unknown"),
                 ack: true,
             });
             let add = [];
-            if (mail.to && mail.to.value != undefined) {
+            if (mail.to && mail.to.value != null) {
                 for (const address of mail.to.value) {
                     if (address.address != null) {
                         add.push(address.address);
@@ -370,7 +370,7 @@ class Imap extends utils.Adapter {
                 ack: true,
             });
             add = [];
-            if (mail.from && mail.from.value != undefined) {
+            if (mail.from && mail.from.value != null) {
                 for (const address of mail.from.value) {
                     if (address.address != null) {
                         add.push(address.address);
@@ -545,8 +545,8 @@ class Imap extends utils.Adapter {
                 return;
             }
             if (command === "search_start") {
-                const criteria = await this.getStateAsync(`${clientID}.criteria`);
-                const show = await this.getStateAsync(`${clientID}.show_mails`);
+                const criteria = await this.getStateAsync(`${clientID}.remote.criteria`);
+                const show = await this.getStateAsync(`${clientID}.remote.show_mails`);
                 if (criteria && criteria.val && show && show.val != null) {
                     this.clientsRaw[clientID].flag = criteria.val;
                     this.clientsRaw[clientID].maxi_html = show.val;
@@ -581,7 +581,8 @@ class Imap extends utils.Adapter {
     log_translator(level, text, merge_array, merge_array2, merge_array3) {
         try {
             const loglevel = !!this.log[level];
-            if (loglevel && level != "debug") {
+            //if (loglevel && level != "debug") {
+            if (loglevel) {
                 if (tl.trans[text] != null) {
                     if (merge_array3) {
                         this.log[level](
@@ -637,8 +638,10 @@ class Imap extends utils.Adapter {
         const today = isToday(new Date(mail.date)) ? id["mails_today_color"] : id["header_text_color"];
         const weight = attrs.flags != "" ? "normal" : "bold";
         let from = this.helper_translator("Unknown");
+        let org_from = this.helper_translator("Unknown");
         if (mail.from && mail.from.value && mail.from.value[0].name != null && mail.from.value[0].name != "") {
             from = mail.from.value[0].name;
+            org_from = mail.from.value[0].address;
         } else if (
             mail.from &&
             mail.from.value &&
@@ -646,7 +649,9 @@ class Imap extends utils.Adapter {
             mail.from.value[0].address != ""
         ) {
             from = mail.from.value[0].address;
+            org_from = mail.from.value[0].address;
         }
+        const org_subject = mail.subject;
         let subject = mail.subject;
         let content = mail.text != null ? mail.text : convert(mail.html);
         let org_content = content;
@@ -669,8 +674,8 @@ class Imap extends utils.Adapter {
         font-weight:${weight};
         font-size:${id["header_font_size"]}px;">
         <td style="text-align:${id["headline_align_column_1"]}">${count}</td>
-        <td style="text-align:${id["headline_align_column_2"]}">${from}</td>
-        <td  title="${subject}" style="text-align:${id["headline_align_column_3"]}">${subject}</td>
+        <td title="${org_from}" style="text-align:${id["headline_align_column_2"]}">${from}</td>
+        <td title="${org_subject}" style="text-align:${id["headline_align_column_3"]}">${subject}</td>
         <td style="text-align:${id["headline_align_column_4"]}">
         ${this.formatDate(new Date(mail.date).getTime(), "TT.MM.JJ - SS:mm")}</td>
         <td title="${org_content}" style="text-align:${id["headline_align_column_5"]}">${content}</td>
