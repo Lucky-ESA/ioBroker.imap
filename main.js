@@ -13,8 +13,8 @@ const { MailListener } = require("./lib/listener");
 const helper = require("./lib/helper");
 const tl = require("./lib/translator.js");
 const util = require("node:util");
+const { convert } = require("html-to-text");
 const FORBIDDEN_CHARS = /[\][züäöÜÄÖ$@ß€*:.,;'"`<>\\\s?]/g;
-const lucky = true;
 
 class Imap extends utils.Adapter {
     /**
@@ -242,6 +242,7 @@ class Imap extends utils.Adapter {
             this.clients[dev.user].stop();
             this.clients[dev.user] = null;
         }
+        this.restartIMAPConnection[dev.user] && this.clearTimeout(this.restartIMAPConnection[dev.user]);
         this.clients[dev.user] = new MailListener(dev, this);
 
         this.clients[dev.user].start();
@@ -296,7 +297,6 @@ class Imap extends utils.Adapter {
             this.restartIMAPConnection[clientID] = setTimeout(() => {
                 this.log_translator("info", "Restart now", clientID);
                 this.imap_connection(this.clientsRaw[clientID]);
-                this.restartIMAPConnection[clientID] = null;
             }, 1000 * 60);
             --this.countOnline;
             if (this.countOnline === 0) {
@@ -320,10 +320,17 @@ class Imap extends utils.Adapter {
                 this.setStatesValue(mail, seqno, clientID, count, attrs);
             }
             this.createHTMLRows(this.clientsHTML[clientID], mail, seqno, clientID, count, all, attrs);
-            this.log_translator("debug", "Mail", clientID, JSON.stringify(mail));
-            this.log_translator("debug", "Attributes", clientID, JSON.stringify(attrs));
-            this.log_translator("debug", "Sequense", clientID, seqno);
-            this.log_translator("debug", "Info", clientID, JSON.stringify(info));
+            this.log_translator(
+                "debug",
+                "Mail",
+                clientID,
+                `${JSON.stringify(mail)} Attributes: ${JSON.stringify(attrs)} Sequense: ${seqno} INFO: ${JSON.stringify(
+                    info,
+                )}`,
+            );
+            //this.log_translator("debug", "Attributes", clientID, JSON.stringify(attrs));
+            //this.log_translator("debug", "Sequense", clientID, seqno);
+            //this.log_translator("debug", "Info", clientID, JSON.stringify(info));
         });
     }
 
@@ -517,10 +524,10 @@ class Imap extends utils.Adapter {
         if (state && !state.ack) {
             const command = id.split(".").pop();
             const clientID = id.split(".")[2];
-            this.log_translator("debug", "Command", command, clientID);
             if (
                 this.clientsHTML[clientID] &&
-                this.clientsHTML[clientID].command &&
+                command != null &&
+                this.clientsHTML[clientID][command] &&
                 state.val != null &&
                 state.val != ""
             ) {
@@ -548,6 +555,13 @@ class Imap extends utils.Adapter {
                 this.setAckFlag(id, { val: false });
                 return;
             }
+            if (command === "reload_emails") {
+                if (this.clients[clientID]) {
+                    this.clients[clientID].onNewRead();
+                    this.setAckFlag(id, { val: false });
+                }
+                return;
+            }
         }
     }
 
@@ -566,7 +580,8 @@ class Imap extends utils.Adapter {
 
     log_translator(level, text, merge_array, merge_array2, merge_array3) {
         try {
-            if (level !== "debug" || lucky) {
+            const loglevel = !!this.log[level];
+            if (loglevel && level != "debug") {
                 if (tl.trans[text] != null) {
                     if (merge_array3) {
                         this.log[level](
@@ -580,11 +595,11 @@ class Imap extends utils.Adapter {
                         this.log[level](tl.trans[text][this.lang]);
                     }
                 } else {
-                    this.log_translator("warn", "Cannot find translation", text);
+                    this.log.warn(tl.trans["Cannot find translation"][this.lang]);
                 }
             }
         } catch (e) {
-            this.log.error("try log_translator: " + e);
+            this.log.error("try log_translator: " + e + " - " + text);
         }
     }
 
@@ -633,12 +648,19 @@ class Imap extends utils.Adapter {
             from = mail.from.value[0].address;
         }
         let subject = mail.subject;
-        let content = mail.text;
+        let content = mail.text != null ? mail.text : convert(mail.html);
+        let org_content = content;
+        if (org_content != null && org_content != "") {
+            org_content = org_content
+                .toString()
+                .replace(/"/g, "'")
+                .replace(/^(?=\n)$|^\s*|\s*$|\n\n+/gm, "");
+        }
         if (mail.subject && mail.subject.toString().length > id["short_subject"]) {
             subject = mail.subject.substring(0, id["short_subject"]);
         }
-        if (mail.text && mail.text.toString().length > id["short_content"]) {
-            content = mail.text.substring(0, id["short_content"]);
+        if (content && content.toString().length > id["short_content"]) {
+            content = content.substring(0, id["short_content"]);
         }
         attrs.flags = attrs.flags != "" ? attrs.flags.toString().replace(/\\/, "") : "unseen";
         this.clientsRows[clientID] += `
@@ -648,12 +670,10 @@ class Imap extends utils.Adapter {
         font-size:${id["header_font_size"]}px;">
         <td style="text-align:${id["headline_align_column_1"]}">${count}</td>
         <td style="text-align:${id["headline_align_column_2"]}">${from}</td>
-        <td class="tooltip" style="text-align:${id["headline_align_column_3"]}">${subject}
-        <span class="tooltiptext">${mail.subject}</span></td>
+        <td  title="${subject}" style="text-align:${id["headline_align_column_3"]}">${subject}</td>
         <td style="text-align:${id["headline_align_column_4"]}">
         ${this.formatDate(new Date(mail.date).getTime(), "TT.MM.JJ - SS:mm")}</td>
-        <td class="tooltip" style="text-align:${id["headline_align_column_5"]}">${content}
-        <span class="tooltiptext">${mail.text}</span></td>
+        <td title="${org_content}" style="text-align:${id["headline_align_column_5"]}">${content}</td>
         <td style="text-align:${id["headline_align_column_6"]}">${seqno}</td>
         <td style="text-align:${id["headline_align_column_7"]}">${attrs.flags}</td>
         </tr>`;
@@ -704,41 +724,6 @@ class Imap extends utils.Adapter {
                 align-items: center;
                 justify-content: center
             }
-            .tooltip {
-                position: relative;
-                display: inline-block;
-                border-bottom: 1px dotted black;
-              }
-              .tooltip .tooltiptext {
-                visibility: hidden;
-                width: 320px;
-                background-color: #555;
-                color: #fff;
-                text-align: center;
-                border-radius: 6px;
-                padding: 5px 0;
-                position: absolute;
-                z-index: 1;
-                bottom: 125%;
-                left: 50%;
-                margin-left: -60px;
-                opacity: 0;
-                transition: opacity 0.3s;
-              }
-              .tooltip .tooltiptext::after {
-                content: "";
-                position: absolute;
-                top: 100%;
-                left: 50%;
-                margin-left: -5px;
-                border-width: 5px;
-                border-style: solid;
-                border-color: #555 transparent transparent transparent;
-              }
-              .tooltip:hover .tooltiptext {
-                visibility: visible;
-                opacity: 1;
-              }
             thread {
                 display: table-header-group
             }
