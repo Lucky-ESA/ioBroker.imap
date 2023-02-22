@@ -10,6 +10,7 @@ const utils = require("@iobroker/adapter-core");
 
 // Load your modules here, e.g.:
 const { MailListener } = require("./lib/listener");
+const { ImapListener } = require("./lib/imap");
 const helper = require("./lib/helper");
 const tl = require("./lib/translator.js");
 const util = require("node:util");
@@ -34,8 +35,11 @@ class Imap extends utils.Adapter {
         this.createMails = helper.createMails;
         this.createRemote = helper.createRemote;
         this.qualityInterval = null;
+        this.statusInterval = null;
+        this.sleepTimer = null;
         this.double_call = {};
         this.clients = {};
+        this.imap_client = {};
         this.clientsRaw = {};
         this.imap_client = {};
         this.clientsHTML = {};
@@ -103,6 +107,7 @@ class Imap extends utils.Adapter {
             this.restartIMAPConnection[dev.user] = null;
             this.clientsRows[dev.user] = "";
             this.clients[dev.user] = null;
+            this.imap_client[dev.user] = null;
             this.clientsRaw[dev.user] = dev;
             this.clientsID.push(dev.user);
             this.log_translator("info", "create device", dev.user);
@@ -124,6 +129,20 @@ class Imap extends utils.Adapter {
         this.qualityInterval = this.setInterval(() => {
             this.cleanupQuality();
         }, 60 * 60 * 24 * 1000);
+        this.statusInterval = this.setInterval(() => {
+            this.connectionCheck();
+        }, 60 * 60 * 1000);
+    }
+
+    async connectionCheck() {
+        for (const dev of this.clientsID) {
+            if (this.clients[dev] != null) {
+                const status = await this.clients[dev].imap_state();
+                this.log.info(dev + " - " + status);
+            } else {
+                this.log.info(dev);
+            }
+        }
     }
 
     async readHTML(dev) {
@@ -240,13 +259,14 @@ class Imap extends utils.Adapter {
     async imap_connection(dev) {
         if (this.clients[dev.user] != null) {
             this.clients[dev.user].stop();
+            await this.sleep(1000);
             this.clients[dev.user] = null;
         }
         this.restartIMAPConnection[dev.user] && this.clearTimeout(this.restartIMAPConnection[dev.user]);
+        this.imap_client[dev.user] = new ImapListener(dev, this);
         this.clients[dev.user] = new MailListener(dev, this);
-
+        //this.imap_client[dev.user].start();
         this.clients[dev.user].start();
-
         this.clients[dev.user].on("connected", (clientID) => {
             this.log_translator("info", "connection", clientID);
             ++this.countOnline;
@@ -261,26 +281,20 @@ class Imap extends utils.Adapter {
 
         this.clients[dev.user].on("update", (seqno, info, clientID) => {
             this.log_translator("info", "Start Update", clientID, JSON.stringify(info), seqno);
-            this.setState(`${clientID}.last_activity`, {
-                val: this.helper_translator("update"),
-                ack: true,
-            });
-            this.setState(`${clientID}.last_activity_timestamp`, {
-                val: Date.now(),
-                ack: true,
-            });
+            this.setUpdate(clientID, info, "update");
         });
 
         this.clients[dev.user].on("mailevent", (seqno, clientID) => {
             this.log_translator("info", "Start new Mail", clientID, seqno);
-            this.setState(`${clientID}.last_activity`, {
-                val: this.helper_translator("new mail"),
-                ack: true,
-            });
-            this.setState(`${clientID}.last_activity_timestamp`, {
-                val: Date.now(),
-                ack: true,
-            });
+            this.setUpdate(clientID, { new_mail: seqno }, "new mail");
+        });
+
+        this.clients[dev.user].on("uidvalidity", (uidvalidity, clientID) => {
+            this.log_translator("info", "UID validity changes", clientID, uidvalidity);
+        });
+
+        this.clients[dev.user].on("expunge", (seqno, clientID) => {
+            this.log_translator("info", "EMail deleted", clientID, seqno);
         });
 
         this.clients[dev.user].on("mailbox", (mailbox, clientID) => {
@@ -292,6 +306,7 @@ class Imap extends utils.Adapter {
         });
 
         this.clients[dev.user].on("disconnected", (error, clientID) => {
+            error = !error ? "FALSE" : "TRUE";
             this.log_translator("info", "disconnected", clientID, error);
             this.log_translator("info", "Restart", clientID, 60);
             this.restartIMAPConnection[clientID] = setTimeout(() => {
@@ -312,6 +327,15 @@ class Imap extends utils.Adapter {
             this.log_translator("error", "Error", clientID, err);
         });
 
+        this.clients[dev.user].on("sendTo", (obj, results, clientID) => {
+            this.log_translator("info", "BLOCKLY value", clientID);
+            this.sendTo(obj.from, obj.command, results, obj.callback);
+        });
+
+        this.clients[dev.user].on("sendToError", (obj, results) => {
+            this.sendTo(obj.from, obj.command, this.helper_translator(results), obj.callback);
+        });
+
         this.clients[dev.user].on("alert", (err, clientID) => {
             this.log_translator("info", "Alert", clientID, err);
         });
@@ -319,7 +343,9 @@ class Imap extends utils.Adapter {
             if (count < this.clientsRaw[clientID].maxi || this.clientsRaw[clientID].maxi == count) {
                 this.setStatesValue(mail, seqno, clientID, count, attrs);
             }
-            this.createHTMLRows(this.clientsHTML[clientID], mail, seqno, clientID, count, all, attrs);
+            if (count < this.clientsRaw[clientID].maxi_html || this.clientsRaw[clientID].maxi_html == count) {
+                this.createHTMLRows(this.clientsHTML[clientID], mail, seqno, clientID, count, all, attrs);
+            }
             this.log_translator(
                 "debug",
                 "Mail",
@@ -331,6 +357,21 @@ class Imap extends utils.Adapter {
             //this.log_translator("debug", "Attributes", clientID, JSON.stringify(attrs));
             //this.log_translator("debug", "Sequense", clientID, seqno);
             //this.log_translator("debug", "Info", clientID, JSON.stringify(info));
+        });
+    }
+
+    async setUpdate(clientID, info, trans) {
+        this.setState(`${clientID}.last_activity`, {
+            val: this.helper_translator(trans),
+            ack: true,
+        });
+        this.setState(`${clientID}.last_activity_json`, {
+            val: JSON.stringify(info),
+            ack: true,
+        });
+        this.setState(`${clientID}.last_activity_timestamp`, {
+            val: Date.now(),
+            ack: true,
         });
     }
 
@@ -477,6 +518,26 @@ class Imap extends utils.Adapter {
                     }
                 }
                 break;
+            case "getIMAPRequest":
+                if (obj.callback) {
+                    if (
+                        obj.message &&
+                        obj.message["search"] != "" &&
+                        obj.message["name"] != "" &&
+                        obj.message["bodie"] != "" &&
+                        obj.message["parse"] != ""
+                    ) {
+                        if (obj.message["name"] !== "all") {
+                            this.log.info(JSON.stringify(_obj));
+                            const user = obj.message["name"].replace(FORBIDDEN_CHARS, "_");
+                            this.clients[user].custom_search(_obj);
+                        } else {
+                            this.log_translator("info", "No IMAP selected");
+                            this.sendTo(obj.from, obj.command, [], obj.callback);
+                        }
+                    }
+                }
+                break;
             default:
                 this.sendTo(obj.from, obj.command, [], obj.callback);
                 delete this.double_call[obj._id];
@@ -498,6 +559,17 @@ class Imap extends utils.Adapter {
         });
     }
 
+    sleep(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+
+    toJson(data) {
+        return JSON.stringify(data, (_, v) => (typeof v === "bigint" ? `${v}n` : v)).replace(
+            /"(-?\d+)n"/g,
+            (_, a) => a,
+        );
+    }
+
     /**
      * Is called when adapter shuts down - callback has to be called under any circumstances!
      * @param {() => void} callback
@@ -509,6 +581,8 @@ class Imap extends utils.Adapter {
                 this.restartIMAPConnection[dev] && this.clearTimeout(this.restartIMAPConnection[dev]);
             }
             this.qualityInterval && this.clearInterval(this.qualityInterval);
+            this.statusInterval && this.clearInterval(this.statusInterval);
+            this.sleepTimer && this.clearTimeout(this.sleepTimer);
             callback();
         } catch (e) {
             callback();
@@ -581,8 +655,8 @@ class Imap extends utils.Adapter {
     log_translator(level, text, merge_array, merge_array2, merge_array3) {
         try {
             const loglevel = !!this.log[level];
-            //if (loglevel && level != "debug") {
-            if (loglevel) {
+            if (loglevel && level != "debug") {
+                //if (loglevel) {
                 if (tl.trans[text] != null) {
                     if (merge_array3) {
                         this.log[level](
