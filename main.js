@@ -13,7 +13,7 @@ const { MailListener } = require("./lib/listener");
 const { ImapListener } = require("./lib/imap");
 const helper = require("./lib/helper");
 const tl = require("./lib/translator.js");
-const util = require("node:util");
+const format = require("util").format;
 const { convert } = require("html-to-text");
 const FORBIDDEN_CHARS = /[\][züäöÜÄÖ$@ß€*:.,;'"`<>\\\s?]/g;
 
@@ -209,20 +209,13 @@ class Imap extends utils.Adapter {
 
     async checkDeviceFolder() {
         try {
-            const all_dp = await this.getObjectListAsync({
-                startkey: `${this.namespace}`,
-                endkey: `${this.namespace}\u9999`,
-            });
-            for (const element of all_dp.rows) {
-                if (element && element.value && element.value.type && element.value.type === "device") {
-                    if (element.value && element.value.common && element.value.common.desc) {
-                        if (this.clientsID.includes(element.value.common.desc)) {
-                            this.log_translator("debug", "Found data point", element.id);
-                        } else {
-                            this.log_translator("debug", "Deleted data point", element.id);
-                            await this.delObjectAsync(`${element.id}`, { recursive: true });
-                        }
-                    }
+            const devices = await this.getDevicesAsync();
+            for (const element of devices) {
+                if (this.clientsID.includes(element.common["desc"])) {
+                    this.log_translator("debug", "Found data point", element["id"]);
+                } else {
+                    this.log_translator("debug", "Deleted data point", element["id"]);
+                    await this.delObjectAsync(`${element["id"]}`, { recursive: true });
                 }
             }
         } catch (e) {
@@ -660,18 +653,16 @@ class Imap extends utils.Adapter {
                 //if (loglevel) {
                 if (tl.trans[text] != null) {
                     if (merge_array3) {
-                        this.log[level](
-                            util.format(tl.trans[text][this.lang], merge_array, merge_array2, merge_array3),
-                        );
+                        this.log[level](format(tl.trans[text][this.lang], merge_array, merge_array2, merge_array3));
                     } else if (merge_array2) {
-                        this.log[level](util.format(tl.trans[text][this.lang], merge_array, merge_array2));
+                        this.log[level](format(tl.trans[text][this.lang], merge_array, merge_array2));
                     } else if (merge_array) {
-                        this.log[level](util.format(tl.trans[text][this.lang], merge_array));
+                        this.log[level](format(tl.trans[text][this.lang], merge_array));
                     } else {
                         this.log[level](tl.trans[text][this.lang]);
                     }
                 } else {
-                    this.log.warn(tl.trans["Cannot find translation"][this.lang]);
+                    this.log.warn(format(tl.trans["Cannot find translation"][this.lang], text));
                 }
             }
         } catch (e) {
@@ -683,9 +674,9 @@ class Imap extends utils.Adapter {
         try {
             if (tl.trans[text][this.lang]) {
                 if (merge_array1) {
-                    return util.format(tl.trans[text][this.lang], merge_array, merge_array1);
+                    return format(tl.trans[text][this.lang], merge_array, merge_array1);
                 } else if (merge_array) {
-                    return util.format(tl.trans[text][this.lang], merge_array);
+                    return format(tl.trans[text][this.lang], merge_array);
                 } else {
                     return tl.trans[text][this.lang];
                 }
