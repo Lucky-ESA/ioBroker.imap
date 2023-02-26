@@ -44,8 +44,15 @@
             "zh-cn": "imap 接收您的电子邮件",
             "uk": "imap для отримання ваших електронних листів"
         },
-        "authors": ["Lucky-ESA <github@luckyskills.de>"],
-        "keywords": ["imap", "mail", "email", "receive"],
+        "authors": [
+            "Lucky-ESA <github@luckyskills.de>"
+        ],
+        "keywords": [
+            "imap",
+            "mail",
+            "email",
+            "receive"
+        ],
         "license": "MIT",
         "platform": "Javascript/Node.js",
         "main": "main.js",
@@ -79,8 +86,12 @@
         "hosts": [],
         "icons": []
     },
-    "encryptedNative": ["password"],
-    "protectedNative": ["password"],
+    "encryptedNative": [
+        "password"
+    ],
+    "protectedNative": [
+        "password"
+    ],
     "objects": [],
     "instanceObjects": [
         {

@@ -45,6 +45,10 @@
     "iconname": "Nombre icónico",
     "ICONNAME": "Nombre del icono (por ejemplo, gmail)",
     "Tab Hosts": "Crear IMAP`S",
-    "icon64": "Elija icono",
-    "ICON64": "Elija icono"
+    "icon64": "Elegir icono",
+    "ICON64": "Elegir icono",
+    "tls_option": "opción tls",
+    "TLS_OPTION": "Objeto de opciones para pasar a tls.connect()",
+    "auto_tls": "auto tls",
+    "AUTO_TLS": "Establézcalo en 'siempre' para intentar siempre actualizaciones de conexión a través de STARTTLS, 'requerido' solo si se requiere una actualización, o 'nunca' para nunca intentar actualizar."
 }

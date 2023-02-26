@@ -10,7 +10,6 @@ const utils = require("@iobroker/adapter-core");
 
 // Load your modules here, e.g.:
 const { MailListener } = require("./lib/listener");
-const { ImapListener } = require("./lib/imap");
 const helper = require("./lib/helper");
 const tl = require("./lib/translator.js");
 const format = require("util").format;
@@ -39,9 +38,7 @@ class Imap extends utils.Adapter {
         this.sleepTimer = null;
         this.double_call = {};
         this.clients = {};
-        this.imap_client = {};
         this.clientsRaw = {};
-        this.imap_client = {};
         this.clientsHTML = {};
         this.clientsRows = {};
         this.restartIMAPConnection = {};
@@ -107,7 +104,6 @@ class Imap extends utils.Adapter {
             this.restartIMAPConnection[dev.user] = null;
             this.clientsRows[dev.user] = "";
             this.clients[dev.user] = null;
-            this.imap_client[dev.user] = null;
             this.clientsRaw[dev.user] = dev;
             this.clientsID.push(dev.user);
             this.log_translator("info", "create device", dev.user);
@@ -137,8 +133,8 @@ class Imap extends utils.Adapter {
     async connectionCheck() {
         for (const dev of this.clientsID) {
             if (this.clients[dev] != null) {
-                const status = await this.clients[dev].imap_state();
-                this.log_translator("info", "IMAP connection", dev, status);
+                const state = await this.clients[dev].imap_state();
+                this.log_translator("info", "IMAP connection", dev, state);
             } else {
                 this.log.info(dev);
                 this.log_translator("info", "No connection", dev);
@@ -257,9 +253,7 @@ class Imap extends utils.Adapter {
             this.clients[dev.user] = null;
         }
         this.restartIMAPConnection[dev.user] && this.clearTimeout(this.restartIMAPConnection[dev.user]);
-        this.imap_client[dev.user] = new ImapListener(dev, this);
         this.clients[dev.user] = new MailListener(dev, this);
-        //this.imap_client[dev.user].start();
         this.clients[dev.user].start();
         this.clients[dev.user].on("connected", (clientID) => {
             this.log_translator("info", "connection", clientID);
@@ -273,8 +267,8 @@ class Imap extends utils.Adapter {
             });
         });
 
-        this.clients[dev.user].on("update", (seqno, info, clientID) => {
-            this.log_translator("info", "Start Update", clientID, JSON.stringify(info), seqno);
+        this.clients[dev.user].on("update", (log, seqno, info, clientID) => {
+            this.log_translator("info", log, clientID, JSON.stringify(info), seqno);
             this.setUpdate(clientID, info, "update");
         });
 

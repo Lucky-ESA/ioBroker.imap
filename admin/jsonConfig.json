@@ -200,6 +200,37 @@
                             "style": {
                                 "width": 200
                             }
+                        },
+                        {
+                            "type": "text",
+                            "attr": "tlsoption",
+                            "width": 200,
+                            "title": "tls_option",
+                            "tooltip": "TLS_OPTION",
+                            "filter": false,
+                            "sort": false,
+                            "default": "{\"rejectUnauthorized\": false}",
+                            "style": {
+                                "width": 200
+                            }
+                        },
+                        {
+                            "type": "select",
+                            "attr": "autotls",
+                            "width": 100,
+                            "title": "auto_tls",
+                            "tooltip": "AUTO_TLS",
+                            "filter": false,
+                            "sort": false,
+                            "options": [
+                                { "label": "never", "value": "never" },
+                                { "label": "always", "value": "always" },
+                                { "label": "required", "value": "required" }
+                            ],
+                            "default": "never",
+                            "style": {
+                                "width": 100
+                            }
                         }
                     ]
                 }

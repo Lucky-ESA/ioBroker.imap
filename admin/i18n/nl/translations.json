@@ -45,6 +45,10 @@
     "iconname": "Icoon naam",
     "ICONNAME": "Pictogramnaam (bijv. Gmail)",
     "Tab Hosts": "IMAP`S maken",
-    "icon64": "Kies icon",
-    "ICON64": "Kies icon"
+    "icon64": "Kies pictogram",
+    "ICON64": "Kies pictogram",
+    "tls_option": "tls-optie",
+    "TLS_OPTION": "Options-object om door te geven aan tls.connect()",
+    "auto_tls": "auto tls",
+    "AUTO_TLS": "Stel in op 'altijd' om altijd verbindingsupgrades via STARTTLS te proberen, 'vereist' alleen als een upgrade vereist is, of 'nooit' om nooit een upgrade uit te voeren."
 }

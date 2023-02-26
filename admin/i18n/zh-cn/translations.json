@@ -45,6 +45,10 @@
     "iconname": "图标名称",
     "ICONNAME": "图标名称（例如 gmail）",
     "Tab Hosts": "创建 IMAP`S",
-    "icon64": "评 注",
-    "ICON64": "评 注"
+    "icon64": "选择图标",
+    "ICON64": "选择图标",
+    "tls_option": "选项",
+    "TLS_OPTION": "要传递给 tls.connect() 的选项对象",
+    "auto_tls": "自动传输",
+    "AUTO_TLS": "设置为“始终”以始终尝试通过 STARTTLS 进行连接升级，设置为“必需”仅在需要升级时设置，或设置为“从不”以从不尝试升级。"
 }
