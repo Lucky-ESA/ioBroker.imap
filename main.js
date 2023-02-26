@@ -269,12 +269,13 @@ class Imap extends utils.Adapter {
 
         this.clients[dev.user].on("update", (log, seqno, info, clientID) => {
             this.log_translator("info", log, clientID, JSON.stringify(info), seqno);
+            info["seqno"] = seqno;
             this.setUpdate(clientID, info, "update");
         });
 
         this.clients[dev.user].on("mailevent", (seqno, clientID) => {
             this.log_translator("info", "Start new Mail", clientID, seqno);
-            this.setUpdate(clientID, { new_mail: seqno }, "new mail");
+            this.setUpdate(clientID, { flags: [], new_mail: seqno }, "new mail");
         });
 
         this.clients[dev.user].on("uidvalidity", (uidvalidity, clientID) => {
