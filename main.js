@@ -134,7 +134,7 @@ class Imap extends utils.Adapter {
         for (const dev of this.clientsID) {
             if (this.clients[dev] != null) {
                 const state = await this.clients[dev].imap_state();
-                this.log_translator("info", "IMAP connection", dev, state);
+                this.log_translator("debug", "IMAP connection", dev, state);
             } else {
                 this.log.info(dev);
                 this.log_translator("info", "No connection", dev);
