@@ -290,7 +290,7 @@ class Imap extends utils.Adapter {
         });
 
         this.clients[dev.user].on("seqno", (seqno, clientID) => {
-            this.save_seqno[clientID].push(seqno);
+            this.save_seqno[clientID] = seqno;
         });
 
         this.clients[dev.user].on("mailbox", (mailbox, clientID) => {
@@ -543,9 +543,9 @@ class Imap extends utils.Adapter {
                         if (obj.message["name"] !== "all") {
                             const user = obj.message["name"].replace(FORBIDDEN_CHARS, "_");
                             if (obj.message["value"] === "data") {
-                                this.sendTo(obj.from, obj.command, [this.save_json[user]], obj.callback);
+                                this.sendTo(obj.from, obj.command, [this.save_json[user][0]], obj.callback);
                             } else {
-                                this.sendTo(obj.from, obj.command, [this.save_seqno[user]], obj.callback);
+                                this.sendTo(obj.from, obj.command, this.save_seqno[user], obj.callback);
                             }
                         } else {
                             this.log_translator("info", "No IMAP selected");
