@@ -264,6 +264,45 @@ Blockly.Words["imap_with_result"] = {
     uk: "з результатом",
     "zh-cn": "结果",
 };
+Blockly.Words["imap_data"] = {
+    en: "Emails data",
+    de: "E-Mail-Daten",
+    ru: "Данные по электронной почте",
+    pt: "Dados de e-mail",
+    nl: "E-mails",
+    fr: "Emails data",
+    it: "Dati e-mail",
+    es: "Datos de correo electrónico",
+    pl: "Data emaili",
+    uk: "Дані електронної пошти",
+    "zh-cn": "电子邮件数据",
+};
+Blockly.Words["imap_data_json"] = {
+    en: "Emails as JSON",
+    de: "E-Mails als JSON",
+    ru: "Email как JSON",
+    pt: "Emails como JSON",
+    nl: "E-mails als JSON",
+    fr: "Courriels comme JSON",
+    it: "E-mail come JSON",
+    es: "Correos electrónicos como JSON",
+    pl: "Email jako JSON",
+    uk: "Електронна пошта: json",
+    "zh-cn": "Email as JSON",
+};
+Blockly.Words["imap_data_seqno"] = {
+    en: "Last sequence numbers",
+    de: "Letzte Sequenznummern",
+    ru: "Последние номера последовательности",
+    pt: "Últimos números de sequência",
+    nl: "Laatste sequenties",
+    fr: "Derniers numéros de séquence",
+    it: "Ultimo numero di sequenza",
+    es: "Últimos números de secuencia",
+    pl: "Liczba ostatnia",
+    uk: "Останні номери послідовності",
+    "zh-cn": "最后一组",
+};
 Blockly.Sendto.blocks["imap"] =
     '<block type="imap">' +
     '     <value name="INSTANCE">' +
@@ -521,6 +560,128 @@ Blockly.JavaScript["imap_request"] = function (block) {
     var statement;
     statement = Blockly.JavaScript.statementToCode(block, "STATEMENT");
     var command = "getIMAPRequest";
+    return (
+        'sendTo("imap' +
+        dropdown_instance +
+        '", "' +
+        command +
+        '", ' +
+        text +
+        ", async function (result) {\n  " +
+        statement +
+        "  });\n" +
+        logText
+    );
+};
+
+Blockly.Sendto.blocks["imap_data"] =
+    '<block type="imap_data">' +
+    '     <value name="INSTANCE">' +
+    "     </value>" +
+    '     <value name="IMAPNAME">' +
+    "     </value>" +
+    '     <value name="IMAPVALUE">' +
+    "     </value>" +
+    '     <value name="LOG">' +
+    "     </value>" +
+    '     <value name="STATEMENT">' +
+    "     </value>" +
+    "</block>";
+
+Blockly.Blocks["imap_data"] = {
+    init: function () {
+        var options_user = [];
+        var options_instance = [];
+        options_user.push([Blockly.Translate("imap_choose"), "all"]);
+        if (typeof main !== "undefined" && main.instances) {
+            for (var i = 0; i < main.instances.length; i++) {
+                var m = main.instances[i].match(/^system.adapter.imap.(\d+)$/);
+                if (m) {
+                    var n = parseInt(m[1], 10);
+                    options_instance.push(["imap." + n, "." + n]);
+                    if (main.objects[main.instances[i]].native.hosts) {
+                        for (var a = 0; a < main.objects[main.instances[i]].native.hosts.length; a++) {
+                            //Checking active in the main.js.
+                            var id = main.objects[main.instances[i]].native.hosts[a].user;
+                            options_user.push([n + "." + id, id]);
+                        }
+                    }
+                }
+            }
+        }
+
+        this.appendDummyInput("INSTANCE")
+            .appendField(Blockly.Translate("imap"))
+            .appendField(new Blockly.FieldDropdown(options_instance), "INSTANCE");
+
+        this.appendDummyInput("IMAPNAME")
+            .appendField(Blockly.Translate("imap_name"))
+            .appendField(new Blockly.FieldDropdown(options_user), "IMAPNAME");
+
+        this.appendDummyInput("IMAPVALUE")
+            .appendField(Blockly.Translate("imap_data"))
+            .appendField(
+                new Blockly.FieldDropdown([
+                    [Blockly.Translate("imap_data_json"), "data"],
+                    [Blockly.Translate("imap_data_seqno"), "seqno"],
+                ]),
+                "IMAPVALUE",
+            );
+
+        this.appendDummyInput("LOG")
+            .appendField(Blockly.Translate("imap_log"))
+            .appendField(
+                new Blockly.FieldDropdown([
+                    [Blockly.Translate("imap_log_none"), ""],
+                    [Blockly.Translate("imap_log_info"), "log"],
+                    [Blockly.Translate("imap_log_debug"), "debug"],
+                    [Blockly.Translate("imap_log_warn"), "warn"],
+                    [Blockly.Translate("imap_log_error"), "error"],
+                ]),
+                "LOG",
+            );
+        this.appendStatementInput("STATEMENT").setCheck(null);
+
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+
+        this.setColour(Blockly.Sendto.HUE);
+        this.setTooltip(Blockly.Translate("imap_tooltip"));
+        this.setHelpUrl(Blockly.Translate("imap_help"));
+    },
+};
+
+Blockly.JavaScript["imap_data"] = function (block) {
+    var dropdown_instance = block.getFieldValue("INSTANCE");
+    var logLevel = block.getFieldValue("LOG");
+    var value_name = block.getFieldValue("IMAPNAME");
+    var value_value = block.getFieldValue("IMAPVALUE");
+
+    var text = "{\n";
+    text += '  name: "' + value_name + '",\n';
+    text += '  value: "' + value_value + '",\n';
+    text += "}";
+
+    var args = [];
+    args.push('\n   "name": "' + value_name + '"');
+    args.push('\n   "value": "' + value_value + '"');
+    var logText;
+    if (logLevel) {
+        logText =
+            "console." +
+            logLevel +
+            '("' +
+            dropdown_instance +
+            ': " + "' +
+            (args.length ? args.join(",") + "\n" : "") +
+            '");\n';
+    } else {
+        logText = "";
+    }
+    var statement;
+    statement = Blockly.JavaScript.statementToCode(block, "STATEMENT");
+    var command = "getIMAPData";
     return (
         'sendTo("imap' +
         dropdown_instance +

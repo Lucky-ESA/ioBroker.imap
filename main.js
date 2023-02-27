@@ -38,6 +38,7 @@ class Imap extends utils.Adapter {
         this.sleepTimer = null;
         this.double_call = {};
         this.save_json = {};
+        this.save_seqno = {};
         this.clients = {};
         this.clientsRaw = {};
         this.clientsHTML = {};
@@ -107,6 +108,7 @@ class Imap extends utils.Adapter {
             this.clients[dev.user] = null;
             this.clientsRaw[dev.user] = dev;
             this.save_json[dev.user] = [];
+            this.save_seqno[dev.user] = [];
             this.clientsID.push(dev.user);
             this.log_translator("info", "create device", dev.user);
             await this.createHost(dev);
@@ -129,7 +131,7 @@ class Imap extends utils.Adapter {
         }, 60 * 60 * 24 * 1000);
         this.statusInterval = this.setInterval(() => {
             this.connectionCheck();
-        }, 60 * 60 * 1000);
+        }, 60 * 1000);
     }
 
     async connectionCheck() {
@@ -138,7 +140,6 @@ class Imap extends utils.Adapter {
                 const state = await this.clients[dev].imap_state();
                 this.log_translator("debug", "IMAP connection", dev, state);
             } else {
-                this.log.info(dev);
                 this.log_translator("info", "No connection", dev);
             }
         }
@@ -288,6 +289,10 @@ class Imap extends utils.Adapter {
             this.log_translator("info", "EMail deleted", clientID, seqno);
         });
 
+        this.clients[dev.user].on("seqno", (seqno, clientID) => {
+            this.save_seqno[clientID].push(seqno);
+        });
+
         this.clients[dev.user].on("mailbox", (mailbox, clientID) => {
             this.log_translator("debug", "mailbox", `${clientID} - ${JSON.stringify(mailbox)}`);
             this.setState(`${clientID}.total`, {
@@ -339,7 +344,7 @@ class Imap extends utils.Adapter {
                 this.setStatesValue(mail, seqno, clientID, count, attrs);
             }
             if (count < this.clientsRaw[clientID].maxi_html || this.clientsRaw[clientID].maxi_html == count) {
-                this.createHTMLRows(this.clientsHTML[clientID], mail, seqno, clientID, count, all, attrs);
+                this.createHTMLRows(mail, seqno, clientID, count, all, attrs);
             }
             this.log_translator(
                 "debug",
@@ -523,9 +528,25 @@ class Imap extends utils.Adapter {
                         obj.message["parse"] != ""
                     ) {
                         if (obj.message["name"] !== "all") {
-                            this.log.info(JSON.stringify(_obj));
                             const user = obj.message["name"].replace(FORBIDDEN_CHARS, "_");
                             this.clients[user].custom_search(_obj);
+                        } else {
+                            this.log_translator("info", "No IMAP selected");
+                            this.sendTo(obj.from, obj.command, [], obj.callback);
+                        }
+                    }
+                }
+                break;
+            case "getIMAPData":
+                if (obj.callback) {
+                    if (obj.message && obj.message["name"] != "" && obj.message["value"] != "") {
+                        if (obj.message["name"] !== "all") {
+                            const user = obj.message["name"].replace(FORBIDDEN_CHARS, "_");
+                            if (obj.message["value"] === "data") {
+                                this.sendTo(obj.from, obj.command, [this.save_json[user]], obj.callback);
+                            } else {
+                                this.sendTo(obj.from, obj.command, [this.save_seqno[user]], obj.callback);
+                            }
                         } else {
                             this.log_translator("info", "No IMAP selected");
                             this.sendTo(obj.from, obj.command, [], obj.callback);
@@ -594,14 +615,13 @@ class Imap extends utils.Adapter {
             const command = id.split(".").pop();
             const clientID = id.split(".")[2];
             if (
-                this.clientsHTML[clientID] &&
+                this.clientsHTML[clientID] != null &&
                 command != null &&
-                this.clientsHTML[clientID][command] &&
-                state.val != null &&
-                state.val != ""
+                this.clientsHTML[clientID][command] != null &&
+                state.val != null
             ) {
                 this.log_translator("debug", "change_attribut", command, clientID);
-                this.clientsHTML[clientID].command = state.val;
+                this.clientsHTML[clientID][command] = state.val;
                 this.setAckFlag(id);
                 return;
             }
@@ -650,8 +670,7 @@ class Imap extends utils.Adapter {
     log_translator(level, text, merge_array, merge_array2, merge_array3) {
         try {
             const loglevel = !!this.log[level];
-            if (loglevel && level != "debug") {
-                //if (loglevel) {
+            if (loglevel) {
                 if (tl.trans[text] != null) {
                     if (merge_array3) {
                         this.log[level](format(tl.trans[text][this.lang], merge_array, merge_array2, merge_array3));
@@ -689,11 +708,12 @@ class Imap extends utils.Adapter {
         }
     }
 
-    async createHTMLRows(id, mail, seqno, clientID, count, all, attrs) {
+    async createHTMLRows(mail, seqno, clientID, count, all, attrs) {
         if (count == 1) {
             this.clientsRows[clientID] = "";
             this.save_json[clientID] = [];
         }
+        const id = this.clientsHTML[clientID];
         mail.seqno = seqno;
         mail.attrs = attrs;
         this.save_json[clientID].push(mail);
@@ -754,13 +774,15 @@ class Imap extends utils.Adapter {
         <td style="text-align:${id["headline_align_column_7"]}">${attrs.flags}</td>
         </tr>`;
         if (count == all || this.clientsRaw[clientID].maxi_html == count) {
-            await this.createHTML(id, clientID, this.clientsRows[clientID], count, all);
+            await this.createHTML(clientID, this.clientsRows[clientID], count, all);
             this.clientsRows[clientID] = "";
         }
     }
 
-    async createHTML(id, ident, htmltext, count, all) {
+    async createHTML(ident, htmltext, count, all) {
         try {
+            const id = this.clientsHTML[ident];
+            const jarvis = id["jarvis"] ? "<div>" : '<div class="container">';
             const htmlStart = `
             <!DOCTYPE html>
             <html lang="${this.lang}">
@@ -812,7 +834,7 @@ class Imap extends utils.Adapter {
             </style>
             </head>
             <body>
-            <div class="container">
+            ${jarvis}
             <table style="width:${id["header_width"]};
             border:${id["header_border"]}px; border-color:${id["header_tag_border_color"]}; 
             color:${id["header_text_color"]}; font-size:${id["header_font_size"]}px; 
