@@ -37,6 +37,7 @@ class Imap extends utils.Adapter {
         this.statusInterval = null;
         this.sleepTimer = null;
         this.double_call = {};
+        this.save_json = {};
         this.clients = {};
         this.clientsRaw = {};
         this.clientsHTML = {};
@@ -105,6 +106,7 @@ class Imap extends utils.Adapter {
             this.clientsRows[dev.user] = "";
             this.clients[dev.user] = null;
             this.clientsRaw[dev.user] = dev;
+            this.save_json[dev.user] = [];
             this.clientsID.push(dev.user);
             this.log_translator("info", "create device", dev.user);
             await this.createHost(dev);
@@ -310,6 +312,10 @@ class Imap extends utils.Adapter {
                 val: false,
                 ack: true,
             });
+        });
+
+        this.clients[dev.user].on("info", (info, clientID) => {
+            this.log_translator("info", "Info", clientID, tl.trans[info][this.lang]);
         });
 
         this.clients[dev.user].on("error", (err, clientID) => {
@@ -686,7 +692,11 @@ class Imap extends utils.Adapter {
     async createHTMLRows(id, mail, seqno, clientID, count, all, attrs) {
         if (count == 1) {
             this.clientsRows[clientID] = "";
+            this.save_json[clientID] = [];
         }
+        mail.seqno = seqno;
+        mail.attrs = attrs;
+        this.save_json[clientID].push(mail);
         const isEven = count % 2 != 0 ? id["mails_even_color"] : id["mails_odd_color"];
         const isToday = (someDate) => {
             const today = new Date();
@@ -858,6 +868,10 @@ class Imap extends utils.Adapter {
             const htmlEnd = `</table></div></body></html>`;
             await this.setStateAsync(`${ident}.html`, {
                 val: htmlStart + htmlEnd,
+                ack: true,
+            });
+            await this.setStateAsync(`${ident}.json`, {
+                val: JSON.stringify(this.save_json[ident]),
                 ack: true,
             });
         } catch (e) {
