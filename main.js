@@ -670,7 +670,7 @@ class Imap extends utils.Adapter {
     log_translator(level, text, merge_array, merge_array2, merge_array3) {
         try {
             const loglevel = !!this.log[level];
-            if (loglevel) {
+            if (loglevel && level != "debug") {
                 if (tl.trans[text] != null) {
                     if (merge_array3) {
                         this.log[level](format(tl.trans[text][this.lang], merge_array, merge_array2, merge_array3));
@@ -782,7 +782,16 @@ class Imap extends utils.Adapter {
     async createHTML(ident, htmltext, count, all) {
         try {
             const id = this.clientsHTML[ident];
-            const jarvis = id["jarvis"] ? "<div>" : '<div class="container">';
+            let div = '<div class="container">';
+            let div_css = `
+            div.container {
+                align-items: center;
+                justify-content: center
+            }`;
+            if (id["jarvis"]) {
+                div = "<div>";
+                div_css = "";
+            }
             const htmlStart = `
             <!DOCTYPE html>
             <html lang="${this.lang}">
@@ -818,10 +827,7 @@ class Imap extends utils.Adapter {
             td:nth-child(2) {
                 width:${id["td_tag_2_colums"]}
             }
-            div.container {
-                align-items: center;
-                justify-content: center
-            }
+            ${div_css}
             thread {
                 display: table-header-group
             }
@@ -834,7 +840,7 @@ class Imap extends utils.Adapter {
             </style>
             </head>
             <body>
-            ${jarvis}
+            ${div}
             <table style="width:${id["header_width"]};
             border:${id["header_border"]}px; border-color:${id["header_tag_border_color"]}; 
             color:${id["header_text_color"]}; font-size:${id["header_font_size"]}px; 
