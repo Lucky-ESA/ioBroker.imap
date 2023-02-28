@@ -558,6 +558,37 @@ class Imap extends utils.Adapter {
                     }
                 }
                 break;
+            case "getFlags":
+                if (
+                    obj.message &&
+                    obj.message["flag"] != "" &&
+                    obj.message["seqno"] > 0 &&
+                    obj.message["name"] != "" &&
+                    obj.message["flagtype"] != "" &&
+                    obj.message["name"] !== "all"
+                ) {
+                    this.log_translator(
+                        "info",
+                        "Set Flags",
+                        obj.message["flag"],
+                        obj.message["seqno"],
+                        obj.message["flagtype"],
+                    );
+                    const user = obj.message["name"].replace(FORBIDDEN_CHARS, "_");
+                    const flags = [];
+                    for (const flag of obj.message["flagtype"].split(",")) {
+                        flags.push("\\" + flag);
+                    }
+                    if (obj.message["flag"] === "addFlags" && typeof this.clients[user] === "object") {
+                        this.clients[user].set_addFlags(obj.message["seqno"], _obj.message["flagtype"]);
+                    } else if (obj.message["flag"] === "delFlags" && typeof this.clients[user] === "object") {
+                        this.clients[user].set_delFlags(obj.message["seqno"], _obj.message["flagtype"]);
+                    }
+                    if (obj.message["flag"] === "setFlags" && typeof this.clients[user] === "object") {
+                        this.clients[user].set_setFlags(obj.message["seqno"], flags);
+                    }
+                }
+                break;
             default:
                 this.sendTo(obj.from, obj.command, [], obj.callback);
                 delete this.double_call[obj._id];
@@ -674,9 +705,9 @@ class Imap extends utils.Adapter {
     log_translator(level, text, merge_array, merge_array2, merge_array3) {
         try {
             const loglevel = !!this.log[level];
-            //if (loglevel && level != "debug") {
-            if (loglevel) {
-                if (tl.trans[text] != null) {
+            if (loglevel && level != "debug") {
+                if (loglevel) {
+                    //if (tl.trans[text] != null) {
                     if (merge_array3) {
                         this.log[level](format(tl.trans[text][this.lang], merge_array, merge_array2, merge_array3));
                     } else if (merge_array2) {

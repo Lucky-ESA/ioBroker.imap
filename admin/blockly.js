@@ -69,6 +69,58 @@ Blockly.Words["imap_bodies"] = {
     uk: "БОДИ:",
     "zh-cn": "BODIES:",
 };
+Blockly.Words["imap_flags"] = {
+    en: "Flag action (addFlags, delFlags or setFlags).",
+    de: "Flaggenaktion (addFlags, delFlags oder setFlags.).",
+    ru: "Флаг действия (addFlags, delFlags или setFlags.).",
+    pt: "Ação da bandeira (addFlags, delFlags ou setFlags.).",
+    nl: "Flag actie (addFlags, delFlags of setFlags).",
+    fr: "Action du drapeau (addFlags, delFlags ou setFlags.).",
+    it: "Azione della bandiera (addFlags, delFlags o setFlags.).",
+    es: "Acción de bandera (addFlags, delFlags o setFlags.).",
+    pl: "Flaga (addFlags, delFlags lub setFlags).",
+    uk: "Прапор дії (addFlags, delFlags або setFlags.).",
+    "zh-cn": "滞后行动(滞后、冲绳或四国).",
+};
+Blockly.Words["imap_flagtype"] = {
+    en: "Set Flags",
+    de: "Flaggen festlegen",
+    ru: "Установите флаги",
+    pt: "Conjunto de bandeiras",
+    nl: "Set Flags",
+    fr: "Set Drapeaux",
+    it: "Set Bandiere",
+    es: "Set Flags",
+    pl: "Flaga",
+    uk: "Комплект Прапорів",
+    "zh-cn": "A. 排减量",
+};
+Blockly.Words["imap_tooltip_flags"] = {
+    en: "Flags available (Seen,Answered,Flagged,Deleted or Draft)",
+    de: "Flaggen verfügbar (Seen,Answered,Flagged,Deleted oder Draft)",
+    ru: "Имеющиеся флаги (Seen,Answered,Flagged,Deleted или Draft)",
+    pt: "Bandeiras disponíveis (Seen,Answered,Flagged,Deleted ou Draft)",
+    nl: "Vlaggen beschikbaar (Seen,Answered,Flagged,Deleted of Draft)",
+    fr: "Drapeaux disponibles (Envoyé,Réponse,Draps ou Draft)",
+    it: "Bandiere disponibili (Vendita,Risposta,Flagged,Deleted o Draft)",
+    es: "Banderas disponibles (ver,Respuesta,Flagged,Deleted o Draft)",
+    pl: "Flagi dostępne (Seen,Answered,Flagged,Deleted lub Draft)",
+    uk: "Прапори доступні (Seen,Answered,Flagged,Deleted або Draft)",
+    "zh-cn": "可用的滞留(见、Answered、Flag、注释、手或空洞无见)",
+};
+Blockly.Words["imap_seqno"] = {
+    en: "Sequence number",
+    de: "Sequenznummer",
+    ru: "Номер последовательности",
+    pt: "Número de sequência",
+    nl: "Vertaling:",
+    fr: "Numéro de séquence",
+    it: "Numero di sequenza",
+    es: "Número de secuencia",
+    pl: "Liczba sekwencjonacyjna",
+    uk: "Кількість місць",
+    "zh-cn": "离职人数",
+};
 Blockly.Words["imap_choose"] = {
     en: "select mailbox",
     de: "Postfach auswählen",
@@ -237,6 +289,19 @@ Blockly.Words["imap_tooltip"] = {
     pl: "Wyszukiwanie",
     uk: "Зміна запиту запиту",
     "zh-cn": "改变搜寻",
+};
+Blockly.Words["imap_tooltip_request"] = {
+    en: "Own search query",
+    de: "Eigene Suchanfrage",
+    ru: "Собственный поисковый запрос",
+    pt: "Própria consulta de pesquisa",
+    nl: "Eigen zoektocht",
+    fr: "Own search query",
+    it: "Ricerca propria query",
+    es: "Own search query",
+    pl: "Wyszukiwarka",
+    uk: "Власний пошуковий запит",
+    "zh-cn": "查询",
 };
 Blockly.Words["imap_help"] = {
     en: "https://github.com/Lucky-ESA/ioBroker.imap/blob/master/README.md",
@@ -416,12 +481,12 @@ Blockly.Sendto.blocks["imap_request"] =
     "     </value>" +
     '     <value name="SEARCH">' +
     '         <shadow type="text">' +
-    '             <field name="TEXT">["ALL", ["SINCE", "May 20, 2022"], ["BEFORE", "May 28, 2022"]]</field>' +
+    '             <field name="TEXT">["ALL", ["SINCE", "May 20, 2022"]]</field>' +
     "         </shadow>" +
     "     </value>" +
     '     <value name="FETCH">' +
     '         <shadow type="text">' +
-    '             <field name="TEXT">{"fetch": false, "seqno": [1,2,3,4], "single": "1:10"}</field>' +
+    '             <field name="TEXT">{"fetch": false, "seqno": [1,2,3,4]}</field>' +
     "         </shadow>" +
     "     </value>" +
     '     <value name="BODIES">' +
@@ -503,7 +568,7 @@ Blockly.Blocks["imap_request"] = {
         this.setNextStatement(true, null);
 
         this.setColour(Blockly.Sendto.HUE);
-        this.setTooltip(Blockly.Translate("imap_tooltip"));
+        this.setTooltip(Blockly.Translate("imap_tooltip_request"));
         this.setHelpUrl(Blockly.Translate("imap_help"));
     },
 };
@@ -692,6 +757,119 @@ Blockly.JavaScript["imap_data"] = function (block) {
         ", async function (result) {\n  " +
         statement +
         "  });\n" +
+        logText
+    );
+};
+Blockly.Sendto.blocks["imap_flag"] =
+    '<block type="imap_flag">' +
+    '     <value name="INSTANCE">' +
+    "     </value>" +
+    '     <value name="IMAPNAME">' +
+    "     </value>" +
+    '     <value name="FLAG">' +
+    '         <shadow type="text">' +
+    '             <field name="TEXT">setFlags</field>' +
+    "         </shadow>" +
+    "     </value>" +
+    '     <value name="FLAGTYPE">' +
+    '         <shadow type="text">' +
+    '             <field name="TEXT">["\\Seen"]</field>' +
+    "         </shadow>" +
+    "     </value>" +
+    '     <value name="SEQNO">' +
+    '         <shadow type="math_number">' +
+    '             <field name="NUM">0</field>' +
+    "         </shadow>" +
+    "     </value>" +
+    '     <value name="LOG">' +
+    "     </value>" +
+    "</block>";
+
+Blockly.Blocks["imap_flag"] = {
+    init: function () {
+        var options_user = [];
+        var options_instance = [];
+        options_user.push([Blockly.Translate("imap_choose"), "all"]);
+        if (typeof main !== "undefined" && main.instances) {
+            for (var i = 0; i < main.instances.length; i++) {
+                var m = main.instances[i].match(/^system.adapter.imap.(\d+)$/);
+                if (m) {
+                    var n = parseInt(m[1], 10);
+                    options_instance.push(["imap." + n, "." + n]);
+                    if (main.objects[main.instances[i]].native.hosts) {
+                        for (var a = 0; a < main.objects[main.instances[i]].native.hosts.length; a++) {
+                            //Checking active in the main.js.
+                            var id = main.objects[main.instances[i]].native.hosts[a].user;
+                            options_user.push([n + "." + id, id]);
+                        }
+                    }
+                }
+            }
+        }
+
+        this.appendDummyInput("INSTANCE")
+            .appendField(Blockly.Translate("imap"))
+            .appendField(new Blockly.FieldDropdown(options_instance), "INSTANCE");
+
+        this.appendDummyInput("IMAPNAME")
+            .appendField(Blockly.Translate("imap_name"))
+            .appendField(new Blockly.FieldDropdown(options_user), "IMAPNAME");
+
+        this.appendValueInput("FLAG").appendField(Blockly.Translate("imap_flags"));
+        this.appendValueInput("FLAGTYPE").appendField(Blockly.Translate("imap_flagtype"));
+        this.appendValueInput("SEQNO").appendField(Blockly.Translate("imap_seqno"));
+
+        this.appendDummyInput("LOG")
+            .appendField(Blockly.Translate("imap_log"))
+            .appendField(
+                new Blockly.FieldDropdown([
+                    [Blockly.Translate("imap_log_none"), ""],
+                    [Blockly.Translate("imap_log_info"), "log"],
+                    [Blockly.Translate("imap_log_debug"), "debug"],
+                    [Blockly.Translate("imap_log_warn"), "warn"],
+                    [Blockly.Translate("imap_log_error"), "error"],
+                ]),
+                "LOG",
+            );
+
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+
+        this.setColour(Blockly.Sendto.HUE);
+        this.setTooltip(Blockly.Translate("imap_tooltip_flags"));
+        this.setHelpUrl(Blockly.Translate("imap_help"));
+    },
+};
+
+Blockly.JavaScript["imap_flag"] = function (block) {
+    var dropdown_instance = block.getFieldValue("INSTANCE");
+    var logLevel = block.getFieldValue("LOG");
+    var value_name = block.getFieldValue("IMAPNAME");
+    var value_flag = Blockly.JavaScript.valueToCode(block, "FLAG", Blockly.JavaScript.ORDER_ATOMIC);
+    var value_flagtype = Blockly.JavaScript.valueToCode(block, "FLAGTYPE", Blockly.JavaScript.ORDER_ATOMIC);
+    var value_seqno = Blockly.JavaScript.valueToCode(block, "SEQNO", Blockly.JavaScript.ORDER_ATOMIC);
+
+    var logText;
+    if (logLevel) {
+        logText =
+            "console." + logLevel + '("imap: " + ' + value_flag + " + " + value_seqno + " + " + value_name + ");\n";
+    } else {
+        logText = "";
+    }
+
+    return (
+        'sendTo("imap' +
+        dropdown_instance +
+        '", "getFlags", {flag: ' +
+        value_flag +
+        ", seqno: " +
+        value_seqno +
+        ", flagtype: " +
+        value_flagtype +
+        ", name: '" +
+        value_name +
+        "'});\n" +
         logText
     );
 };
