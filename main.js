@@ -131,12 +131,16 @@ class Imap extends utils.Adapter {
         }, 60 * 60 * 24 * 1000);
         this.statusInterval = this.setInterval(() => {
             this.connectionCheck();
-        }, 60 * 1000);
+        }, 60 * 60 * 24 * 1000);
     }
 
     async connectionCheck() {
         for (const dev of this.clientsID) {
             if (this.clients[dev] != null) {
+                const check = await this.clients[dev].imap_namespaces();
+                this.log_translator("debug", "IMAP namespaces", dev, JSON.stringify(check));
+                const deli = await this.clients[dev].imap_delimiter();
+                this.log_translator("debug", "IMAP delimiter", dev, JSON.stringify(deli));
                 const state = await this.clients[dev].imap_state();
                 this.log_translator("debug", "IMAP connection", dev, state);
             } else {
@@ -543,7 +547,7 @@ class Imap extends utils.Adapter {
                         if (obj.message["name"] !== "all") {
                             const user = obj.message["name"].replace(FORBIDDEN_CHARS, "_");
                             if (obj.message["value"] === "data") {
-                                this.sendTo(obj.from, obj.command, [this.save_json[user][0]], obj.callback);
+                                this.sendTo(obj.from, obj.command, this.save_json[user], obj.callback);
                             } else {
                                 this.sendTo(obj.from, obj.command, this.save_seqno[user], obj.callback);
                             }
@@ -670,7 +674,8 @@ class Imap extends utils.Adapter {
     log_translator(level, text, merge_array, merge_array2, merge_array3) {
         try {
             const loglevel = !!this.log[level];
-            if (loglevel && level != "debug") {
+            //if (loglevel && level != "debug") {
+            if (loglevel) {
                 if (tl.trans[text] != null) {
                     if (merge_array3) {
                         this.log[level](format(tl.trans[text][this.lang], merge_array, merge_array2, merge_array3));
@@ -745,6 +750,17 @@ class Imap extends utils.Adapter {
         const org_subject = mail.subject;
         let subject = mail.subject;
         let content = mail.text != null ? mail.text : convert(mail.html);
+        if (id["choose_content"] == "html") {
+            content = mail.html != null ? mail.html : "";
+        } else if (id["choose_content"] == "text") {
+            content = mail.text != null ? mail.text : convert(mail.html);
+        } else if (id["choose_content"] == "textAsHtml") {
+            content = mail.textAsHtml != null ? mail.textAsHtml : mail.text;
+        } else if (id["choose_content"] == "html_convert") {
+            content = mail.html != null ? convert(mail.html) : mail.text;
+        } else if (id["choose_content"] == "textAsHtml_convert") {
+            content = mail.textAsHtml != null ? convert(mail.textAsHtml) : mail.text;
+        }
         let org_content = content;
         if (org_content != null && org_content != "") {
             org_content = org_content
@@ -752,10 +768,10 @@ class Imap extends utils.Adapter {
                 .replace(/"/g, "'")
                 .replace(/^(?=\n)$|^\s*|\s*$|\n\n+/gm, "");
         }
-        if (mail.subject && mail.subject.toString().length > id["short_subject"]) {
+        if (mail.subject && mail.subject.toString().length > id["short_subject"] && id["short_subject"] > 0) {
             subject = mail.subject.substring(0, id["short_subject"]);
         }
-        if (content && content.toString().length > id["short_content"]) {
+        if (content && content.toString().length > id["short_content"] && id["short_content"] > 0) {
             content = content.substring(0, id["short_content"]);
         }
         attrs.flags = attrs.flags != "" ? attrs.flags.toString().replace(/\\/, "") : "unseen";
@@ -898,12 +914,64 @@ class Imap extends utils.Adapter {
                 val: htmlStart + htmlEnd,
                 ack: true,
             });
-            await this.setStateAsync(`${ident}.json`, {
-                val: JSON.stringify(this.save_json[ident]),
+            this.json_table(this.save_json[ident], ident);
+        } catch (e) {
+            this.log_translator("error", "try", `createHTML: ${e}`);
+        }
+    }
+
+    async json_table(jsons, id) {
+        try {
+            if (typeof jsons != "object") {
+                return;
+            }
+            let count = 0;
+            const new_array = [];
+            let new_json = {};
+            let addaddress = [];
+            let addname = [];
+            for (const element of jsons) {
+                new_json = {};
+                new_json["id"] = ++count;
+                new_json["date"] = element.date ? this.formatDate(element.date, "TT.MM.JJJJ hh:mm:ss") : "";
+                addaddress = [];
+                addname = [];
+                if (element.from && element.from.value != null) {
+                    for (const address of element.from.value) {
+                        if (address.address != null) {
+                            addaddress.push(address.address);
+                            addname.push(address.name);
+                        }
+                    }
+                }
+                new_json["from"] = addaddress;
+                new_json["from_name"] = addname;
+                addaddress = [];
+                addname = [];
+                if (element.to && element.to.value != null) {
+                    for (const address of element.to.value) {
+                        if (address.address != null) {
+                            addaddress.push(address.address);
+                            addname.push(address.name);
+                        }
+                    }
+                }
+                new_json["to"] = addaddress;
+                new_json["to_name"] = addname;
+                new_json["subject"] = element.subject ? element.subject : "";
+                new_json["text"] = element.text ? element.text : "";
+                new_json["text"] = element.html ? element.html : "";
+                new_json["text"] = element.textAsHtml ? element.textAsHtml : "";
+                new_json["seqno"] = element.seqno ? element.seqno : "";
+                new_json["flag"] = element.attrs.flags ? element.attrs.flags : "";
+                new_array.push(new_json);
+            }
+            await this.setStateAsync(`${id}.json`, {
+                val: JSON.stringify(new_array),
                 ack: true,
             });
         } catch (e) {
-            this.log_translator("error", "try", `createHTML: ${e}`);
+            this.log_translator("error", "try", `json_table: ${e}`);
         }
     }
 
