@@ -28,8 +28,7 @@ imap to receive your emails
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 0.0.2 (2023-03-01)
 
 -   (Lucky-ESA) initial release
 
