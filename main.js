@@ -33,6 +33,7 @@ class Imap extends utils.Adapter {
         this.createHost = helper.createHost;
         this.createMails = helper.createMails;
         this.createRemote = helper.createRemote;
+        this.createinbox = helper.createinbox;
         this.qualityInterval = null;
         this.statusInterval = null;
         this.sleepTimer = null;
@@ -131,7 +132,7 @@ class Imap extends utils.Adapter {
         }, 60 * 60 * 24 * 1000);
         this.statusInterval = this.setInterval(() => {
             this.connectionCheck();
-        }, 60 * 60 * 24 * 1000);
+        }, 60 * 60 * 1000);
     }
 
     async connectionCheck() {
@@ -260,7 +261,7 @@ class Imap extends utils.Adapter {
             this.clients[dev.user] = null;
         }
         this.restartIMAPConnection[dev.user] && this.clearTimeout(this.restartIMAPConnection[dev.user]);
-        this.clients[dev.user] = new MailListener(dev, this);
+        this.clients[dev.user] = new MailListener(dev, this.log.debug);
         this.clients[dev.user].start();
         this.clients[dev.user].on("connected", (clientID) => {
             this.log_translator("info", "connection", clientID);
@@ -274,15 +275,37 @@ class Imap extends utils.Adapter {
             });
         });
 
+        this.clients[dev.user].on("log", (level, text, info, clientID) => {
+            this.log_translator(level, text, info, clientID);
+        });
+
+        this.clients[dev.user].on("sub", (folder, clientID) => {
+            this.createinbox(clientID, folder);
+            this.log_translator("info", "INBOXFOLDER", clientID);
+        });
+
         this.clients[dev.user].on("update", (log, seqno, info, clientID) => {
             this.log_translator("info", log, clientID, JSON.stringify(info), seqno);
             info["seqno"] = seqno;
             this.setUpdate(clientID, info, "update");
         });
 
+        this.clients[dev.user].on("status", (info, clientID) => {
+            this.log_translator("debug", "Status eMail folder", clientID, JSON.stringify(info));
+            this.setState(`${clientID}.total`, {
+                val: info.messages && info.messages.total != null ? info.messages.total : 0,
+                ack: true,
+            });
+            this.setState(`${clientID}.total_unread`, {
+                val: info.messages && info.messages.unseen != null ? info.messages.unseen : 0,
+                ack: true,
+            });
+        });
+
         this.clients[dev.user].on("mailevent", (seqno, clientID) => {
             this.log_translator("info", "Start new Mail", clientID, seqno);
             this.setUpdate(clientID, { flags: [], new_mail: seqno }, "new mail");
+            this.setTotal(clientID, true, "total");
         });
 
         this.clients[dev.user].on("uidvalidity", (uidvalidity, clientID) => {
@@ -291,6 +314,7 @@ class Imap extends utils.Adapter {
 
         this.clients[dev.user].on("expunge", (seqno, clientID) => {
             this.log_translator("info", "EMail deleted", clientID, seqno);
+            this.setTotal(clientID, false, "total");
         });
 
         this.clients[dev.user].on("seqno", (seqno, clientID) => {
@@ -362,6 +386,22 @@ class Imap extends utils.Adapter {
             //this.log_translator("debug", "Sequense", clientID, seqno);
             //this.log_translator("debug", "Info", clientID, JSON.stringify(info));
         });
+    }
+
+    async setTotal(clientID, event, dp) {
+        const actual = await this.getStateAsync(`${clientID}.${dp}`);
+        if (actual && actual["val"] != null) {
+            let total = Number(actual["val"]);
+            if (event) {
+                ++total;
+            } else {
+                --total;
+            }
+            this.setState(`${clientID}.${dp}`, {
+                val: total,
+                ack: true,
+            });
+        }
     }
 
     async setUpdate(clientID, info, trans) {
@@ -614,13 +654,6 @@ class Imap extends utils.Adapter {
         return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
-    toJson(data) {
-        return JSON.stringify(data, (_, v) => (typeof v === "bigint" ? `${v}n` : v)).replace(
-            /"(-?\d+)n"/g,
-            (_, a) => a,
-        );
-    }
-
     /**
      * Is called when adapter shuts down - callback has to be called under any circumstances!
      * @param {() => void} callback
@@ -679,6 +712,17 @@ class Imap extends utils.Adapter {
                 this.setAckFlag(id, { val: false });
                 return;
             }
+            if (command === "change_folder" && state.val != "") {
+                if (this.clients[clientID]) {
+                    this.clients[clientID].onReady(state.val);
+                    this.setState(`${clientID}.active_inbox`, {
+                        val: state.val,
+                        ack: true,
+                    });
+                    this.setAckFlag(id);
+                }
+                return;
+            }
             if (command === "reload_emails") {
                 if (this.clients[clientID]) {
                     this.clients[clientID].onNewRead();
@@ -705,9 +749,9 @@ class Imap extends utils.Adapter {
     log_translator(level, text, merge_array, merge_array2, merge_array3) {
         try {
             const loglevel = !!this.log[level];
-            if (loglevel && level != "debug") {
-                if (loglevel) {
-                    //if (tl.trans[text] != null) {
+            //if (loglevel && level != "debug") {
+            if (loglevel) {
+                if (tl.trans[text] != null) {
                     if (merge_array3) {
                         this.log[level](format(tl.trans[text][this.lang], merge_array, merge_array2, merge_array3));
                     } else if (merge_array2) {
