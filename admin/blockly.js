@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use strict";
 
 if (typeof goog !== "undefined") {
