@@ -749,8 +749,8 @@ class Imap extends utils.Adapter {
     log_translator(level, text, merge_array, merge_array2, merge_array3) {
         try {
             const loglevel = !!this.log[level];
-            //if (loglevel && level != "debug") {
-            if (loglevel) {
+            if (loglevel && level != "debug") {
+                //if (loglevel) {
                 if (tl.trans[text] != null) {
                     if (merge_array3) {
                         this.log[level](format(tl.trans[text][this.lang], merge_array, merge_array2, merge_array3));
@@ -806,7 +806,12 @@ class Imap extends utils.Adapter {
                 someDate.getFullYear() == today.getFullYear()
             );
         };
-        const today = isToday(new Date(mail.date)) ? id["mails_today_color"] : id["header_text_color"];
+        let days;
+        if (isToday(new Date(mail.date))) {
+            days = count % 2 != 0 ? id["mails_today_color"] : id["mails_today_color_odd"];
+        } else {
+            days = count % 2 != 0 ? id["mails_nextday_color_even"] : id["mails_nextday_color_odd"];
+        }
         const weight = attrs.flags != "" ? "normal" : "bold";
         let from = this.helper_translator("Unknown");
         let org_from = this.helper_translator("Unknown");
@@ -852,7 +857,7 @@ class Imap extends utils.Adapter {
         attrs.flags = attrs.flags != "" ? attrs.flags.toString().replace(/\\/, "") : "unseen";
         this.clientsRows[clientID] += `
         <tr style="background-color:${isEven}; 
-        color:${today};
+        color:${days};
         font-weight:${weight};
         font-size:${id["header_font_size"]}px;">
         <td style="text-align:${id["headline_align_column_1"]}">${count}</td>
