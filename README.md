@@ -22,6 +22,10 @@ imap to receive your emails
 -   vodafone
 -   strato
 
+## Description and Questions
+
+<https://forum.iobroker.net/topic/63400/test-adapter-iobroker-imap-v0-0-1-github>
+
 ## Changelog
 
 <!--
