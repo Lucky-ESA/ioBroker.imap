@@ -333,7 +333,7 @@ class Imap extends utils.Adapter {
             error = !error ? "FALSE" : "TRUE";
             this.log_translator("info", "disconnected", clientID, error);
             this.log_translator("info", "Restart", clientID, 60);
-            this.restartIMAPConnection[clientID] = setTimeout(() => {
+            this.restartIMAPConnection[clientID] = this.setTimeout(() => {
                 this.log_translator("info", "Restart now", clientID);
                 this.imap_connection(this.clientsRaw[clientID]);
             }, 1000 * 60);
