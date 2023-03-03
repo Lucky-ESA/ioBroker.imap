@@ -15,6 +15,7 @@
                     "newLine": true,
                     "sm": 12,
                     "noDelete": false,
+                    "hidden": "!_alive",
                     "type": "table",
                     "items": [
                         {
