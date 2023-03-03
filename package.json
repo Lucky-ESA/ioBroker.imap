@@ -1,6 +1,6 @@
 {
   "name": "iobroker.imap",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "imap to receive your emails",
   "author": {
     "name": "Lucky-ESA",
