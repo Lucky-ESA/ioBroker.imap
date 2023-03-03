@@ -32,6 +32,11 @@ imap to receive your emails
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+
+-   (Lucky-ESA) Fix json_table
+
 ### 0.0.3 (2023-03-03)
 
 -   (Lucky-ESA) Beta release
