@@ -1040,8 +1040,8 @@ class Imap extends utils.Adapter {
                 new_json["to_name"] = addname;
                 new_json["subject"] = element.subject ? element.subject : "";
                 new_json["text"] = element.text ? element.text : "";
-                new_json["text"] = element.html ? element.html : "";
-                new_json["text"] = element.textAsHtml ? element.textAsHtml : "";
+                new_json["html"] = element.html ? element.html : "";
+                new_json["textAsHtml"] = element.textAsHtml ? element.textAsHtml : "";
                 new_json["seqno"] = element.seqno ? element.seqno : "";
                 new_json["flag"] = element.attrs.flags ? element.attrs.flags : "";
                 new_array.push(new_json);
