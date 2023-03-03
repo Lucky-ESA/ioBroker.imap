@@ -405,12 +405,13 @@ class Imap extends utils.Adapter {
     }
 
     async setUpdate(clientID, info, trans) {
+        const activity = this.helper_translator(trans) != null ? this.helper_translator(trans) : "";
         this.setState(`${clientID}.last_activity`, {
-            val: this.helper_translator(trans),
+            val: activity,
             ack: true,
         });
         this.setState(`${clientID}.last_activity_json`, {
-            val: JSON.stringify(info),
+            val: typeof info === "object" ? JSON.stringify(info) : JSON.stringify({ seqno: "0" }),
             ack: true,
         });
         this.setState(`${clientID}.last_activity_timestamp`, {
