@@ -48,6 +48,7 @@ class Imap extends utils.Adapter {
         this.clientsRows = {};
         this.restartIMAPConnection = {};
         this.clientsID = [];
+        this.clientsIDdelete = [];
         this.countOnline = 0;
         this.lang = "de";
     }
@@ -77,9 +78,6 @@ class Imap extends utils.Adapter {
         }
         devices["data"] = this.config.hosts;
         for (const dev of devices.data) {
-            if (!dev.activ) {
-                continue;
-            }
             if (dev.inbox == "") {
                 this.log_translator("info", "no inbox");
                 continue;
@@ -105,6 +103,10 @@ class Imap extends utils.Adapter {
                 this.log_translator("info", "missing password");
                 continue;
             }
+            this.clientsIDdelete.push(dev);
+            if (!dev.activ) {
+                continue;
+            }
             this.clientsHTML[dev.user] = {};
             this.restartIMAPConnection[dev.user] = null;
             this.clientsRows[dev.user] = "";
@@ -126,7 +128,6 @@ class Imap extends utils.Adapter {
             await this.readHTML(dev);
             await this.imap_connection(dev);
             this.subscribeStates(`${dev.user}.remote.*`);
-            this.cleanupQuality();
         }
         this.log_translator("info", "IMAP check start");
         await this.checkDeviceFolder();
@@ -136,6 +137,7 @@ class Imap extends utils.Adapter {
         this.statusInterval = this.setInterval(() => {
             this.connectionCheck();
         }, 60 * 60 * 1000);
+        this.cleanupQuality();
     }
 
     async connectionCheck() {
@@ -218,11 +220,13 @@ class Imap extends utils.Adapter {
         try {
             const devices = await this.getDevicesAsync();
             for (const element of devices) {
-                if (this.clientsID.includes(element.common["desc"])) {
-                    this.log_translator("debug", "Found data point", element["id"]);
+                const id = element["_id"].split(".").pop();
+                const isfind = this.clientsIDdelete.find((mes) => mes.user === id);
+                if (isfind) {
+                    this.log_translator("debug", "Found data point", element["_id"]);
                 } else {
-                    this.log_translator("debug", "Deleted data point", element["id"]);
-                    await this.delObjectAsync(`${element["id"]}`, { recursive: true });
+                    this.log_translator("debug", "Deleted data point", element["_id"]);
+                    await this.delObjectAsync(`${id}`, { recursive: true });
                 }
             }
         } catch (e) {
