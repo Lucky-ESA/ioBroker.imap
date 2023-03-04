@@ -15,6 +15,7 @@ const tl = require("./lib/translator.js");
 const format = require("util").format;
 const { convert } = require("html-to-text");
 const FORBIDDEN_CHARS = /[\][züäöÜÄÖ$@ß€*:.,;'"`<>\\\s?]/g;
+const limited_reconnect = 5;
 
 class Imap extends utils.Adapter {
     /**
@@ -41,6 +42,7 @@ class Imap extends utils.Adapter {
         this.save_json = {};
         this.save_seqno = {};
         this.clients = {};
+        this.reconnect_count = {};
         this.clientsRaw = {};
         this.clientsHTML = {};
         this.clientsRows = {};
@@ -108,6 +110,7 @@ class Imap extends utils.Adapter {
             this.clientsRows[dev.user] = "";
             this.clients[dev.user] = null;
             this.clientsRaw[dev.user] = dev;
+            this.reconnect_count[dev.user] = 0;
             this.save_json[dev.user] = [];
             this.save_seqno[dev.user] = [];
             this.clientsID.push(dev.user);
@@ -263,11 +266,14 @@ class Imap extends utils.Adapter {
         this.clients[dev.user] = new MailListener(dev, this.log.debug);
         this.clients[dev.user].start();
         this.clients[dev.user].on("connected", (clientID) => {
-            this.log_translator("info", "connection", clientID);
+            if (this.reconnect_count[clientID] === 0) {
+                this.log_translator("info", "connection", clientID);
+            }
             ++this.countOnline;
             if (this.countOnline === 1) {
                 this.setStateAsync("info.connection", true, true);
             }
+            this.reconnect_count[clientID] = 0;
             this.setState(`${clientID}.online`, {
                 val: true,
                 ack: true,
@@ -330,17 +336,22 @@ class Imap extends utils.Adapter {
 
         this.clients[dev.user].on("disconnected", (error, clientID) => {
             error = !error ? "FALSE" : "TRUE";
-            this.log_translator("info", "disconnected", clientID, error);
-            this.log_translator("info", "Restart", clientID, 60);
+            this.log_translator("debug", "disconnected", clientID, error);
+            this.log_translator("debug", "Restart", clientID, 60);
             this.clients[clientID].stop();
             this.clients[clientID] = null;
-            this.restartIMAPConnection[clientID] = this.setTimeout(() => {
-                this.log_translator("info", "Restart now", clientID);
-                this.imap_connection(this.clientsRaw[clientID]);
-            }, 1000 * 60);
+            if (this.reconnect_count[clientID] == limited_reconnect) {
+                this.log_translator("warn", "Connection attempt", clientID);
+            } else {
+                this.restartIMAPConnection[clientID] = this.setTimeout(() => {
+                    this.log_translator("debug", "Restart now", clientID);
+                    this.imap_connection(this.clientsRaw[clientID]);
+                }, 1000 * 60);
+            }
+            ++this.reconnect_count[clientID];
             --this.countOnline;
             if (this.countOnline === 0) {
-                this.setStateAsync("info.connection", true, true);
+                this.setStateAsync("info.connection", false, true);
             }
             this.setState(`${clientID}.online`, {
                 val: false,
@@ -375,13 +386,17 @@ class Imap extends utils.Adapter {
             if (count < this.clientsRaw[clientID].maxi_html || this.clientsRaw[clientID].maxi_html == count) {
                 this.createHTMLRows(mail, seqno, clientID, count, all, attrs);
             }
+            const mails = JSON.parse(JSON.stringify(mail));
+            if (mails && mails.attachments && mails.attachments.length > 0) {
+                delete mails.attachments;
+            }
             this.log_translator(
                 "debug",
                 "Mail",
                 clientID,
-                `${JSON.stringify(mail)} Attributes: ${JSON.stringify(attrs)} Sequense: ${seqno} INFO: ${JSON.stringify(
-                    info,
-                )}`,
+                `${JSON.stringify(mails)} Attributes: ${JSON.stringify(
+                    attrs,
+                )} Sequense: ${seqno} INFO: ${JSON.stringify(info)}`,
             );
             //this.log_translator("debug", "Attributes", clientID, JSON.stringify(attrs));
             //this.log_translator("debug", "Sequense", clientID, seqno);
@@ -480,6 +495,12 @@ class Imap extends utils.Adapter {
                 val: seqno != null ? seqno : "",
                 ack: true,
             });
+            if (mail && mail.attachments && mail.attachments.length != null) {
+                await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.attach`, {
+                    val: mail.attachments.length,
+                    ack: true,
+                });
+            }
         } catch (e) {
             this.log_translator("error", "try", `setStatesValue: ${e}`);
         }
@@ -747,8 +768,8 @@ class Imap extends utils.Adapter {
     log_translator(level, text, merge_array, merge_array2, merge_array3) {
         try {
             const loglevel = !!this.log[level];
-            if (loglevel && level != "debug") {
-                //if (loglevel) {
+            //if (loglevel && level != "debug") {
+            if (loglevel) {
                 if (tl.trans[text] != null) {
                     if (merge_array3) {
                         this.log[level](format(tl.trans[text][this.lang], merge_array, merge_array2, merge_array3));
