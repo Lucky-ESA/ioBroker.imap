@@ -257,7 +257,6 @@ class Imap extends utils.Adapter {
     async imap_connection(dev) {
         if (this.clients[dev.user] != null) {
             this.clients[dev.user].stop();
-            await this.sleep(1000);
             this.clients[dev.user] = null;
         }
         this.restartIMAPConnection[dev.user] && this.clearTimeout(this.restartIMAPConnection[dev.user]);
@@ -333,6 +332,8 @@ class Imap extends utils.Adapter {
             error = !error ? "FALSE" : "TRUE";
             this.log_translator("info", "disconnected", clientID, error);
             this.log_translator("info", "Restart", clientID, 60);
+            this.clients[clientID].stop();
+            this.clients[clientID] = null;
             this.restartIMAPConnection[clientID] = this.setTimeout(() => {
                 this.log_translator("info", "Restart now", clientID);
                 this.imap_connection(this.clientsRaw[clientID]);
@@ -649,10 +650,6 @@ class Imap extends utils.Adapter {
             val: true,
             ack: false,
         });
-    }
-
-    sleep(ms) {
-        return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
     /**
