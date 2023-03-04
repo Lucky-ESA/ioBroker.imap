@@ -60,10 +60,10 @@ Monitor your email accounts via IMAP (Internet Message Access Protocol)
 -   imap.0.xx.active_inbox: Selected folder
 -   imap.0.xx.json: VIS json_table
 
-![change_default_search](img/imap_default.png)
-![set_flags](img/imap_new_flag.png)
-![new_search](img/imap_new_search.png)
-![value_last_request](img/imap_value_last_request.png)
+![change_default_search](admin/img/imap_default.png)
+![set_flags](admin/img/imap_new_flag.png)
+![new_search](admin/img/imap_new_search.png)
+![value_last_request](admin/img/imap_value_last_request.png)
 
 **<https://forum.iobroker.net/topic/63400/test-adapter-iobroker-imap-v0-0-1-github>**
 
