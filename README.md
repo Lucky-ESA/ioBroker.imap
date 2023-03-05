@@ -24,7 +24,7 @@ Monitor your email accounts via IMAP (Internet Message Access Protocol)
 
 ## Description and Questions
 
-🇬🇧 [Description](/docs/en/README.md)</br>
+🇬🇧 [Description](/docs/README.md)</br>
 🇩🇪 [Beschreibung & Fragen](https://forum.iobroker.net/topic/63400/test-adapter-iobroker-imap-v0-0-1-github)
 
 ## Changelog
