@@ -1,4 +1,4 @@
-![Logo](../../admin/imap.png)
+![Logo](../admin/imap.png)
 
 # ioBroker.imap
 
@@ -38,7 +38,14 @@
 -   imap.0.xx.active_inbox: Selected folder
 -   imap.0.xx.json: VIS json_table
 
-![change_default_search](img/imap_default.png)
-![set_flags](img/imap_new_flag.png)
-![new_search](img/imap_new_search.png)
-![value_last_request](img/imap_value_last_request.png)
+-   text
+    ![change_default_search](img/imap_default.png)
+
+-   text
+    ![set_flags](img/imap_new_flag.png)
+
+-   text
+    ![new_search](img/imap_new_search.png)
+
+-   text
+    ![value_last_request](img/imap_value_last_request.png)
