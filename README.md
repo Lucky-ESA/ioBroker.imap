@@ -2,6 +2,7 @@
 
 # ioBroker.imap
 
+[![GitHub license](https://img.shields.io/github/license/Lucky-ESA/ioBroker.imap)](https://github.com/Lucky-ESA/ioBroker.imap/blob/main/LICENSE)
 [![NPM version](https://img.shields.io/npm/v/iobroker.imap.svg)](https://www.npmjs.com/package/iobroker.imap)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.imap.svg)](https://www.npmjs.com/package/iobroker.imap)
 ![Number of Installations](https://iobroker.live/badges/imap-installed.svg)
@@ -9,7 +10,10 @@
 
 [![NPM](https://nodei.co/npm/iobroker.imap.png?downloads=true)](https://nodei.co/npm/iobroker.imap/)
 
-**Tests:** ![Test and Release](https://github.com/Lucky-ESA/ioBroker.imap/workflows/Test%20and%20Release/badge.svg)
+**Tests:** </br>
+![Test and Release](https://github.com/Lucky-ESA/ioBroker.imap/workflows/Test%20and%20Release/badge.svg)
+[![CodeQL](https://github.com/Lucky-ESA/ioBroker.imap/actions/workflows/codeql.yml/badge.svg)](https://github.com/Lucky-ESA/ioBroker.imap/actions/workflows/codeql.yml)
+![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/Lucky-ESA/ioBroker.imap)
 
 ## imap adapter for ioBroker
 
