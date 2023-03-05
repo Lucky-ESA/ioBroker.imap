@@ -38,14 +38,24 @@
 -   imap.0.xx.active_inbox: Selected folder
 -   imap.0.xx.json: VIS json_table
 
--   text
+-   **Change instance config**</br>
     ![change_default_search](img/imap_default.png)
 
--   text
-    ![set_flags](img/imap_new_flag.png)
+-   **Add, delete or set flags**
 
--   text
-    ![new_search](img/imap_new_search.png)
+    -   Required: - Command: setFlags, addFlags or delFlags - Possible flags: - \Seen - Message has been read - \Answered - Message has been answered - \Flagged - Message is "flagged" for urgent/special attention - \Deleted - Message is marked for removal - \Draft - Message has not completed composition (marked as a draft) - SeqNo</br>
+        ![set_flags](img/imap_new_flag.png)
 
--   text
-    ![value_last_request](img/imap_value_last_request.png)
+-   **Own query**
+
+    -   Required:
+        -   Search: e.g.
+            -   ["ALL", ["SINCE", "May 20, 2022"], ["BEFORE", "May 28, 2022"]]
+            -   ["UNSEEN", ["SINCE", "May 05, 2022"]]
+            -   [description](https://www.npmjs.com/package/node-imap)</br>
+    -   Output: name of the variable == result
+        ![new_search](img/imap_new_search.png)
+
+-   **JSON of the active query**
+    -   Output: name of the variable == result</br>
+        ![value_last_request](img/imap_value_last_request.png)
