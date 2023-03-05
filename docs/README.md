@@ -43,8 +43,16 @@
 
 -   **Add, delete or set flags**
 
-    -   Required: - Command: setFlags, addFlags or delFlags - Possible flags: - \Seen - Message has been read - \Answered - Message has been answered - \Flagged - Message is "flagged" for urgent/special attention - \Deleted - Message is marked for removal - \Draft - Message has not completed composition (marked as a draft) - SeqNo</br>
-        ![set_flags](img/imap_new_flag.png)
+    -   Required:
+        -   Command: setFlags, addFlags or delFlags
+        -   Possible flags:
+            -   \Seen: Message has been read
+            -   \Answered: Message has been answered
+            -   \Flagged: Message is "flagged" for urgent/special attention
+            -   \Deleted: Message is marked for removal
+            -   \Draft: Message has not completed composition (marked as a draft)
+        -   SeqNo</br>
+            ![set_flags](img/imap_new_flag.png)
 
 -   **Own query**
 
@@ -52,8 +60,10 @@
         -   Search: e.g.
             -   ["ALL", ["SINCE", "May 20, 2022"], ["BEFORE", "May 28, 2022"]]
             -   ["UNSEEN", ["SINCE", "May 05, 2022"]]
-            -   [description](https://www.npmjs.com/package/node-imap)</br>
-    -   Output: name of the variable == result
+        -   fetch: Set fetch true for direct fetch request without search value
+            -   e.g. Sequence number: [12345,2345,234,2344]
+        -   bodies: [documention](https://www.npmjs.com/package/node-imap)
+    -   Output: name of the variable == result</br>
         ![new_search](img/imap_new_search.png)
 
 -   **JSON of the active query**
