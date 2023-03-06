@@ -12,6 +12,7 @@
 
 **Tests:** </br>
 ![Test and Release](https://github.com/Lucky-ESA/ioBroker.imap/workflows/Test%20and%20Release/badge.svg)
+[![CodeQL](https://github.com/Lucky-ESA/ioBroker.imap/actions/workflows/codeql.yml/badge.svg)](https://github.com/Lucky-ESA/ioBroker.imap/actions/workflows/codeql.yml)
 ![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/Lucky-ESA/ioBroker.imap)
 
 ## imap adapter for ioBroker
