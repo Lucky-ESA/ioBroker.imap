@@ -47,6 +47,7 @@ Monitor your email accounts via IMAP (Internet Message Access Protocol)
 -   (Lucky-ESA) Fix: wrong json_table
 -   (Lucky-ESA) Fix: value null
 -   (Lucky-ESA) Change: Reconnected change info level to debug level
+-   (Lucky-ESA) Change: correct dp roles
 
 ### 0.0.4 (2023-03-03)
 
