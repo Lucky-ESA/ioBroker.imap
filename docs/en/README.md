@@ -1,4 +1,4 @@
-![Logo](../admin/imap.png)
+![Logo](../../admin/imap.png)
 
 # ioBroker.imap
 
