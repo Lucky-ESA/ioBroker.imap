@@ -6,7 +6,11 @@
 [![NPM version](https://img.shields.io/npm/v/iobroker.imap.svg)](https://www.npmjs.com/package/iobroker.imap)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.imap.svg)](https://www.npmjs.com/package/iobroker.imap)
 ![Number of Installations](https://iobroker.live/badges/imap-installed.svg)
-![Current version in stable repository](https://iobroker.live/badges/imap-stable.svg)
+![Current version in stable repository](https://iobroker.live/badges/imap-stable.svg)</br>
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/Lucky-ESA/ioBroker.imap)
+![GitHub commits since latest release](https://img.shields.io/github/commits-since/Lucky-ESA/ioBroker.imap/latest)
+![GitHub last commit](https://img.shields.io/github/last-commit/Lucky-ESA/ioBroker.imap)
+![GitHub issues](https://img.shields.io/github/issues/Lucky-ESA/ioBroker.imap)
 
 [![NPM](https://nodei.co/npm/iobroker.imap.png?downloads=true)](https://nodei.co/npm/iobroker.imap/)
 
@@ -17,7 +21,12 @@
 
 ## imap adapter for ioBroker
 
-Monitor your email accounts via IMAP (Internet Message Access Protocol)
+-   Monitor your email accounts via IMAP (Internet Message Access Protocol)
+
+## Requirements
+
+-   Node >= 16
+-   ~150 MB free ram
 
 ## Tested with
 
