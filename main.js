@@ -14,7 +14,7 @@ const helper = require("./lib/helper");
 const tl = require("./lib/translator.js");
 const format = require("util").format;
 const { convert } = require("html-to-text");
-const FORBIDDEN_CHARS = /[\][züäöÜÄÖ$@ß€*:.,;'"`<>\\\s?]/g;
+const FORBIDDEN_CHARS = /[üäöÜÄÖ$@ß€*:.]|[^._\-/ :!#$%&()+=@^{}|~\p{Ll}\p{Lu}\p{Nd}]+/gu;
 const limited_reconnect = 5;
 
 class Imap extends utils.Adapter {
@@ -769,18 +769,18 @@ class Imap extends utils.Adapter {
         }
     }
 
-    log_translator(level, text, merge_array, merge_array2, merge_array3) {
+    log_translator(level, text, merge_1, merge_2, merge_3) {
         try {
             const loglevel = !!this.log[level];
             //if (loglevel && level != "debug") {
             if (loglevel) {
                 if (tl.trans[text] != null) {
-                    if (merge_array3) {
-                        this.log[level](format(tl.trans[text][this.lang], merge_array, merge_array2, merge_array3));
-                    } else if (merge_array2) {
-                        this.log[level](format(tl.trans[text][this.lang], merge_array, merge_array2));
-                    } else if (merge_array) {
-                        this.log[level](format(tl.trans[text][this.lang], merge_array));
+                    if (merge_3) {
+                        this.log[level](format(tl.trans[text][this.lang], merge_1, merge_2, merge_3));
+                    } else if (merge_2) {
+                        this.log[level](format(tl.trans[text][this.lang], merge_1, merge_2));
+                    } else if (merge_1) {
+                        this.log[level](format(tl.trans[text][this.lang], merge_1));
                     } else {
                         this.log[level](tl.trans[text][this.lang]);
                     }
@@ -793,13 +793,13 @@ class Imap extends utils.Adapter {
         }
     }
 
-    helper_translator(text, merge_array, merge_array1) {
+    helper_translator(text, merge, merge_1) {
         try {
             if (tl.trans[text][this.lang]) {
-                if (merge_array1) {
-                    return format(tl.trans[text][this.lang], merge_array, merge_array1);
-                } else if (merge_array) {
-                    return format(tl.trans[text][this.lang], merge_array);
+                if (merge_1) {
+                    return format(tl.trans[text][this.lang], merge, merge_1);
+                } else if (merge) {
+                    return format(tl.trans[text][this.lang], merge);
                 } else {
                     return tl.trans[text][this.lang];
                 }
@@ -1118,7 +1118,7 @@ class Imap extends utils.Adapter {
                                         ++isfind.counter;
                                         isfind.dp[isfind.counter] = dp.id;
                                     } else {
-                                        this.log_translator("debug", "Found", JSON.stringify(isfind));
+                                        this.log_translator("debug", "Not found", JSON.stringify(isfind));
                                         const new_array = {
                                             message: quality[states.q],
                                             quality: states.q,
