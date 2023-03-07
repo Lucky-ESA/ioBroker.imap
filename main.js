@@ -907,9 +907,11 @@ class Imap extends utils.Adapter {
                 align-items: center;
                 justify-content: center
             }`;
+            let min = "";
             if (id["jarvis"]) {
                 div = "<div>";
                 div_css = "";
+                min = "min-width:100%;";
             }
             const htmlStart = `
             <!DOCTYPE html>
@@ -960,7 +962,7 @@ class Imap extends utils.Adapter {
             </head>
             <body>
             ${div}
-            <table style="width:${id["header_width"]};
+            <table style="${min} width:${id["header_width"]};
             border:${id["header_border"]}px; border-color:${id["header_tag_border_color"]}; 
             color:${id["header_text_color"]}; font-size:${id["header_font_size"]}px; 
             font-family:${id["header_font"]}; 
