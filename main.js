@@ -866,7 +866,7 @@ class Imap extends utils.Adapter {
         }
         let org_content = content;
         if (org_content != null && org_content != "") {
-            org_content = org_content.replace(/["]+|<\/?[a-z][^>]*>/gi, "");
+            org_content = convert(org_content).replace(/["]+|[']+/g, "");
         }
         if (mail.subject && mail.subject.toString().length > id["short_subject"] && id["short_subject"] > 0) {
             subject = mail.subject.substring(0, id["short_subject"]);
