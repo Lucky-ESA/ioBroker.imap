@@ -866,10 +866,7 @@ class Imap extends utils.Adapter {
         }
         let org_content = content;
         if (org_content != null && org_content != "") {
-            org_content = org_content
-                .toString()
-                .replace(/"/g, "'")
-                .replace(/^(?=\n)$|^\s*|\s*$|\n\n+/gm, "");
+            org_content = org_content.replace(/["]+|<\/?[a-z][^>]*>/gi, "");
         }
         if (mail.subject && mail.subject.toString().length > id["short_subject"] && id["short_subject"] > 0) {
             subject = mail.subject.substring(0, id["short_subject"]);
@@ -877,7 +874,7 @@ class Imap extends utils.Adapter {
         if (content && content.toString().length > id["short_content"] && id["short_content"] > 0) {
             content = content.substring(0, id["short_content"]);
         }
-        attrs.flags = attrs.flags != "" ? attrs.flags.toString().replace(/\\/, "") : "unseen";
+        attrs.flags = attrs.flags != "" ? attrs.flags.toString().replace(/\\/g, "") : "unseen";
         this.clientsRows[clientID] += `
         <tr style="background-color:${isEven}; 
         color:${days};
