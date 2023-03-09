@@ -97,8 +97,19 @@ class Imap extends utils.Adapter {
                 dev["username"] = dev.user;
                 dev.user = dev.user.replace(FORBIDDEN_CHARS, "_");
             }
-            if (dev.password != "" && dev.password.match(/<LUCKY-ESA>/gi) != null) {
-                dev.password = this.decrypt(dev.password.split("<LUCKY-ESA>")[1]);
+            if (dev.password != "" && dev.password.includes("<LUCKY-ESA>")) {
+                try {
+                    const decrypt_pw = dev.password.split("<LUCKY-ESA>")[1];
+                    if (decrypt_pw != "") {
+                        dev.password = this.decrypt(decrypt_pw);
+                    } else {
+                        this.log_translator("info", "Cannot found password", dev.user);
+                        continue;
+                    }
+                } catch (e) {
+                    this.log_translator("info", "decrypt pw", dev.user);
+                    continue;
+                }
             } else {
                 this.log_translator("info", "missing password");
                 continue;
@@ -165,7 +176,7 @@ class Imap extends utils.Adapter {
                 if (element && element.value && element.value.type && element.value.type === "state") {
                     const last = element.id.split(".").pop();
                     const html = await this.getStateAsync(`${dev.user}.remote.html.${last}`);
-                    if (last != undefined) {
+                    if (html != undefined && last != undefined && this.clientsHTML[dev.user] != null) {
                         this.clientsHTML[dev.user][last] = html?.val;
                     }
                 }
@@ -241,7 +252,7 @@ class Imap extends utils.Adapter {
             const adapterconfigs = this.adapterConfig;
             if (adapterconfigs && adapterconfigs.native && adapterconfigs.native.hosts) {
                 for (const pw of adapterconfigs.native.hosts) {
-                    if (pw.password != "" && pw.password.match(/<LUCKY-ESA>/gi) === null) {
+                    if (pw.password != "" && !pw.password.includes("<LUCKY-ESA>")) {
                         pw.password = `<LUCKY-ESA>${this.encrypt(pw.password)}`;
                         isdecode = true;
                     }
@@ -294,7 +305,7 @@ class Imap extends utils.Adapter {
         });
 
         this.clients[dev.user].on("update", (log, seqno, info, clientID) => {
-            this.log_translator("info", log, clientID, JSON.stringify(info), seqno);
+            this.log_translator("info", log, seqno, clientID, JSON.stringify(info));
             info["seqno"] = seqno;
             this.setUpdate(clientID, info, "update");
         });
@@ -706,6 +717,7 @@ class Imap extends utils.Adapter {
             const command = id.split(".").pop();
             const clientID = id.split(".")[2];
             if (
+                clientID != null &&
                 this.clientsHTML[clientID] != null &&
                 command != null &&
                 this.clientsHTML[clientID][command] != null &&
