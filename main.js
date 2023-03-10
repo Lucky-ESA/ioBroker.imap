@@ -394,24 +394,21 @@ class Imap extends utils.Adapter {
         this.clients[dev.user].on("alert", (err, clientID) => {
             this.log_translator("info", "Alert", clientID, err);
         });
+
         this.clients[dev.user].on("mail", (mail, seqno, attrs, info, clientID, count, all) => {
             if (count < this.clientsRaw[clientID].maxi || this.clientsRaw[clientID].maxi == count) {
-                this.setStatesValue(mail, seqno, clientID, count, attrs);
+                this.setStatesValue(mail, seqno, clientID, count, attrs, info);
             }
             if (count < this.clientsRaw[clientID].maxi_html || this.clientsRaw[clientID].maxi_html == count) {
                 this.createHTMLRows(mail, seqno, clientID, count, all, attrs);
-            }
-            const mails = JSON.parse(JSON.stringify(mail));
-            if (mails && mails.attachments && mails.attachments.length > 0) {
-                delete mails.attachments;
             }
             this.log_translator(
                 "debug",
                 "Mail",
                 clientID,
-                `${JSON.stringify(mails)} Attributes: ${JSON.stringify(
-                    attrs,
-                )} Sequense: ${seqno} INFO: ${JSON.stringify(info)}`,
+                `${JSON.stringify(mail)} Attributes: ${JSON.stringify(attrs)} Sequense: ${seqno} INFO: ${JSON.stringify(
+                    info,
+                )}`,
             );
             //this.log_translator("debug", "Attributes", clientID, JSON.stringify(attrs));
             //this.log_translator("debug", "Sequense", clientID, seqno);
@@ -451,7 +448,7 @@ class Imap extends utils.Adapter {
         });
     }
 
-    async setStatesValue(mail, seqno, clientID, count, attrs) {
+    async setStatesValue(mail, seqno, clientID, count, attrs, info) {
         try {
             await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.subject`, {
                 val: mail.subject != null ? mail.subject : this.helper_translator("Unknown"),
@@ -503,16 +500,20 @@ class Imap extends utils.Adapter {
                 ack: true,
             });
             await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.uid`, {
-                val: attrs.uid != null ? attrs.uid : "",
+                val: attrs.uid != null ? attrs.uid : 0,
                 ack: true,
             });
             await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.seq`, {
-                val: seqno != null ? seqno : "",
+                val: seqno != null ? seqno : 0,
                 ack: true,
             });
-            if (mail && mail.attachments && mail.attachments.length != null) {
+            await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.size`, {
+                val: info.size != null ? info.size : 0,
+                ack: true,
+            });
+            if (mail && mail.attachments != null) {
                 await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.attach`, {
-                    val: mail.attachments.length,
+                    val: mail.attachments,
                     ack: true,
                 });
             }
