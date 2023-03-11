@@ -53,11 +53,14 @@
 -   (Lucky-ESA) Added: into datapoints
 -   (Lucky-ESA) Added: Password entry not possible without an active instance
 -   (Lucky-ESA) Added: Added description to reradme
+-   (Lucky-ESA) Added: Added move or copy
+-   (Lucky-ESA) Added: Set flag with datapoints
 -   (Lucky-ESA) Fix: debug output without attachments
 -   (Lucky-ESA) Fix: wrong json_table
 -   (Lucky-ESA) Fix: value null
 -   (Lucky-ESA) Change: Reconnected change info level to debug level
 -   (Lucky-ESA) Change: correct dp roles
+-   (Lucky-ESA) Change: delete attachments (too much RAM usage)
 
 ### 0.0.4 (2023-03-03)
 

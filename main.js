@@ -39,6 +39,7 @@ class Imap extends utils.Adapter {
         this.statusInterval = null;
         this.sleepTimer = null;
         this.double_call = {};
+        this.boxfolder = {};
         this.save_json = {};
         this.save_seqno = {};
         this.clients = {};
@@ -114,11 +115,13 @@ class Imap extends utils.Adapter {
                 this.log_translator("info", "missing password");
                 continue;
             }
+            dev["inbox_activ"] = dev.inbox;
             this.clientsIDdelete.push(dev);
             if (!dev.activ) {
                 continue;
             }
             this.clientsHTML[dev.user] = {};
+            this.boxfolder[dev.user] = {};
             this.restartIMAPConnection[dev.user] = null;
             this.clientsRows[dev.user] = "";
             this.clients[dev.user] = null;
@@ -301,6 +304,7 @@ class Imap extends utils.Adapter {
 
         this.clients[dev.user].on("sub", (folder, clientID) => {
             this.createinbox(clientID, folder);
+            this.boxfolder[clientID] = folder;
             this.log_translator("info", "INBOXFOLDER", clientID);
         });
 
@@ -400,7 +404,7 @@ class Imap extends utils.Adapter {
                 this.setStatesValue(mail, seqno, clientID, count, attrs, info);
             }
             if (count < this.clientsRaw[clientID].maxi_html || this.clientsRaw[clientID].maxi_html == count) {
-                this.createHTMLRows(mail, seqno, clientID, count, all, attrs);
+                this.createHTMLRows(mail, seqno, clientID, count, all, attrs, info);
             }
             this.log_translator(
                 "debug",
@@ -641,7 +645,7 @@ class Imap extends utils.Adapter {
                 if (
                     obj.message &&
                     obj.message["flag"] != "" &&
-                    obj.message["seqno"] > 0 &&
+                    obj.message["uid"] > 0 &&
                     obj.message["name"] != "" &&
                     obj.message["flagtype"] != "" &&
                     obj.message["name"] !== "all"
@@ -650,7 +654,7 @@ class Imap extends utils.Adapter {
                         "info",
                         "Set Flags",
                         obj.message["flag"],
-                        obj.message["seqno"],
+                        obj.message["uid"],
                         obj.message["flagtype"],
                     );
                     const user = obj.message["name"].replace(FORBIDDEN_CHARS, "_");
@@ -659,12 +663,12 @@ class Imap extends utils.Adapter {
                         flags.push("\\" + flag);
                     }
                     if (obj.message["flag"] === "addFlags" && typeof this.clients[user] === "object") {
-                        this.clients[user].set_addFlags(obj.message["seqno"], _obj.message["flagtype"]);
+                        this.clients[user].set_addFlags(obj.message["uid"], _obj.message["flagtype"]);
                     } else if (obj.message["flag"] === "delFlags" && typeof this.clients[user] === "object") {
-                        this.clients[user].set_delFlags(obj.message["seqno"], _obj.message["flagtype"]);
+                        this.clients[user].set_delFlags(obj.message["uid"], _obj.message["flagtype"]);
                     }
                     if (obj.message["flag"] === "setFlags" && typeof this.clients[user] === "object") {
-                        this.clients[user].set_setFlags(obj.message["seqno"], flags);
+                        this.clients[user].set_setFlags(obj.message["uid"], flags);
                     }
                 }
                 break;
@@ -737,7 +741,44 @@ class Imap extends utils.Adapter {
                 this.setAckFlag(id);
                 return;
             }
-            if (command === "search_start") {
+            if (command === "folder") {
+                this.setAckFlag(id);
+                return;
+            }
+            if (command === "uid") {
+                this.setAckFlag(id);
+                return;
+            }
+            if (command === "apply_move" && state.val) {
+                this.applyCopyMove("command", clientID);
+                this.setAckFlag(id, { val: false });
+                return;
+            }
+            if (command === "apply_copy" && state.val) {
+                this.applyCopyMove("copy", clientID);
+                this.setAckFlag(id, { val: false });
+                return;
+            }
+            if (command === "apply_flag" && state.val) {
+                this.applyFlag(clientID);
+                this.setAckFlag(id, { val: false });
+                return;
+            }
+            if (command === "vis_command") {
+                if (state.val != "") {
+                    const value = state.val?.toString().split("<L>");
+                    if (value != null && value[0] != null && value[1] != null && value[2] != null) {
+                        if (value[0] === "copy" || value[0] === "move") {
+                            this.applyCopyMove(value[0], clientID, value[1], value[2]);
+                        } else {
+                            this.applyFlag(clientID, value[0], value[1], value[2]);
+                        }
+                    }
+                }
+                this.setAckFlag(id);
+                return;
+            }
+            if (command === "search_start" && state.val) {
                 const criteria = await this.getStateAsync(`${clientID}.remote.criteria`);
                 const show = await this.getStateAsync(`${clientID}.remote.show_mails`);
                 if (criteria && criteria.val && show && show.val != null) {
@@ -751,6 +792,7 @@ class Imap extends utils.Adapter {
             if (command === "change_folder" && state.val != "") {
                 if (this.clients[clientID]) {
                     this.clients[clientID].onReady(state.val);
+                    this.clientsRaw[clientID].inbox_activ = state.val;
                     this.setState(`${clientID}.active_inbox`, {
                         val: state.val,
                         ack: true,
@@ -759,12 +801,63 @@ class Imap extends utils.Adapter {
                 }
                 return;
             }
-            if (command === "reload_emails") {
+            if (command === "reload_emails" && state.val) {
                 if (this.clients[clientID]) {
                     this.clients[clientID].onNewRead();
                     this.setAckFlag(id, { val: false });
                 }
                 return;
+            }
+        }
+    }
+
+    async applyFlag(clientID, set, uid, type) {
+        if (this.clients[clientID]) {
+            if (!set) {
+                set = await this.getStateAsync(`${clientID}.remote.flag.set`);
+            }
+            if (!uid) {
+                uid = await this.getStateAsync(`${clientID}.remote.flag.uid`);
+            }
+            if (!type) {
+                type = await this.getStateAsync(`${clientID}.remote.flag.type`);
+            }
+            const flags = [];
+            for (const flag of type.split(",")) {
+                flags.push("\\" + flag);
+            }
+            if (set === "setFlags") {
+                this.clients[clientID].set_setFlags(uid, flags);
+            }
+            if (set === "addFlags") {
+                this.clients[clientID].set_addFlags(uid, flags);
+            }
+            if (set === "delFlags") {
+                this.clients[clientID].set_delFlags(uid, flags);
+            }
+        }
+    }
+
+    async applyCopyMove(command, clientID, uid, folder) {
+        if (!folder) {
+            folder = await this.getStateAsync(`${clientID}.remote.${command}.folder`);
+        }
+        if (!uid) {
+            uid = await this.getStateAsync(`${clientID}.remote.${command}.uid`);
+        }
+        if (!folder || folder.val != "") {
+            this.log_translator("info", "No folder selected");
+            return;
+        }
+        if (!uid || uid.val === 0) {
+            this.log_translator("info", "No UID specified");
+            return;
+        }
+        if (this.clients[clientID]) {
+            if (command === "copy") {
+                this.clients[clientID].set_copy(uid.val, folder.val);
+            } else {
+                this.clients[clientID].set_move(uid.val, folder.val);
             }
         }
     }
@@ -824,7 +917,7 @@ class Imap extends utils.Adapter {
         }
     }
 
-    async createHTMLRows(mail, seqno, clientID, count, all, attrs) {
+    async createHTMLRows(mail, seqno, clientID, count, all, attrs, info) {
         if (count == 1) {
             this.clientsRows[clientID] = "";
             this.save_json[clientID] = [];
@@ -832,6 +925,7 @@ class Imap extends utils.Adapter {
         const id = this.clientsHTML[clientID];
         mail.seqno = seqno;
         mail.attrs = attrs;
+        mail.info = info;
         this.save_json[clientID].push(mail);
         const isEven = count % 2 != 0 ? id["mails_even_color"] : id["mails_odd_color"];
         const isToday = (someDate) => {
@@ -842,7 +936,13 @@ class Imap extends utils.Adapter {
                 someDate.getFullYear() == today.getFullYear()
             );
         };
+        const all_flags = ["Seen", "Answered", "Flagged", "Deleted", "Draft"];
         let days;
+        let action = "";
+        let action_copy = "";
+        let flags = "";
+        let flags_add = "";
+        let flags_del = "";
         if (isToday(new Date(mail.date))) {
             days = count % 2 != 0 ? id["mails_today_color"] : id["mails_today_color_odd"];
         } else {
@@ -888,6 +988,29 @@ class Imap extends utils.Adapter {
             content = content.substring(0, id["short_content"]);
         }
         attrs.flags = attrs.flags != "" ? attrs.flags.toString().replace(/\\/g, "") : "unseen";
+        action = `<option value="" selected="selected"></option>`;
+        for (const inbox of this.boxfolder[clientID]) {
+            if (inbox != this.clientsRaw[clientID].inbox_activ) {
+                action_copy += `<option value="copy<L>${attrs.uid}<L>${inbox}">${this.helper_translator(
+                    "copy",
+                )} - ${inbox}</option>`;
+                action += `<option value="move<L>${attrs.uid}<L>${inbox}">${this.helper_translator(
+                    "move",
+                )} - ${inbox}</option>`;
+            }
+        }
+        action += action_copy;
+        flags = `<option value="" selected="selected"></option>`;
+        for (const key of all_flags) {
+            if (attrs.flags.indexOf(key) !== -1) {
+                flags_del += `<option value="delFlags<L>${attrs.uid}<L>${key}">delFlags - ${key}</option>`;
+            } else {
+                flags += `<option value="setFlags<L>${attrs.uid}<L>${key}">setFlags - ${key}</option>`;
+                flags_add += `<option value="addFlags<L>${attrs.uid}<L>${key}">addFlags - ${key}</option>`;
+            }
+        }
+        flags += flags_add;
+        flags += flags_del;
         this.clientsRows[clientID] += `
         <tr style="background-color:${isEven}; 
         color:${days};
@@ -901,6 +1024,13 @@ class Imap extends utils.Adapter {
         <td title="${org_content}" style="text-align:${id["headline_align_column_5"]}">${content}</td>
         <td style="text-align:${id["headline_align_column_6"]}">${seqno}</td>
         <td style="text-align:${id["headline_align_column_7"]}">${attrs.flags}</td>
+        <td style="text-align:${id["headline_align_column_8"]}">${attrs.uid}</td>
+        <td style="text-align:${id["headline_align_column_9"]}">
+        <select onchange="setState('${this.namespace}.${clientID}.remote.vis_command', this.value)">
+        ${action}</select></td>
+        <td style="text-align:${id["headline_align_column_10"]}">
+        <select onchange="setState('${this.namespace}.${clientID}.remote.vis_command', this.value)">
+        ${flags}</select></td>
         </tr>`;
         if (count == all || this.clientsRaw[clientID].maxi_html == count) {
             await this.createHTML(clientID, this.clientsRows[clientID], count, all);
@@ -969,6 +1099,19 @@ class Imap extends utils.Adapter {
                 display: table-footer-group
             }
             </style>
+            <script> 
+            function setState(stateId, value) {
+            	sendPostMessage("setState", stateId, value);
+            }
+            function sendPostMessage(command, stateId, value) {
+            	message = {
+                    command: command,
+                    stateId: stateId,
+                    value: value
+                	};
+                window.parent.postMessage(message, "*");
+            }
+            </script>
             </head>
             <body>
             ${div}
@@ -980,7 +1123,7 @@ class Imap extends utils.Adapter {
             ${id["header_linear_color_1"]});">
             <thead>
             <tr>
-            <th colspan="7" scope="colgroup">
+            <th colspan="10" scope="colgroup">
             <p style="color:${id["top_text_color"]}; font-family:${id["top_font"]}; 
             font-size:${id["top_font_size"]}px; font-weight:${id["top_font_weight"]}">
             ${id["top_text"]}&ensp;&ensp;${this.helper_translator("top_last_update")} 
@@ -1010,11 +1153,20 @@ class Imap extends utils.Adapter {
             <th style="text-align:${id["headline_align_column_7"]}; width:${id["headline_column_width_7"]}">
             &ensp;${this.helper_translator("Flag")}&ensp;
             </th>
+            <th style="text-align:${id["headline_align_column_8"]}; width:${id["headline_column_width_8"]}">
+            &ensp;${this.helper_translator("UID")}&ensp;
+            </th>
+            <th style="text-align:${id["headline_align_column_9"]}; width:${id["headline_column_width_9"]}">
+            &ensp;${this.helper_translator("move or copy")}&ensp;
+            </th>
+            <th style="text-align:${id["headline_align_column_10"]}; width:${id["headline_column_width_10"]}">
+            &ensp;${this.helper_translator("Flag action")}&ensp;
+            </th>
             </tr>
             </thead>
             <tfoot>
             <tr>
-            <th colspan="7" scope="colgroup">
+            <th colspan="10" scope="colgroup">
             <p style="color:${id["top_text_color"]}; font-family:${id["top_font"]}; 
             font-size:${id["top_font_size"]}px; font-weight:${id["top_font_weight"]}">
             ${this.helper_translator("footer", count, all)}</p></th>
@@ -1077,7 +1229,9 @@ class Imap extends utils.Adapter {
                 new_json["text"] = element.text ? element.text : "";
                 new_json["html"] = element.html ? element.html : "";
                 new_json["textAsHtml"] = element.textAsHtml ? element.textAsHtml : "";
-                new_json["seqno"] = element.seqno ? element.seqno : "";
+                new_json["seqno"] = element.seqno ? element.seqno : 0;
+                new_json["uid"] = element.attrs.uid ? element.attrs.uid : 0;
+                new_json["size"] = element.info.size ? element.info.size : 0;
                 new_json["flag"] = element.attrs.flags ? element.attrs.flags : "";
                 new_array.push(new_json);
             }

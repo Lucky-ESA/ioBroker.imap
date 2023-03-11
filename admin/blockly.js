@@ -111,18 +111,18 @@ Blockly.Words["imap_tooltip_flags"] = {
     uk: "Прапори доступні (Seen,Answered,Flagged,Deleted або Draft)",
     "zh-cn": "可用的滞留(见、Answered、Flag、注释、手或空洞无见)",
 };
-Blockly.Words["imap_seqno"] = {
-    en: "Sequence number",
-    de: "Sequenznummer",
-    ru: "Номер последовательности",
-    pt: "Número de sequência",
-    nl: "Vertaling:",
-    fr: "Numéro de séquence",
-    it: "Numero di sequenza",
-    es: "Número de secuencia",
-    pl: "Liczba sekwencjonacyjna",
-    uk: "Кількість місць",
-    "zh-cn": "离职人数",
+Blockly.Words["imap_uid"] = {
+    "en": "UID number",
+    "de": "UID-Nummer",
+    "ru": "UID номер",
+    "pt": "Número do UID",
+    "nl": "UID nummer",
+    "fr": "Numéro UID",
+    "it": "Numero UID",
+    "es": "Número de UID",
+    "pl": "Liczba UID",
+    "uk": "UID номер",
+    "zh-cn": "IDID编号"
 };
 Blockly.Words["imap_choose"] = {
     en: "select mailbox",
@@ -776,10 +776,10 @@ Blockly.Sendto.blocks["imap_flag"] =
     "     </value>" +
     '     <value name="FLAGTYPE">' +
     '         <shadow type="text">' +
-    '             <field name="TEXT">["\\Seen"]</field>' +
+    '             <field name="TEXT">Seen</field>' +
     "         </shadow>" +
     "     </value>" +
-    '     <value name="SEQNO">' +
+    '     <value name="UIDNO">' +
     '         <shadow type="math_number">' +
     '             <field name="NUM">0</field>' +
     "         </shadow>" +
@@ -820,7 +820,7 @@ Blockly.Blocks["imap_flag"] = {
 
         this.appendValueInput("FLAG").appendField(Blockly.Translate("imap_flags"));
         this.appendValueInput("FLAGTYPE").appendField(Blockly.Translate("imap_flagtype"));
-        this.appendValueInput("SEQNO").appendField(Blockly.Translate("imap_seqno"));
+        this.appendValueInput("UIDNO").appendField(Blockly.Translate("imap_uid"));
 
         this.appendDummyInput("LOG")
             .appendField(Blockly.Translate("imap_log"))
@@ -851,12 +851,12 @@ Blockly.JavaScript["imap_flag"] = function (block) {
     var value_name = block.getFieldValue("IMAPNAME");
     var value_flag = Blockly.JavaScript.valueToCode(block, "FLAG", Blockly.JavaScript.ORDER_ATOMIC);
     var value_flagtype = Blockly.JavaScript.valueToCode(block, "FLAGTYPE", Blockly.JavaScript.ORDER_ATOMIC);
-    var value_seqno = Blockly.JavaScript.valueToCode(block, "SEQNO", Blockly.JavaScript.ORDER_ATOMIC);
+    var value_uid = Blockly.JavaScript.valueToCode(block, "UIDNO", Blockly.JavaScript.ORDER_ATOMIC);
 
     var logText;
     if (logLevel) {
         logText =
-            "console." + logLevel + '("imap: " + ' + value_flag + " + " + value_seqno + " + " + value_name + ");\n";
+            "console." + logLevel + '("imap: " + ' + value_flag + " + " + value_uid + " + " + value_name + ");\n";
     } else {
         logText = "";
     }
@@ -866,8 +866,8 @@ Blockly.JavaScript["imap_flag"] = function (block) {
         dropdown_instance +
         '", "getFlags", {flag: ' +
         value_flag +
-        ", seqno: " +
-        value_seqno +
+        ", uid: " +
+        value_uid +
         ", flagtype: " +
         value_flagtype +
         ", name: '" +
