@@ -845,7 +845,7 @@ class Imap extends utils.Adapter {
         if (!uid) {
             uid = await this.getStateAsync(`${clientID}.remote.${command}.uid`);
         }
-        if (!folder || folder.val != "") {
+        if (!folder || folder.val == "") {
             this.log_translator("info", "No folder selected");
             return;
         }
