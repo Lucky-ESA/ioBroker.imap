@@ -15,7 +15,6 @@
                     "newLine": true,
                     "sm": 12,
                     "noDelete": false,
-                    "hidden": "!_alive",
                     "type": "table",
                     "items": [
                         {
@@ -91,7 +90,6 @@
                             "title": "password",
                             "tooltip": "PASSWORD",
                             "filter": false,
-                            "visible": true,
                             "sort": false,
                             "default": "",
                             "style": {

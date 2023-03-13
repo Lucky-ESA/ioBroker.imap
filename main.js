@@ -277,10 +277,12 @@ class Imap extends utils.Adapter {
 
     async imap_connection(dev) {
         if (this.clients[dev.user] != null) {
-            this.clients[dev.user].stop();
+            this.clients[dev.user].destroy();
+            await this.sleep(5000);
             this.clients[dev.user] = null;
         }
         this.restartIMAPConnection[dev.user] && this.clearTimeout(this.restartIMAPConnection[dev.user]);
+        this.restartIMAPConnection[dev.user] = null;
         this.clients[dev.user] = new MailListener(dev, this.log.debug);
         this.clients[dev.user].start();
         this.clients[dev.user].on("connected", (clientID) => {
@@ -304,8 +306,10 @@ class Imap extends utils.Adapter {
 
         this.clients[dev.user].on("sub", (folder, clientID) => {
             this.createinbox(clientID, folder);
+            if (Object.keys(this.boxfolder[clientID]).length > 0) {
+                this.log_translator("info", "INBOXFOLDER", clientID);
+            }
             this.boxfolder[clientID] = folder;
-            this.log_translator("info", "INBOXFOLDER", clientID);
         });
 
         this.clients[dev.user].on("update", (log, seqno, info, clientID) => {
@@ -659,15 +663,15 @@ class Imap extends utils.Adapter {
                     );
                     const user = obj.message["name"].replace(FORBIDDEN_CHARS, "_");
                     const flags = [];
-                    for (const flag of obj.message["flagtype"].split(",")) {
+                    const types = obj.message["flagtype"].replace(/ /g, "").split(",");
+                    for (const flag of types) {
                         flags.push("\\" + flag);
                     }
                     if (obj.message["flag"] === "addFlags" && typeof this.clients[user] === "object") {
-                        this.clients[user].set_addFlags(obj.message["uid"], _obj.message["flagtype"]);
+                        this.clients[user].set_addFlags(obj.message["uid"], flags);
                     } else if (obj.message["flag"] === "delFlags" && typeof this.clients[user] === "object") {
-                        this.clients[user].set_delFlags(obj.message["uid"], _obj.message["flagtype"]);
-                    }
-                    if (obj.message["flag"] === "setFlags" && typeof this.clients[user] === "object") {
+                        this.clients[user].set_delFlags(obj.message["uid"], flags);
+                    } else if (obj.message["flag"] === "setFlags" && typeof this.clients[user] === "object") {
                         this.clients[user].set_setFlags(obj.message["uid"], flags);
                     }
                 }
@@ -693,6 +697,14 @@ class Imap extends utils.Adapter {
         });
     }
 
+    sleep(ms) {
+        return new Promise((resolve) => {
+            this.sleepTimer = this.setTimeout(() => {
+                resolve(true);
+            }, ms);
+        });
+    }
+
     /**
      * Is called when adapter shuts down - callback has to be called under any circumstances!
      * @param {() => void} callback
@@ -700,7 +712,7 @@ class Imap extends utils.Adapter {
     onUnload(callback) {
         try {
             for (const dev of this.clientsID) {
-                this.clients[dev.user].stop();
+                this.clients[dev.user] && this.clients[dev.user].stop();
                 this.restartIMAPConnection[dev] && this.clearTimeout(this.restartIMAPConnection[dev]);
             }
             this.qualityInterval && this.clearInterval(this.qualityInterval);
@@ -733,6 +745,11 @@ class Imap extends utils.Adapter {
                 this.setAckFlag(id);
                 return;
             }
+            if (command === "reload_emails") {
+                this.clients[clientID].onNewRead();
+                this.setAckFlag(id, { val: false });
+                return;
+            }
             if (command === "criteria") {
                 this.setAckFlag(id);
                 return;
@@ -750,7 +767,7 @@ class Imap extends utils.Adapter {
                 return;
             }
             if (command === "apply_move" && state.val) {
-                this.applyCopyMove("command", clientID);
+                this.applyCopyMove("move", clientID);
                 this.setAckFlag(id, { val: false });
                 return;
             }
@@ -814,18 +831,35 @@ class Imap extends utils.Adapter {
     async applyFlag(clientID, set, uid, type) {
         if (this.clients[clientID]) {
             if (!set) {
-                set = await this.getStateAsync(`${clientID}.remote.flag.set`);
+                const sets = await this.getStateAsync(`${clientID}.remote.flag.set`);
+                set = sets && sets.val ? sets.val : "";
             }
-            if (!uid) {
-                uid = await this.getStateAsync(`${clientID}.remote.flag.uid`);
+            if (uid == null) {
+                const uids = await this.getStateAsync(`${clientID}.remote.flag.uid`);
+                uid = uids && uids.val != null ? uids.val : 0;
             }
             if (!type) {
-                type = await this.getStateAsync(`${clientID}.remote.flag.type`);
+                const types = await this.getStateAsync(`${clientID}.remote.flag.type`);
+                type = types && types.val ? types.val : "";
+            }
+            if (set == "") {
+                this.log_translator("info", "Flag Type is empty");
+                return;
+            }
+            if (uid === 0) {
+                this.log_translator("info", "No UID specified");
+                return;
+            }
+            if (type == "") {
+                this.log_translator("info", "Type is empty");
+                return;
             }
             const flags = [];
-            for (const flag of type.split(",")) {
-                flags.push("\\" + flag);
+            const types = type.replace(/ /g, "").split(",");
+            for (const flag of types) {
+                flags.push(flag);
             }
+            this.log.info(uid);
             if (set === "setFlags") {
                 this.clients[clientID].set_setFlags(uid, flags);
             }
@@ -840,24 +874,26 @@ class Imap extends utils.Adapter {
 
     async applyCopyMove(command, clientID, uid, folder) {
         if (!folder) {
-            folder = await this.getStateAsync(`${clientID}.remote.${command}.folder`);
+            const folders = await this.getStateAsync(`${clientID}.remote.${command}.folder`);
+            folder = folders && folders.val ? folders.val : "";
         }
-        if (!uid) {
-            uid = await this.getStateAsync(`${clientID}.remote.${command}.uid`);
+        if (uid == null) {
+            const uids = await this.getStateAsync(`${clientID}.remote.${command}.uid`);
+            uid = uids && uids.val != null ? uids.val : 0;
         }
-        if (!folder || folder.val == "") {
+        if (!folder || folder == "") {
             this.log_translator("info", "No folder selected");
             return;
         }
-        if (!uid || uid.val === 0) {
+        if (uid == null || uid === 0) {
             this.log_translator("info", "No UID specified");
             return;
         }
         if (this.clients[clientID]) {
             if (command === "copy") {
-                this.clients[clientID].set_copy(uid.val, folder.val);
+                this.clients[clientID].set_copy(uid, folder);
             } else {
-                this.clients[clientID].set_move(uid.val, folder.val);
+                this.clients[clientID].set_move(uid, folder);
             }
         }
     }
@@ -1101,15 +1137,7 @@ class Imap extends utils.Adapter {
             </style>
             <script> 
             function setState(stateId, value) {
-            	sendPostMessage("setState", stateId, value);
-            }
-            function sendPostMessage(command, stateId, value) {
-            	message = {
-                    command: command,
-                    stateId: stateId,
-                    value: value
-                	};
-                window.parent.postMessage(message, "*");
+                this.servConn._socket.emit("setState", stateId, value);
             }
             </script>
             </head>
