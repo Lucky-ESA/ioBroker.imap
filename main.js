@@ -1027,22 +1027,19 @@ class Imap extends utils.Adapter {
         action = `<option value="" selected="selected"></option>`;
         for (const inbox of this.boxfolder[clientID]) {
             if (inbox != this.clientsRaw[clientID].inbox_activ) {
-                action_copy += `<option value="copy<L>${attrs.uid}<L>${inbox}">${this.helper_translator(
-                    "copy",
-                )} - ${inbox}</option>`;
-                action += `<option value="move<L>${attrs.uid}<L>${inbox}">${this.helper_translator(
-                    "move",
-                )} - ${inbox}</option>`;
+                action_copy += `<option value="copy<L>${attrs.uid}<L>${inbox}">${id["text_select_copy"]},
+                )}${inbox}</option>`;
+                action += `<option value="move<L>${attrs.uid}<L>${inbox}">${id["text_select_move"]}${inbox}</option>`;
             }
         }
         action += action_copy;
         flags = `<option value="" selected="selected"></option>`;
         for (const key of all_flags) {
             if (attrs.flags.indexOf(key) !== -1) {
-                flags_del += `<option value="delFlags<L>${attrs.uid}<L>${key}">delFlags - ${key}</option>`;
+                flags_del += `<option value="delFlags<L>${attrs.uid}<L>${key}">${id["text_select_delflag"]}${key}</option>`;
             } else {
-                flags += `<option value="setFlags<L>${attrs.uid}<L>${key}">setFlags - ${key}</option>`;
-                flags_add += `<option value="addFlags<L>${attrs.uid}<L>${key}">addFlags - ${key}</option>`;
+                flags += `<option value="setFlags<L>${attrs.uid}<L>${key}">${id["text_select_setflag"]}${key}</option>`;
+                flags_add += `<option value="addFlags<L>${attrs.uid}<L>${key}">${id["text_select_addflag"]}${key}</option>`;
             }
         }
         flags += flags_add;
@@ -1161,34 +1158,34 @@ class Imap extends utils.Adapter {
             font-size: ${id["headline_font_size"]}px; font-weight: ${id["headline_style"]}; 
             border-bottom: ${id["headline_underlined"]}px solid ${id["headline_underlined_color"]}">
             <th style="text-align:${id["headline_align_column_1"]}; width:${id["headline_column_width_1"]}">
-            &ensp;${this.helper_translator("ID")}&ensp;
+            ${id["text_id"]}
             </th>
             <th style="text-align:${id["headline_align_column_2"]}; width:${id["headline_column_width_2"]}">
-            &ensp;${this.helper_translator("Header_From")}&ensp;
+            ${id["text_from"]}
             </th>
             <th style="text-align:${id["headline_align_column_3"]}; width:${id["headline_column_width_3"]}">
-            &ensp;${this.helper_translator("Header_Subject")}&ensp;
+            ${id["text_subject"]}
             </th>
             <th style="text-align:${id["headline_align_column_4"]}; width:${id["headline_column_width_4"]}">
-            &ensp;${this.helper_translator("Header_Date")}&ensp;
+            ${id["text_date"]}
             </th>
             <th style="text-align:${id["headline_align_column_5"]}; width:${id["headline_column_width_5"]}">
-            &ensp;${this.helper_translator("Header_Content")}&ensp;
+            ${id["text_content"]}
             </th>
             <th style="text-align:${id["headline_align_column_6"]}; width:${id["headline_column_width_6"]}">
-            &ensp;${this.helper_translator("Header_SEQ")}&ensp;
+            ${id["text_seq"]}
             </th>
             <th style="text-align:${id["headline_align_column_7"]}; width:${id["headline_column_width_7"]}">
-            &ensp;${this.helper_translator("Flag")}&ensp;
+            ${id["text_flag"]}
             </th>
             <th style="text-align:${id["headline_align_column_8"]}; width:${id["headline_column_width_8"]}">
-            &ensp;${this.helper_translator("UID")}&ensp;
+            ${id["text_uid"]}
             </th>
             <th style="text-align:${id["headline_align_column_9"]}; width:${id["headline_column_width_9"]}">
-            &ensp;${this.helper_translator("move or copy")}&ensp;
+            ${id["text_move_or_copy"]}
             </th>
             <th style="text-align:${id["headline_align_column_10"]}; width:${id["headline_column_width_10"]}">
-            &ensp;${this.helper_translator("Flag action")}&ensp;
+            ${id["text_setflag"]}
             </th>
             </tr>
             </thead>
