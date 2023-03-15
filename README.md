@@ -47,12 +47,12 @@
     ### **WORK IN PROGRESS**
 -->
 
-### **WORK IN PROGRESS**
+### 0.0.5 (2023-03-15)
 
 -   (Lucky-ESA) Added: Limited reconnected (5 max)
 -   (Lucky-ESA) Added: into datapoints
 -   (Lucky-ESA) Added: Password entry not possible without an active instance
--   (Lucky-ESA) Added: Added description to reradme
+-   (Lucky-ESA) Added: Added description to readme
 -   (Lucky-ESA) Added: Added move or copy
 -   (Lucky-ESA) Added: Set flag with datapoints
 -   (Lucky-ESA) Fix: debug output without attachments

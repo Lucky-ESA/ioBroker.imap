@@ -1,8 +1,21 @@
 {
     "common": {
         "name": "imap",
-        "version": "0.0.4",
+        "version": "0.0.5",
         "news": {
+            "0.0.5": {
+                "en": "(Lucky-ESA) Added: Added move or copy\n(Lucky-ESA) Added: Set flag with datapoints",
+                "de": "(Lucky-ESA) Hinzugefügt: hinzugefügt verschieben oder kopieren\n(Lucky-ESA) Hinzugefügt: Flagge mit Datenpunkten festlegen",
+                "ru": "(Lucky-ESA) Добавлена: Добавлен ход или копия\n(Lucky-ESA) Добавлена: Установите флаг с точками данных",
+                "pt": "(Lucky-ESA) Adicionado: Adicionado movimento ou cópia\n(Lucky-ESA) Adicionado: Definir bandeira com datapoints",
+                "nl": "(Lucky-ESA) Toegevoegd\n(Lucky-ESA) Toegevoegd: Zet vlag met datapoints",
+                "fr": "(Lucky-ESA) Ajouté : Ajout d'un mouvement ou d'une copie\n(Lucky-ESA) Ajouté : Définir le drapeau avec des points de données",
+                "it": "(Lucky-ESA) Aggiunto: Aggiunto movimento o copia\n(Lucky-ESA) Aggiunto: Impostare la bandiera con i datapoint",
+                "es": "(Lucky-ESA) Añadido: Añadido movimiento o copia\n(Lucky-ESA) Añadido: Establecer bandera con puntos de datos",
+                "pl": "(Lucky-ESA) (ang.). Addition: Added movement or copy copy copy copy copy\n(Lucky-ESA) (ang.). Added: Ustanowić flagę z punktami danych",
+                "uk": "(Lucky-ESA) Доданий: Додано переміщення або копіювання\n(Lucky-ESA) Доданий: Настроювання прапора з точками даних",
+                "zh-cn": "(Lucky-ESA) 增 编:\n(Lucky-ESA) 增加: 数据点的旗帜"
+            },
             "0.0.4": {
                 "en": "Fix json_table",
                 "de": "Json_table",
