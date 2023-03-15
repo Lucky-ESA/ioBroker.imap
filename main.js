@@ -900,13 +900,20 @@ class Imap extends utils.Adapter {
                 }
                 return;
             }
-            if (command === "reload_emails" && state.val) {
+            if (command === "apply_html" && state.val) {
                 if (this.clients[clientID]) {
                     if (this.save_json[clientID] && Object.keys(this.save_json[clientID]).length > 0) {
                         this.updateIMAPData(clientID, false);
                     } else {
                         this.clients[clientID].onNewRead();
                     }
+                    this.setAckFlag(id, { val: false });
+                }
+                return;
+            }
+            if (command === "reload_emails" && state.val) {
+                if (this.clients[clientID]) {
+                    this.clients[clientID].onNewRead();
                     this.setAckFlag(id, { val: false });
                 }
                 return;
