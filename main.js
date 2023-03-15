@@ -17,6 +17,24 @@ const { convert } = require("html-to-text");
 const FORBIDDEN_CHARS = /[üäöÜÄÖ$@ß€*:.]|[^._\-/ :!#$%&()+=@^{}|~\p{Ll}\p{Lu}\p{Nd}]+/gu;
 const limited_reconnect = 5;
 
+const empty = {
+    subject: "",
+    date: "",
+    html: "",
+    text: "",
+    textAsHtml: "",
+    to: {
+        value: [],
+    },
+    from: {
+        value: [],
+    },
+    flag: "",
+    uid: 0,
+    size: 0,
+    attachments: 0,
+};
+
 class Imap extends utils.Adapter {
     /**
      * @param {Partial<utils.AdapterOptions>} [options={}]
@@ -152,6 +170,7 @@ class Imap extends utils.Adapter {
             this.connectionCheck();
         }, 60 * 60 * 1000);
         this.cleanupQuality();
+        this.checksupport();
     }
 
     async connectionCheck() {
@@ -283,7 +302,7 @@ class Imap extends utils.Adapter {
         }
         this.restartIMAPConnection[dev.user] && this.clearTimeout(this.restartIMAPConnection[dev.user]);
         this.restartIMAPConnection[dev.user] = null;
-        this.clients[dev.user] = new MailListener(dev, this.log.debug);
+        this.clients[dev.user] = new MailListener(dev, this.log);
         this.clients[dev.user].start();
         this.clients[dev.user].on("connected", (clientID) => {
             if (this.reconnect_count[clientID] === 0) {
@@ -334,6 +353,23 @@ class Imap extends utils.Adapter {
             this.log_translator("info", "Start new Mail", clientID, seqno);
             this.setUpdate(clientID, { flags: [], new_mail: seqno }, "new mail");
             this.setTotal(clientID, true, "total");
+        });
+
+        this.clients[dev.user].on("updatejson", (mail, seqno, attrs, info, clientID, what) => {
+            mail.seqno = seqno;
+            mail.attrs = attrs;
+            mail.info = info;
+            if (what === "new") {
+                const del_seqno = this.save_json[clientID].pop();
+                this.save_json[clientID].push(mail);
+                this.clients[clientID].updateseqno(del_seqno["seqno"]);
+            } else {
+                const merge = this.save_json[clientID].findIndex((merge) => merge.seqno === seqno);
+                if (merge != -1) {
+                    this.save_json[clientID][merge] = mail;
+                }
+            }
+            this.updateIMAPData(clientID, false);
         });
 
         this.clients[dev.user].on("uidvalidity", (uidvalidity, clientID) => {
@@ -403,12 +439,22 @@ class Imap extends utils.Adapter {
             this.log_translator("info", "Alert", clientID, err);
         });
 
-        this.clients[dev.user].on("mail", (mail, seqno, attrs, info, clientID, count, all) => {
-            if (count < this.clientsRaw[clientID].maxi || this.clientsRaw[clientID].maxi == count) {
-                this.setStatesValue(mail, seqno, clientID, count, attrs, info);
+        this.clients[dev.user].on("mail", (mail, seqno, attrs, info, clientID, count, all, sort) => {
+            if (count == 1) {
+                this.save_json[clientID] = [];
             }
-            if (count < this.clientsRaw[clientID].maxi_html || this.clientsRaw[clientID].maxi_html == count) {
-                this.createHTMLRows(mail, seqno, clientID, count, all, attrs, info);
+            const higher_max =
+                this.clientsRaw[clientID].maxi > this.clientsRaw[clientID].maxi_html
+                    ? this.clientsRaw[clientID].maxi
+                    : this.clientsRaw[clientID].maxi_html;
+            if (count < higher_max || higher_max == count) {
+                mail.seqno = seqno;
+                mail.attrs = attrs;
+                mail.info = info;
+                this.save_json[clientID].push(mail);
+            }
+            if (count == all || higher_max == count) {
+                this.updateIMAPData(clientID, sort);
             }
             this.log_translator(
                 "debug",
@@ -418,10 +464,51 @@ class Imap extends utils.Adapter {
                     info,
                 )}`,
             );
-            //this.log_translator("debug", "Attributes", clientID, JSON.stringify(attrs));
-            //this.log_translator("debug", "Sequense", clientID, seqno);
-            //this.log_translator("debug", "Info", clientID, JSON.stringify(info));
         });
+    }
+
+    async checksupport() {
+        await this.sleep(5000);
+        for (const dev of this.clientsID) {
+            if (this.clients[dev] != null) {
+                const sorts = await this.clients[dev].serverSupport("SORT");
+                this.setState(`${dev}.sort`, {
+                    val: sorts,
+                    ack: true,
+                });
+            }
+        }
+    }
+
+    updateIMAPData(clientID, sort) {
+        if (!this.save_json[clientID] || Object.keys(this.save_json[clientID]).length === 0) {
+            return;
+        }
+        const max = this.clientsRaw[clientID].maxi;
+        const max_html = this.clientsRaw[clientID].maxi_html;
+        let count = 0;
+        const sort_seq = [];
+        let count_all = Object.keys(this.save_json[clientID]).length;
+        const sorted = this.save_json[clientID].sort((a, b) => b.date - a.date);
+        for (const mail of sorted) {
+            ++count;
+            if (count < max || max == count) {
+                this.setStatesValue(mail, mail.seqno, clientID, count, mail.attrs, mail.info);
+            }
+            if (count < max_html || max_html == count) {
+                this.createHTMLRows(mail, mail.seqno, clientID, count, max_html, mail.attrs);
+            }
+            sort_seq.push(mail.seqno);
+        }
+        if (sort) {
+            this.clients[clientID].updateSeqno(sort_seq);
+        }
+        ++count_all;
+        if (count_all < max) {
+            for (let i = count_all; i < max + 1; i++) {
+                this.setStatesValue(empty, 0, clientID, i, empty, empty);
+            }
+        }
     }
 
     async setTotal(clientID, event, dp) {
@@ -745,11 +832,6 @@ class Imap extends utils.Adapter {
                 this.setAckFlag(id);
                 return;
             }
-            if (command === "reload_emails") {
-                this.clients[clientID].onNewRead();
-                this.setAckFlag(id, { val: false });
-                return;
-            }
             if (command === "criteria") {
                 this.setAckFlag(id);
                 return;
@@ -808,7 +890,7 @@ class Imap extends utils.Adapter {
             }
             if (command === "change_folder" && state.val != "") {
                 if (this.clients[clientID]) {
-                    this.clients[clientID].onReady(state.val);
+                    this.clients[clientID].changeFolder(state.val);
                     this.clientsRaw[clientID].inbox_activ = state.val;
                     this.setState(`${clientID}.active_inbox`, {
                         val: state.val,
@@ -820,7 +902,11 @@ class Imap extends utils.Adapter {
             }
             if (command === "reload_emails" && state.val) {
                 if (this.clients[clientID]) {
-                    this.clients[clientID].onNewRead();
+                    if (this.save_json[clientID] && Object.keys(this.save_json[clientID]).length > 0) {
+                        this.updateIMAPData(clientID, false);
+                    } else {
+                        this.clients[clientID].onNewRead();
+                    }
                     this.setAckFlag(id, { val: false });
                 }
                 return;
@@ -953,16 +1039,11 @@ class Imap extends utils.Adapter {
         }
     }
 
-    async createHTMLRows(mail, seqno, clientID, count, all, attrs, info) {
+    async createHTMLRows(mail, seqno, clientID, count, all, attrs) {
         if (count == 1) {
             this.clientsRows[clientID] = "";
-            this.save_json[clientID] = [];
         }
         const id = this.clientsHTML[clientID];
-        mail.seqno = seqno;
-        mail.attrs = attrs;
-        mail.info = info;
-        this.save_json[clientID].push(mail);
         const isEven = count % 2 != 0 ? id["mails_even_color"] : id["mails_odd_color"];
         const isToday = (someDate) => {
             const today = new Date();
@@ -1027,8 +1108,7 @@ class Imap extends utils.Adapter {
         action = `<option value="" selected="selected"></option>`;
         for (const inbox of this.boxfolder[clientID]) {
             if (inbox != this.clientsRaw[clientID].inbox_activ) {
-                action_copy += `<option value="copy<L>${attrs.uid}<L>${inbox}">${id["text_select_copy"]},
-                )}${inbox}</option>`;
+                action_copy += `<option value="copy<L>${attrs.uid}<L>${inbox}">${id["text_select_copy"]}${inbox}</option>`;
                 action += `<option value="move<L>${attrs.uid}<L>${inbox}">${id["text_select_move"]}${inbox}</option>`;
             }
         }
