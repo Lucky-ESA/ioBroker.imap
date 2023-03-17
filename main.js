@@ -53,6 +53,7 @@ class Imap extends utils.Adapter {
         this.createMails = helper.createMails;
         this.createRemote = helper.createRemote;
         this.createinbox = helper.createinbox;
+        this.createSelect = helper.createSelect;
         this.qualityInterval = null;
         this.statusInterval = null;
         this.sleepTimer = null;
@@ -78,6 +79,7 @@ class Imap extends utils.Adapter {
     async onReady() {
         // Initialize your adapter here
         const devices = {};
+        const selectbox = {};
         if (Object.keys(this.config.hosts).length === 0) {
             this.log_translator("info", "No imap");
             return;
@@ -96,6 +98,7 @@ class Imap extends utils.Adapter {
             }
         }
         devices["data"] = this.config.hosts;
+        selectbox["states"] = {};
         for (const dev of devices.data) {
             if (dev.inbox == "") {
                 this.log_translator("info", "no inbox");
@@ -142,6 +145,7 @@ class Imap extends utils.Adapter {
             this.boxfolder[dev.user] = {};
             this.restartIMAPConnection[dev.user] = null;
             this.clientsRows[dev.user] = "";
+            selectbox["states"][dev.user] = dev.user;
             this.clients[dev.user] = null;
             this.clientsRaw[dev.user] = dev;
             this.reconnect_count[dev.user] = 0;
@@ -160,6 +164,7 @@ class Imap extends utils.Adapter {
             await this.readHTML(dev);
             await this.imap_connection(dev);
             this.subscribeStates(`${dev.user}.remote.*`);
+            this.setStateSearchRestart(dev);
         }
         this.log_translator("info", "IMAP check start");
         await this.checkDeviceFolder();
@@ -171,6 +176,20 @@ class Imap extends utils.Adapter {
         }, 60 * 60 * 1000);
         this.cleanupQuality();
         this.checksupport();
+        await this.createSelect(selectbox);
+        this.subscribeStates(`json_imap`);
+    }
+
+    async setStateSearchRestart(dev) {
+        this.setState(`${dev.user}.remote.criteria`, {
+            val: dev.flag,
+            ack: true,
+        });
+        const max = dev.maxi > dev.maxi_html ? dev.maxi : dev.maxi_html;
+        this.setState(`${dev.user}.remote.show_mails`, {
+            val: max,
+            ack: true,
+        });
     }
 
     async connectionCheck() {
@@ -270,8 +289,12 @@ class Imap extends utils.Adapter {
     async configcheck() {
         try {
             let isdecode = false;
-            // @ts-ignore
-            const adapterconfigs = this.adapterConfig;
+            let adapterconfigs;
+            adapterconfigs = await this.getForeignObjectAsync(`system.adapter.${this.namespace}`);
+            if (!adapterconfigs) {
+                // @ts-ignore
+                adapterconfigs = this.adapterConfig;
+            }
             if (adapterconfigs && adapterconfigs.native && adapterconfigs.native.hosts) {
                 for (const pw of adapterconfigs.native.hosts) {
                     if (pw.password != "" && !pw.password.includes("<LUCKY-ESA>")) {
@@ -285,7 +308,10 @@ class Imap extends utils.Adapter {
                 if (adapterconfigs.native.hosts[0] === null) {
                     adapterconfigs.native.hosts = [];
                 }
-                this.updateConfig(adapterconfigs);
+                await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
+                    native: adapterconfigs.native,
+                });
+                //this.updateConfig(adapterconfigs);
                 return true;
             }
             return false;
@@ -376,8 +402,9 @@ class Imap extends utils.Adapter {
             this.log_translator("info", "UID validity changes", clientID, uidvalidity);
         });
 
-        this.clients[dev.user].on("expunge", (seqno, clientID) => {
-            this.log_translator("info", "EMail deleted", clientID, seqno);
+        this.clients[dev.user].on("expunge", (text, seqno, clientID) => {
+            this.log_translator("info", text, clientID, seqno);
+            this.setUpdate(clientID, { seqno: seqno }, "move_copy");
             this.setTotal(clientID, false, "total");
         });
 
@@ -480,7 +507,7 @@ class Imap extends utils.Adapter {
         }
     }
 
-    updateIMAPData(clientID, sort) {
+    updateIMAPData(clientID, sort, html) {
         if (!this.save_json[clientID] || Object.keys(this.save_json[clientID]).length === 0) {
             return;
         }
@@ -496,7 +523,7 @@ class Imap extends utils.Adapter {
                 this.setStatesValue(mail, mail.seqno, clientID, count, mail.attrs, mail.info);
             }
             if (count < max_html || max_html == count) {
-                this.createHTMLRows(mail, mail.seqno, clientID, count, max_html, mail.attrs);
+                this.createHTMLRows(mail, mail.seqno, clientID, count, count_all, mail.attrs, html);
             }
             sort_seq.push(mail.seqno);
         }
@@ -755,11 +782,7 @@ class Imap extends utils.Adapter {
                         flags.push("\\" + flag);
                     }
                     if (obj.message["flag"] === "addFlags" && typeof this.clients[user] === "object") {
-                        this.clients[user].set_addFlags(obj.message["uid"], flags);
-                    } else if (obj.message["flag"] === "delFlags" && typeof this.clients[user] === "object") {
-                        this.clients[user].set_delFlags(obj.message["uid"], flags);
-                    } else if (obj.message["flag"] === "setFlags" && typeof this.clients[user] === "object") {
-                        this.clients[user].set_setFlags(obj.message["uid"], flags);
+                        this.clients[user].change_events(obj.message["flag"], obj.message["uid"], flags);
                     }
                 }
                 break;
@@ -769,9 +792,9 @@ class Imap extends utils.Adapter {
         }
     }
 
-    async setStateSearch(id, user, max) {
+    async setStateSearch(id, criteria, max) {
         await this.setStateAsync(`${id}.remote.criteria`, {
-            val: user,
+            val: criteria,
             ack: true,
         });
         await this.setStateAsync(`${id}.remote.show_mails`, {
@@ -903,7 +926,7 @@ class Imap extends utils.Adapter {
             if (command === "apply_html" && state.val) {
                 if (this.clients[clientID]) {
                     if (this.save_json[clientID] && Object.keys(this.save_json[clientID]).length > 0) {
-                        this.updateIMAPData(clientID, false);
+                        this.updateIMAPData(clientID, false, true);
                     } else {
                         this.clients[clientID].onNewRead();
                     }
@@ -918,6 +941,21 @@ class Imap extends utils.Adapter {
                 }
                 return;
             }
+            if (command === "json_imap" && state.val != "") {
+                this.setJson_table(state);
+                this.setAckFlag(id);
+                return;
+            }
+        }
+    }
+
+    async setJson_table(state) {
+        const jsons = await this.getStateAsync(`${state.val}.json`);
+        if (jsons && jsons.val) {
+            this.setState(`json_table`, {
+                val: jsons.val,
+                ack: true,
+            });
         }
     }
 
@@ -952,16 +990,7 @@ class Imap extends utils.Adapter {
             for (const flag of types) {
                 flags.push(flag);
             }
-            this.log.info(uid);
-            if (set === "setFlags") {
-                this.clients[clientID].set_setFlags(uid, flags);
-            }
-            if (set === "addFlags") {
-                this.clients[clientID].set_addFlags(uid, flags);
-            }
-            if (set === "delFlags") {
-                this.clients[clientID].set_delFlags(uid, flags);
-            }
+            this.clients[clientID].change_events(set, uid, flags);
         }
     }
 
@@ -983,11 +1012,7 @@ class Imap extends utils.Adapter {
             return;
         }
         if (this.clients[clientID]) {
-            if (command === "copy") {
-                this.clients[clientID].set_copy(uid, folder);
-            } else {
-                this.clients[clientID].set_move(uid, folder);
-            }
+            this.clients[clientID].change_events(command, uid, folder);
         }
     }
 
@@ -1046,7 +1071,7 @@ class Imap extends utils.Adapter {
         }
     }
 
-    async createHTMLRows(mail, seqno, clientID, count, all, attrs) {
+    async createHTMLRows(mail, seqno, clientID, count, all, attrs, html) {
         if (count == 1) {
             this.clientsRows[clientID] = "";
         }
@@ -1153,12 +1178,12 @@ class Imap extends utils.Adapter {
         ${flags}</select></td>
         </tr>`;
         if (count == all || this.clientsRaw[clientID].maxi_html == count) {
-            await this.createHTML(clientID, this.clientsRows[clientID], count, all);
+            await this.createHTML(clientID, this.clientsRows[clientID], count, all, html);
             this.clientsRows[clientID] = "";
         }
     }
 
-    async createHTML(ident, htmltext, count, all) {
+    async createHTML(ident, htmltext, count, all, html) {
         try {
             const id = this.clientsHTML[ident];
             let div = '<div class="container">';
@@ -1293,13 +1318,13 @@ class Imap extends utils.Adapter {
                 val: htmlStart + htmlEnd,
                 ack: true,
             });
-            this.json_table(this.save_json[ident], ident);
+            this.json_table(this.save_json[ident], ident, html);
         } catch (e) {
             this.log_translator("error", "try", `createHTML: ${e}`);
         }
     }
 
-    async json_table(jsons, id) {
+    async json_table(jsons, id, html) {
         try {
             if (typeof jsons != "object") {
                 return;
@@ -1351,6 +1376,16 @@ class Imap extends utils.Adapter {
                 val: JSON.stringify(new_array),
                 ack: true,
             });
+            if (!html) {
+                await this.setStateAsync(`json_table`, {
+                    val: JSON.stringify(new_array),
+                    ack: true,
+                });
+                await this.setStateAsync(`json_imap`, {
+                    val: id,
+                    ack: true,
+                });
+            }
         } catch (e) {
             this.log_translator("error", "try", `json_table: ${e}`);
         }

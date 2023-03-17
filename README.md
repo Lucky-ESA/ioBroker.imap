@@ -47,6 +47,12 @@
     ### **WORK IN PROGRESS**
 -->
 
+### **WORK IN PROGRESS**
+
+-   (Lucky-ESA) Added trigger move or copy emails
+-   (Lucky-ESA) Added JSON for multiple IMAP accounts
+-   (Lucky-ESA) Bug fixes
+
 ### 0.0.5 (2023-03-15)
 
 -   (Lucky-ESA) Added: Limited reconnected (5 max)
