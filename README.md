@@ -46,8 +46,7 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 0.0.6 (2023-03-17)
 
 -   (Lucky-ESA) Added trigger move or copy emails
 -   (Lucky-ESA) Added JSON for multiple IMAP accounts

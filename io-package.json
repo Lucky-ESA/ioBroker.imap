@@ -1,173 +1,199 @@
 {
-    "common": {
-        "name": "imap",
-        "version": "0.0.5",
-        "news": {
-            "0.0.5": {
-                "en": "(Lucky-ESA) Added: Added move or copy\n(Lucky-ESA) Added: Set flag with datapoints",
-                "de": "(Lucky-ESA) Hinzugefügt: hinzugefügt verschieben oder kopieren\n(Lucky-ESA) Hinzugefügt: Flagge mit Datenpunkten festlegen",
-                "ru": "(Lucky-ESA) Добавлена: Добавлен ход или копия\n(Lucky-ESA) Добавлена: Установите флаг с точками данных",
-                "pt": "(Lucky-ESA) Adicionado: Adicionado movimento ou cópia\n(Lucky-ESA) Adicionado: Definir bandeira com datapoints",
-                "nl": "(Lucky-ESA) Toegevoegd\n(Lucky-ESA) Toegevoegd: Zet vlag met datapoints",
-                "fr": "(Lucky-ESA) Ajouté : Ajout d'un mouvement ou d'une copie\n(Lucky-ESA) Ajouté : Définir le drapeau avec des points de données",
-                "it": "(Lucky-ESA) Aggiunto: Aggiunto movimento o copia\n(Lucky-ESA) Aggiunto: Impostare la bandiera con i datapoint",
-                "es": "(Lucky-ESA) Añadido: Añadido movimiento o copia\n(Lucky-ESA) Añadido: Establecer bandera con puntos de datos",
-                "pl": "(Lucky-ESA) (ang.). Addition: Added movement or copy copy copy copy copy\n(Lucky-ESA) (ang.). Added: Ustanowić flagę z punktami danych",
-                "uk": "(Lucky-ESA) Доданий: Додано переміщення або копіювання\n(Lucky-ESA) Доданий: Настроювання прапора з точками даних",
-                "zh-cn": "(Lucky-ESA) 增 编:\n(Lucky-ESA) 增加: 数据点的旗帜"
-            },
-            "0.0.4": {
-                "en": "Fix json_table",
-                "de": "Json_table",
-                "ru": "Исправление json_table",
-                "pt": "Fix json_table",
-                "nl": "_",
-                "fr": "Fix json_table",
-                "it": "Fissare json_table",
-                "es": "Corrección json_table",
-                "pl": "Fixus json_table",
-                "uk": "Виправлення json_table",
-                "zh-cn": "Fix json_table"
-            },
-            "0.0.3": {
-                "en": "Beta release",
-                "de": "Beta Release",
-                "ru": "Beta релиз",
-                "pt": "Liberação Beta",
-                "nl": "Beta vrij",
-                "fr": "Sortie de Beta",
-                "it": "Comunicato Beta",
-                "es": "Beta release",
-                "pl": "Beta",
-                "uk": "Бета реліз",
-                "zh-cn": "B. 释放"
-            },
-            "0.0.2": {
-                "en": "initial release",
-                "de": "erstausstrahlung",
-                "ru": "начальный выпуск",
-                "pt": "lançamento inicial",
-                "nl": "niet",
-                "fr": "initial release",
-                "it": "rilascio iniziale",
-                "es": "liberación inicial",
-                "pl": "pierwsze wydanie",
-                "uk": "початковий реліз",
-                "zh-cn": "初步释放"
-            }
-        },
-        "titleLang": {
-            "en": "imap",
-            "de": "imap",
-            "ru": "имап",
-            "pt": "imap",
-            "nl": "imap",
-            "fr": "imap",
-            "it": "imap",
-            "es": "imágen",
-            "pl": "mapa",
-            "zh-cn": "地图",
-            "uk": "imap"
-        },
-        "desc": {
-            "en": "imap to receive your emails",
-            "de": "IMAP, um Ihre E-Mails zu empfangen",
-            "ru": "imap для получения ваших писем",
-            "pt": "imap para receber seus e-mails",
-            "nl": "imap om je e-mails te ontvangen",
-            "fr": "imap pour recevoir vos emails",
-            "it": "imap per ricevere le tue email",
-            "es": "imap para recibir tus correos",
-            "pl": "imap, aby otrzymywać e-maile",
-            "zh-cn": "imap 接收您的电子邮件",
-            "uk": "imap для отримання ваших електронних листів"
-        },
-        "authors": ["Lucky-ESA <github@luckyskills.de>"],
-        "keywords": ["imap", "mail", "email", "receive"],
-        "license": "MIT",
-        "platform": "Javascript/Node.js",
-        "main": "main.js",
-        "icon": "imap.png",
-        "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/Lucky-ESA/ioBroker.imap/master/admin/imap.png",
-        "readme": "https://github.com/Lucky-ESA/ioBroker.imap/blob/master/README.md",
-        "loglevel": "info",
-        "mode": "daemon",
-        "type": "messaging",
-        "messagebox": true,
-        "blockly": true,
-        "compact": true,
-        "connectionType": "cloud",
-        "dataSource": "push",
-        "adminUI": {
-            "config": "json"
-        },
-        "docs": {
-            "en": ["docs/en/README.md"]
-        },
-        "dependencies": [
-            {
-                "js-controller": ">=3.3.22"
-            }
-        ],
-        "globalDependencies": [
-            {
-                "admin": ">=5.1.13"
-            }
-        ]
+  "common": {
+    "name": "imap",
+    "version": "0.0.6",
+    "news": {
+      "0.0.6": {
+        "en": "Added trigger move or copy emails\nAdded JSON for multiple IMAP accounts\nBug fixes",
+        "de": "Trigger-Bewegung oder Kopie-E-Mails hinzugefügt\nJSON für mehrere IMAP-Konten hinzugefügt\nFehlerbehebungen",
+        "ru": "Добавлены триггеры или копировать электронные письма\nДобавлен JSON для нескольких учетных записей IMAP\nИсправления ошибок",
+        "pt": "Adicionado movimento do gatilho ou copiar e-mails\nAdicionado JSON para múltiplas contas IMAP\nCorreções de bugs",
+        "nl": "Verplaatsing of mails\n_\nBug repareert",
+        "fr": "Ajout d'un déménagement ou d'une copie des courriels\nJSON ajouté pour plusieurs comptes IMAP\nCorrections",
+        "it": "Aggiunta di attivazione spostare o copiare e-mail\nAggiunto JSON per più account IMAP\nCorrezioni di bug",
+        "es": "Añadido movimiento de gatillo o copiar correos electrónicos\nAñadido JSON para múltiples cuentas de IMAP\nCorrección de errores",
+        "pl": "Added trigger move lub copy mail\nAdded JSON dla wielu kont IMAP\nBug",
+        "uk": "Доданий тригер переміщення або копіювання електронних листів\nДодано JSON для декількох облікових записів IMAP\nВиправлення помилок",
+        "zh-cn": "增购机或邮票\n增聘联合办多管方案账户\nBug fix"
+      },
+      "0.0.5": {
+        "en": "(Lucky-ESA) Added: Added move or copy\n(Lucky-ESA) Added: Set flag with datapoints",
+        "de": "(Lucky-ESA) Hinzugefügt: hinzugefügt verschieben oder kopieren\n(Lucky-ESA) Hinzugefügt: Flagge mit Datenpunkten festlegen",
+        "ru": "(Lucky-ESA) Добавлена: Добавлен ход или копия\n(Lucky-ESA) Добавлена: Установите флаг с точками данных",
+        "pt": "(Lucky-ESA) Adicionado: Adicionado movimento ou cópia\n(Lucky-ESA) Adicionado: Definir bandeira com datapoints",
+        "nl": "(Lucky-ESA) Toegevoegd\n(Lucky-ESA) Toegevoegd: Zet vlag met datapoints",
+        "fr": "(Lucky-ESA) Ajouté : Ajout d'un mouvement ou d'une copie\n(Lucky-ESA) Ajouté : Définir le drapeau avec des points de données",
+        "it": "(Lucky-ESA) Aggiunto: Aggiunto movimento o copia\n(Lucky-ESA) Aggiunto: Impostare la bandiera con i datapoint",
+        "es": "(Lucky-ESA) Añadido: Añadido movimiento o copia\n(Lucky-ESA) Añadido: Establecer bandera con puntos de datos",
+        "pl": "(Lucky-ESA) (ang.). Addition: Added movement or copy copy copy copy copy\n(Lucky-ESA) (ang.). Added: Ustanowić flagę z punktami danych",
+        "uk": "(Lucky-ESA) Доданий: Додано переміщення або копіювання\n(Lucky-ESA) Доданий: Настроювання прапора з точками даних",
+        "zh-cn": "(Lucky-ESA) 增 编:\n(Lucky-ESA) 增加: 数据点的旗帜"
+      },
+      "0.0.4": {
+        "en": "Fix json_table",
+        "de": "Json_table",
+        "ru": "Исправление json_table",
+        "pt": "Fix json_table",
+        "nl": "_",
+        "fr": "Fix json_table",
+        "it": "Fissare json_table",
+        "es": "Corrección json_table",
+        "pl": "Fixus json_table",
+        "uk": "Виправлення json_table",
+        "zh-cn": "Fix json_table"
+      },
+      "0.0.3": {
+        "en": "Beta release",
+        "de": "Beta Release",
+        "ru": "Beta релиз",
+        "pt": "Liberação Beta",
+        "nl": "Beta vrij",
+        "fr": "Sortie de Beta",
+        "it": "Comunicato Beta",
+        "es": "Beta release",
+        "pl": "Beta",
+        "uk": "Бета реліз",
+        "zh-cn": "B. 释放"
+      },
+      "0.0.2": {
+        "en": "initial release",
+        "de": "erstausstrahlung",
+        "ru": "начальный выпуск",
+        "pt": "lançamento inicial",
+        "nl": "niet",
+        "fr": "initial release",
+        "it": "rilascio iniziale",
+        "es": "liberación inicial",
+        "pl": "pierwsze wydanie",
+        "uk": "початковий реліз",
+        "zh-cn": "初步释放"
+      }
     },
-    "native": {
-        "hosts": [],
-        "icons": []
+    "titleLang": {
+      "en": "imap",
+      "de": "imap",
+      "ru": "имап",
+      "pt": "imap",
+      "nl": "imap",
+      "fr": "imap",
+      "it": "imap",
+      "es": "imágen",
+      "pl": "mapa",
+      "zh-cn": "地图",
+      "uk": "imap"
     },
-    "encryptedNative": ["password"],
-    "protectedNative": ["password"],
-    "objects": [],
-    "instanceObjects": [
-        {
-            "_id": "info",
-            "type": "channel",
-            "common": {
-                "name": {
-                    "en": "Information",
-                    "de": "Informationen",
-                    "ru": "Информация",
-                    "pt": "Informação",
-                    "nl": "Informatie",
-                    "fr": "Information",
-                    "it": "Informazioni",
-                    "es": "Información",
-                    "pl": "Informacja",
-                    "uk": "Інформація",
-                    "zh-cn": "信息"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.connection",
-            "type": "state",
-            "common": {
-                "role": "indicator.connected",
-                "name": {
-                    "en": "Device or service connected",
-                    "de": "Geräte- oder Serviceanschluss",
-                    "ru": "Устройство или сервис подключены",
-                    "pt": "Dispositivo ou serviço conectado",
-                    "nl": "Device of dienst verbonden",
-                    "fr": "Appareil ou service connecté",
-                    "it": "Dispositivo o servizio collegato",
-                    "es": "Dispositivo o servicio conectado",
-                    "pl": "Urządzenie lub usługa połączona",
-                    "uk": "Пристрої або послуги підключені",
-                    "zh-cn": "证人或有关服务"
-                },
-                "type": "boolean",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
-        }
+    "desc": {
+      "en": "imap to receive your emails",
+      "de": "IMAP, um Ihre E-Mails zu empfangen",
+      "ru": "imap для получения ваших писем",
+      "pt": "imap para receber seus e-mails",
+      "nl": "imap om je e-mails te ontvangen",
+      "fr": "imap pour recevoir vos emails",
+      "it": "imap per ricevere le tue email",
+      "es": "imap para recibir tus correos",
+      "pl": "imap, aby otrzymywać e-maile",
+      "zh-cn": "imap 接收您的电子邮件",
+      "uk": "imap для отримання ваших електронних листів"
+    },
+    "authors": [
+      "Lucky-ESA <github@luckyskills.de>"
+    ],
+    "keywords": [
+      "imap",
+      "mail",
+      "email",
+      "receive"
+    ],
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "main": "main.js",
+    "icon": "imap.png",
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/Lucky-ESA/ioBroker.imap/master/admin/imap.png",
+    "readme": "https://github.com/Lucky-ESA/ioBroker.imap/blob/master/README.md",
+    "loglevel": "info",
+    "mode": "daemon",
+    "type": "messaging",
+    "messagebox": true,
+    "blockly": true,
+    "compact": true,
+    "connectionType": "cloud",
+    "dataSource": "push",
+    "adminUI": {
+      "config": "json"
+    },
+    "docs": {
+      "en": [
+        "docs/en/README.md"
+      ]
+    },
+    "dependencies": [
+      {
+        "js-controller": ">=3.3.22"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=5.1.13"
+      }
     ]
+  },
+  "native": {
+    "hosts": [],
+    "icons": []
+  },
+  "encryptedNative": [
+    "password"
+  ],
+  "protectedNative": [
+    "password"
+  ],
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "Information",
+          "de": "Informationen",
+          "ru": "Информация",
+          "pt": "Informação",
+          "nl": "Informatie",
+          "fr": "Information",
+          "it": "Informazioni",
+          "es": "Información",
+          "pl": "Informacja",
+          "uk": "Інформація",
+          "zh-cn": "信息"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "role": "indicator.connected",
+        "name": {
+          "en": "Device or service connected",
+          "de": "Geräte- oder Serviceanschluss",
+          "ru": "Устройство или сервис подключены",
+          "pt": "Dispositivo ou serviço conectado",
+          "nl": "Device of dienst verbonden",
+          "fr": "Appareil ou service connecté",
+          "it": "Dispositivo o servizio collegato",
+          "es": "Dispositivo o servicio conectado",
+          "pl": "Urządzenie lub usługa połączona",
+          "uk": "Пристрої або послуги підключені",
+          "zh-cn": "证人或有关服务"
+        },
+        "type": "boolean",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    }
+  ]
 }
