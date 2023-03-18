@@ -378,7 +378,10 @@ class Imap extends utils.Adapter {
         this.clients[dev.user].on("mailevent", (seqno, clientID) => {
             this.log_translator("info", "Start new Mail", clientID, seqno);
             this.setUpdate(clientID, { flags: [], new_mail: seqno }, "new mail");
-            this.setTotal(clientID, true, "total");
+        });
+
+        this.clients[dev.user].on("total", (count_all, count_unseen, clientID) => {
+            this.setTotal(clientID, count_all, count_unseen);
         });
 
         this.clients[dev.user].on("updatejson", (mail, seqno, attrs, info, clientID, what) => {
@@ -405,7 +408,6 @@ class Imap extends utils.Adapter {
         this.clients[dev.user].on("expunge", (text, seqno, clientID) => {
             this.log_translator("info", text, clientID, seqno);
             this.setUpdate(clientID, { seqno: seqno }, "move_copy");
-            this.setTotal(clientID, false, "total");
         });
 
         this.clients[dev.user].on("seqno", (seqno, clientID) => {
@@ -499,7 +501,7 @@ class Imap extends utils.Adapter {
         for (const dev of this.clientsID) {
             if (this.clients[dev] != null) {
                 const sorts = await this.clients[dev].serverSupport("SORT");
-                this.setState(`${dev}.sort`, {
+                await this.setStateAsync(`${dev}.sort`, {
                     val: sorts,
                     ack: true,
                 });
@@ -538,20 +540,15 @@ class Imap extends utils.Adapter {
         }
     }
 
-    async setTotal(clientID, event, dp) {
-        const actual = await this.getStateAsync(`${clientID}.${dp}`);
-        if (actual && actual["val"] != null) {
-            let total = Number(actual["val"]);
-            if (event) {
-                ++total;
-            } else {
-                --total;
-            }
-            this.setState(`${clientID}.${dp}`, {
-                val: total,
-                ack: true,
-            });
-        }
+    async setTotal(clientID, count_all, count_unseen) {
+        await this.setStateAsync(`${clientID}.total`, {
+            val: count_all,
+            ack: true,
+        });
+        await this.setStateAsync(`${clientID}.total_unread`, {
+            val: count_unseen,
+            ack: true,
+        });
     }
 
     async setUpdate(clientID, info, trans) {
