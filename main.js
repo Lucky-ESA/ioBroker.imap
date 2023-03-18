@@ -498,10 +498,44 @@ class Imap extends utils.Adapter {
 
     async checksupport() {
         await this.sleep(5000);
+        const capabilitys = [
+            "SORT",
+            "ESEARCH",
+            "QUOTA",
+            "SORT=DISPLAY",
+            "THREAD=REFERENCES",
+            "THREAD=ORDEREDSUBJECT",
+            "IDLE",
+            "NAMESPACE",
+            "STARTTLS",
+            "LOGINDISABLED",
+            "AUTH=XOAUTH",
+            "AUTH=XOAUTH2",
+            "AUTH=CRAM-MD5",
+            "LITERAL+",
+            "ID",
+            "CONDSTORE",
+            "UNSELECT",
+            "UNSELECT",
+            "MOVE",
+            "X-GM-EXT-1",
+        ];
+        let common = {};
         for (const dev of this.clientsID) {
-            if (this.clients[dev] != null) {
-                const sorts = await this.clients[dev].serverSupport("SORT");
-                await this.setStateAsync(`${dev}.sort`, {
+            for (const capability of capabilitys) {
+                const sorts = await this.clients[dev].serverSupport(capability);
+                const dp_capability = capability.replace(/[=|-|+]/g, "_");
+                common = {
+                    type: "boolean",
+                    role: "switch",
+                    name: this.helper_translator("Is supported", capability),
+                    desc: "Create by Adapter",
+                    read: true,
+                    write: false,
+                    def: false,
+                };
+                await this.createDataPoint(`${dev}.infos.${dp_capability.toLowerCase()}`, common, "state");
+                await this.setStateAsync(`${dev}.infos.${dp_capability.toLowerCase()}`, {
                     val: sorts,
                     ack: true,
                 });

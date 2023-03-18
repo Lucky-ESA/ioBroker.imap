@@ -50,6 +50,7 @@
 ### **WORK IN PROGRESS**
 
 -   (Lucky-ESA) Fix correct counter for seen and unseen
+-   (Lucky-ESA) Added capability
 
 ### 0.0.6 (2023-03-17)
 
