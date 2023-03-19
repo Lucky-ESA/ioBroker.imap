@@ -937,7 +937,9 @@ class Imap extends utils.Adapter {
                 if (criteria && criteria.val && show && show.val != null) {
                     this.clientsRaw[clientID].flag = criteria.val;
                     this.clientsRaw[clientID].maxi_html = show.val;
-                    this.imap_connection(this.clientsRaw[clientID]);
+                    if (this.clients[clientID]) {
+                        this.clients[clientID].changesearch(criteria.val, show.val);
+                    }
                 }
                 this.setAckFlag(id, { val: false });
                 return;
