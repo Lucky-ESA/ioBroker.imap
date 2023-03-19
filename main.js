@@ -522,23 +522,25 @@ class Imap extends utils.Adapter {
         ];
         let common = {};
         for (const dev of this.clientsID) {
-            for (const capability of capabilitys) {
-                const sorts = await this.clients[dev].serverSupport(capability);
-                const dp_capability = capability.replace(/[=|-|+]/g, "_");
-                common = {
-                    type: "boolean",
-                    role: "switch",
-                    name: this.helper_translator("Is supported", capability),
-                    desc: "Create by Adapter",
-                    read: true,
-                    write: false,
-                    def: false,
-                };
-                await this.createDataPoint(`${dev}.infos.${dp_capability.toLowerCase()}`, common, "state");
-                await this.setStateAsync(`${dev}.infos.${dp_capability.toLowerCase()}`, {
-                    val: sorts,
-                    ack: true,
-                });
+            if (this.clients[dev]) {
+                for (const capability of capabilitys) {
+                    const sorts = await this.clients[dev].serverSupport(capability);
+                    const dp_capability = capability.replace(/[=|-|+]/g, "_");
+                    common = {
+                        type: "boolean",
+                        role: "switch",
+                        name: this.helper_translator("Is supported", capability),
+                        desc: "Create by Adapter",
+                        read: true,
+                        write: false,
+                        def: false,
+                    };
+                    await this.createDataPoint(`${dev}.infos.${dp_capability.toLowerCase()}`, common, "state");
+                    await this.setStateAsync(`${dev}.infos.${dp_capability.toLowerCase()}`, {
+                        val: sorts,
+                        ack: true,
+                    });
+                }
             }
         }
     }
