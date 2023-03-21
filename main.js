@@ -139,6 +139,7 @@ class Imap extends utils.Adapter {
             dev["inbox_activ"] = dev.inbox;
             this.clientsIDdelete.push(dev);
             if (!dev.activ) {
+                await this.cleanupDatapoints(dev);
                 continue;
             }
             this.clientsHTML[dev.user] = {};
@@ -178,6 +179,18 @@ class Imap extends utils.Adapter {
         this.checksupport();
         await this.createSelect(selectbox);
         this.subscribeStates(`json_imap`);
+    }
+
+    async cleanupDatapoints(dev) {
+        if (dev.user != null && dev.user != "") {
+            const isDP = await this.getStateAsync(`${dev.user}.online`);
+            if (isDP != null) {
+                await this.setStateAsync(`${dev.user}.online`, {
+                    val: false,
+                    ack: true,
+                });
+            }
+        }
     }
 
     async setStateSearchRestart(dev) {
@@ -823,14 +836,14 @@ class Imap extends utils.Adapter {
                         } else if (adapterconfigs && adapterconfigs.native && adapterconfigs.native.oauth_token) {
                             token_array = adapterconfigs.native.oauth_token;
                         }
-                        const new_token = [];
+                        let new_token = [];
                         new_token.push({ label: this.helper_translator("none select"), value: "" });
                         if (token_array && Object.keys(token_array).length > 0) {
                             for (const token of token_array) {
                                 tokens.push({ label: token.name, value: token.name });
                             }
                             tokens.sort((a, b) => (a.label > b.label ? 1 : b.label > a.label ? -1 : 0));
-                            new_token.concat(tokens);
+                            new_token = new_token.concat(tokens);
                             this.sendTo(obj.from, obj.command, tokens, obj.callback);
                         } else {
                             this.sendTo(obj.from, obj.command, [], obj.callback);
