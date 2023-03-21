@@ -189,19 +189,6 @@
                         },
                         {
                             "type": "text",
-                            "attr": "token",
-                            "width": 200,
-                            "title": "token",
-                            "tooltip": "TOKEN",
-                            "filter": false,
-                            "sort": false,
-                            "default": "",
-                            "style": {
-                                "width": 200
-                            }
-                        },
-                        {
-                            "type": "text",
                             "attr": "tlsoption",
                             "width": 200,
                             "title": "tls_option",
