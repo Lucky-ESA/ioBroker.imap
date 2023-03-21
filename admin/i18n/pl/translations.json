@@ -50,5 +50,17 @@
     "tls_option": "opcja tls",
     "TLS_OPTION": "Obiekt opcji do przekazania do tls.connect()",
     "auto_tls": "auto tls",
-    "AUTO_TLS": "Ustaw „zawsze”, aby zawsze próbować aktualizować połączenia przez STARTTLS, „wymagane” tylko wtedy, gdy aktualizacja jest wymagana, lub „nigdy”, aby nigdy nie podejmować prób aktualizacji."
+    "AUTO_TLS": "Ustaw „zawsze”, aby zawsze próbować aktualizować połączenia przez STARTTLS, „wymagane” tylko wtedy, gdy aktualizacja jest wymagana, lub „nigdy”, aby nigdy nie podejmować prób aktualizacji.",
+    "Tab oauth": "Autoryzuj oauth2",
+    "Tab oauth2": "Dane logowania oauth2",
+    "provider": "Dostawca",
+    "PROVIDER": "Dostawca",
+    "name": "Nazwa",
+    "NAME": "Nazwa",
+    "clientid": "Identyfikator klienta",
+    "CLIENTID": "Identyfikator klienta",
+    "secureid": "Tajny identyfikator",
+    "SECUREID": "Tajny identyfikator",
+    "pathid": "Identyfikator katalogu",
+    "PATHID": "Identyfikator katalogu"
 }

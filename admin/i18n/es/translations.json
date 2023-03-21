@@ -50,5 +50,17 @@
     "tls_option": "opción tls",
     "TLS_OPTION": "Objeto de opciones para pasar a tls.connect()",
     "auto_tls": "auto tls",
-    "AUTO_TLS": "Establézcalo en 'siempre' para intentar siempre actualizaciones de conexión a través de STARTTLS, 'requerido' solo si se requiere una actualización, o 'nunca' para nunca intentar actualizar."
+    "AUTO_TLS": "Establézcalo en 'siempre' para intentar siempre actualizaciones de conexión a través de STARTTLS, 'requerido' solo si se requiere una actualización, o 'nunca' para nunca intentar actualizar.",
+    "Tab oauth": "Autorizar oauth2",
+    "Tab oauth2": "Iniciar sesión oauth2 datos",
+    "provider": "Proveedor",
+    "PROVIDER": "Proveedor",
+    "name": "Nombre",
+    "NAME": "Nombre",
+    "clientid": "Identificación del cliente",
+    "CLIENTID": "Identificación del cliente",
+    "secureid": "identificación secreta",
+    "SECUREID": "identificación secreta",
+    "pathid": "Id. de directorio",
+    "PATHID": "Id. de directorio"
 }

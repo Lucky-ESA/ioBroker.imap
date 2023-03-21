@@ -50,5 +50,17 @@
     "tls_option": "tls-optie",
     "TLS_OPTION": "Options-object om door te geven aan tls.connect()",
     "auto_tls": "auto tls",
-    "AUTO_TLS": "Stel in op 'altijd' om altijd verbindingsupgrades via STARTTLS te proberen, 'vereist' alleen als een upgrade vereist is, of 'nooit' om nooit een upgrade uit te voeren."
+    "AUTO_TLS": "Stel in op 'altijd' om altijd verbindingsupgrades via STARTTLS te proberen, 'vereist' alleen als een upgrade vereist is, of 'nooit' om nooit een upgrade uit te voeren.",
+    "Tab oauth": "Autoriseren oauth2",
+    "Tab oauth2": "Inloggen oauth2-gegevens",
+    "provider": "Aanbieder",
+    "PROVIDER": "Aanbieder",
+    "name": "Naam",
+    "NAME": "Naam",
+    "clientid": "klant identificatie",
+    "CLIENTID": "klant identificatie",
+    "secureid": "Geheime ID",
+    "SECUREID": "Geheime ID",
+    "pathid": "Directory-ID",
+    "PATHID": "Directory-ID"
 }

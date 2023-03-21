@@ -50,5 +50,17 @@
     "tls_option": "tls-Option",
     "TLS_OPTION": "Options-Objekt, das an tls.connect() übergeben werden soll",
     "auto_tls": "Auto-TLS",
-    "AUTO_TLS": "Auf 'always' setzen, um immer Verbindungs-Upgrades über STARTTLS zu versuchen, 'required', nur wenn ein Upgrade erforderlich ist, oder 'nerver', um nie ein Upgrade zu versuchen."
+    "AUTO_TLS": "Auf 'always' setzen, um immer Verbindungs-Upgrades über STARTTLS zu versuchen, 'required', nur wenn ein Upgrade erforderlich ist, oder 'nerver', um nie ein Upgrade zu versuchen.",
+    "Tab oauth": "Autorisierung oauth2",
+    "Tab oauth2": "Login-oauth2-Daten",
+    "provider": "Anbieter",
+    "PROVIDER": "Anbieter",
+    "name": "Name",
+    "NAME": "Name",
+    "clientid": "Kunden ID",
+    "CLIENTID": "Kunden ID",
+    "secureid": "Geheime ID",
+    "SECUREID": "Geheime ID",
+    "pathid": "Verzeichnis-ID",
+    "PATHID": "Verzeichnis-ID"
 }

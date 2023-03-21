@@ -11,7 +11,7 @@ const utils = require("@iobroker/adapter-core");
 // Load your modules here, e.g.:
 const { MailListener } = require("./lib/listener");
 const helper = require("./lib/helper");
-const tl = require("./lib/translator.js");
+const tl = require("./lib/translator");
 const format = require("util").format;
 const { convert } = require("html-to-text");
 const FORBIDDEN_CHARS = /[üäöÜÄÖ$@ß€*:.]|[^._\-/ :!#$%&()+=@^{}|~\p{Ll}\p{Lu}\p{Nd}]+/gu;
@@ -132,7 +132,7 @@ class Imap extends utils.Adapter {
                     this.log_translator("info", "decrypt pw", dev.user);
                     continue;
                 }
-            } else {
+            } else if (dev.token == "") {
                 this.log_translator("info", "missing password");
                 continue;
             }
@@ -303,10 +303,21 @@ class Imap extends utils.Adapter {
                     }
                 }
             }
+            if (adapterconfigs && adapterconfigs.native && adapterconfigs.native.oauth_token) {
+                for (const pw of adapterconfigs.native.oauth_token) {
+                    if (pw.secureid != "" && !pw.secureid.includes("<LUCKY-ESA>")) {
+                        pw.secureid = `<LUCKY-ESA>${this.encrypt(pw.secureid)}`;
+                        isdecode = true;
+                    }
+                }
+            }
             if (isdecode) {
                 this.log_translator("info", "Encrypt");
                 if (adapterconfigs.native.hosts[0] === null) {
                     adapterconfigs.native.hosts = [];
+                }
+                if (adapterconfigs.native.oauth_token[0] === null) {
+                    adapterconfigs.native.oauth_token = [];
                 }
                 await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
                     native: adapterconfigs.native,
@@ -320,6 +331,60 @@ class Imap extends utils.Adapter {
         }
     }
 
+    async loadToken(dev) {
+        const search_token = {};
+        search_token["token"] = this.config.oauth_token;
+        let msalConfig;
+        const isfind = search_token["token"].find((tok) => tok.name === dev.token);
+        if (
+            isfind != null &&
+            isfind.name != null &&
+            isfind.provider == "office365" &&
+            isfind.clientid != "" &&
+            isfind.secureid != "" &&
+            isfind.pathid != ""
+        ) {
+            const msal = require("@azure/msal-node");
+            if (isfind.secureid != "" && isfind.secureid.includes("<LUCKY-ESA>")) {
+                try {
+                    const decrypt_pw = isfind.secureid.split("<LUCKY-ESA>")[1];
+                    if (decrypt_pw != "") {
+                        isfind.secureid = this.decrypt(decrypt_pw);
+                    } else {
+                        this.log_translator("info", "Security-ID", isfind.user);
+                        dev.token = null;
+                    }
+                } catch (e) {
+                    return (dev.token = null);
+                }
+            } else {
+                dev.token = null;
+            }
+            msalConfig = {
+                auth: {
+                    clientId: isfind.clientid,
+                    authority: `https://login.microsoftonline.com/${isfind.pathid}/`,
+                    clientSecret: isfind.secureid,
+                },
+            };
+            const cca = new msal.ConfidentialClientApplication(msalConfig);
+            const tokenRequest = {
+                scopes: ["https://graph.microsoft.com/.default"],
+            };
+            const accessT = await cca.acquireTokenByClientCredential(tokenRequest);
+            if (accessT && accessT.accessToken) {
+                dev.token = Buffer.from(
+                    [`user=${dev.user}`, `auth=Bearer ${accessT.accessToken}`, "", ""].join("\x01"),
+                    "utf-8",
+                ).toString("base64");
+                return dev.token;
+            } else {
+                dev.token = null;
+            }
+        }
+        dev.token = null;
+    }
+
     async imap_connection(dev) {
         if (this.clients[dev.user] != null) {
             this.clients[dev.user].destroy();
@@ -328,6 +393,27 @@ class Imap extends utils.Adapter {
         }
         this.restartIMAPConnection[dev.user] && this.clearTimeout(this.restartIMAPConnection[dev.user]);
         this.restartIMAPConnection[dev.user] = null;
+        if (
+            dev.token &&
+            dev.token != "" &&
+            this.config.oauth_token != null &&
+            Object.keys(this.config.oauth_token).length > 0
+        ) {
+            dev.token = await this.loadToken(dev);
+            if (dev.token == null) {
+                this.log_translator("info", "Token could not be created", dev.user);
+                if (dev.password == null || dev.password == "") {
+                    this.log_translator("info", "Token cannot be created", dev.user);
+                    this.clients[dev.user] = null;
+                    return;
+                }
+            } else {
+                dev.password = null;
+                this.log_translator("info", "Token was created", dev.user);
+            }
+        } else {
+            dev.token = null;
+        }
         this.clients[dev.user] = new MailListener(dev, this.log);
         this.clients[dev.user].start();
         this.clients[dev.user].on("connected", (clientID) => {
@@ -528,7 +614,7 @@ class Imap extends utils.Adapter {
                     const dp_capability = capability.replace(/[=|-|+]/g, "_");
                     common = {
                         type: "boolean",
-                        role: "switch",
+                        role: "state",
                         name: this.helper_translator("Is supported", capability),
                         desc: "Create by Adapter",
                         read: true,
@@ -698,12 +784,12 @@ class Imap extends utils.Adapter {
             delete this.double_call[obj._id];
             return;
         }
-        let icon_array = [];
-        const icons = [];
         switch (obj.command) {
             case "getIconList":
                 if (obj.callback) {
                     try {
+                        let icon_array = [];
+                        const icons = [];
                         if (_obj && _obj.message && _obj.message.icon && _obj.message.icon.icons) {
                             icon_array = _obj.message.icon.icons;
                         } else if (adapterconfigs && adapterconfigs.native && adapterconfigs.native.icons) {
@@ -716,6 +802,36 @@ class Imap extends utils.Adapter {
                             }
                             icons.sort((a, b) => (a.label > b.label ? 1 : b.label > a.label ? -1 : 0));
                             this.sendTo(obj.from, obj.command, icons, obj.callback);
+                        } else {
+                            this.sendTo(obj.from, obj.command, [], obj.callback);
+                        }
+                    } catch (error) {
+                        delete this.double_call[obj._id];
+                        this.log_translator("error", "catch", `onMessage: ${error}`);
+                        this.sendTo(obj.from, obj.command, [], obj.callback);
+                    }
+                }
+                delete this.double_call[obj._id];
+                break;
+            case "getTokenList":
+                if (obj.callback) {
+                    try {
+                        let token_array = [];
+                        const tokens = [];
+                        if (_obj && _obj.message && _obj.message.token && _obj.message.token.tokens) {
+                            token_array = _obj.message.token.tokens;
+                        } else if (adapterconfigs && adapterconfigs.native && adapterconfigs.native.oauth_token) {
+                            token_array = adapterconfigs.native.oauth_token;
+                        }
+                        const new_token = [];
+                        new_token.push({ label: this.helper_translator("none select"), value: "" });
+                        if (token_array && Object.keys(token_array).length > 0) {
+                            for (const token of token_array) {
+                                tokens.push({ label: token.name, value: token.name });
+                            }
+                            tokens.sort((a, b) => (a.label > b.label ? 1 : b.label > a.label ? -1 : 0));
+                            new_token.concat(tokens);
+                            this.sendTo(obj.from, obj.command, tokens, obj.callback);
                         } else {
                             this.sendTo(obj.from, obj.command, [], obj.callback);
                         }

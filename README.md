@@ -52,6 +52,7 @@
 -   (Lucky-ESA) Fix correct counter for seen and unseen
 -   (Lucky-ESA) Added capabilities
 -   (Lucky-ESA) Criteria change without restart
+-   (Lucky-ESA) Added outlook.office365.com oauth2 login
 
 ### 0.0.6 (2023-03-17)
 

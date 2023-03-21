@@ -50,5 +50,17 @@
     "tls_option": "tls option",
     "TLS_OPTION": "Options object to pass to tls.connect()",
     "auto_tls": "auto tls",
-    "AUTO_TLS": "Set to 'always' to always attempt connection upgrades via STARTTLS, 'required' only if upgrading is required, or 'never' to never attempt upgrading."
+    "AUTO_TLS": "Set to 'always' to always attempt connection upgrades via STARTTLS, 'required' only if upgrading is required, or 'never' to never attempt upgrading.",
+    "Tab oauth": "Authorize oauth2",
+    "Tab oauth2": "Login oauth2 data",
+    "provider": "Provider",
+    "PROVIDER": "Provider",
+    "name": "Name",
+    "NAME": "Name",
+    "clientid": "Client ID",
+    "CLIENTID": "Client ID",
+    "secureid": "Secret ID",
+    "SECUREID": "Secret ID",
+    "pathid": "Directory ID",
+    "PATHID": "Directory ID"
 }

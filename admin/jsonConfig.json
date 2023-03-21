@@ -217,6 +217,21 @@
                             "style": {
                                 "width": 100
                             }
+                        },
+                        {
+                            "type": "selectSendTo",
+                            "attr": "token",
+                            "width": 200,
+                            "title": "token",
+                            "tooltip": "TOKEN",
+                            "filter": false,
+                            "sort": false,
+                            "jsonData": "{\"token\":{\"tokens\":${JSON.stringify(globalData.oauth_token)}}}",
+                            "command": "getTokenList",
+                            "alsoDependsOn": ["oauth_token"],
+                            "style": {
+                                "width": 200
+                            }
                         }
                     ]
                 }
@@ -260,6 +275,89 @@
                             "accept": "image/*",
                             "base64": true,
                             "crop": true
+                        }
+                    ]
+                }
+            }
+        },
+        "tab3": {
+            "type": "panel",
+            "label": "Tab oauth",
+            "items": {
+                "_headerAlexa": {
+                    "type": "header",
+                    "text": "Info oauth2",
+                    "size": 2
+                },
+                "oauth_token": {
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "noDelete": false,
+                    "type": "table",
+                    "style": {
+                        "textAlign": "center"
+                    },
+                    "items": [
+                        {
+                            "type": "select",
+                            "attr": "provider",
+                            "width": "25%",
+                            "title": "provider",
+                            "tooltip": "PROVIDER",
+                            "filter": false,
+                            "sort": false,
+                            "options": [
+                                { "label": "none", "value": "" },
+                                { "label": "office365", "value": "office365" }
+                            ],
+                            "default": "none",
+                            "style": {
+                                "textAlign": "center"
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "attr": "name",
+                            "width": "25%",
+                            "title": "name",
+                            "tooltip": "NAME",
+                            "filter": true,
+                            "sort": true,
+                            "default": ""
+                        },
+                        {
+                            "type": "text",
+                            "attr": "clientid",
+                            "width": "25%",
+                            "title": "clientid",
+                            "tooltip": "CLIENTID",
+                            "filter": true,
+                            "sort": true,
+                            "default": ""
+                        },
+                        {
+                            "type": "password",
+                            "attr": "secureid",
+                            "width": "25%",
+                            "title": "secureid",
+                            "tooltip": "SECUREID",
+                            "visible": true,
+                            "filter": true,
+                            "sort": true,
+                            "default": ""
+                        },
+                        {
+                            "type": "text",
+                            "attr": "pathid",
+                            "width": "25%",
+                            "title": "pathid",
+                            "disabled": "data.provider != \"office365\"",
+                            "hidden": "data.provider != \"office365\"",
+                            "tooltip": "PATHID",
+                            "filter": true,
+                            "sort": true,
+                            "default": ""
                         }
                     ]
                 }
