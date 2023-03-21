@@ -836,15 +836,15 @@ class Imap extends utils.Adapter {
                         } else if (adapterconfigs && adapterconfigs.native && adapterconfigs.native.oauth_token) {
                             token_array = adapterconfigs.native.oauth_token;
                         }
-                        let new_token = [];
-                        new_token.push({ label: this.helper_translator("none select"), value: "" });
                         if (token_array && Object.keys(token_array).length > 0) {
                             for (const token of token_array) {
                                 tokens.push({ label: token.name, value: token.name });
                             }
                             tokens.sort((a, b) => (a.label > b.label ? 1 : b.label > a.label ? -1 : 0));
-                            new_token = new_token.concat(tokens);
-                            this.sendTo(obj.from, obj.command, tokens, obj.callback);
+                            const new_token = [{ label: this.helper_translator("none select"), value: "" }].concat(
+                                tokens,
+                            );
+                            this.sendTo(obj.from, obj.command, new_token, obj.callback);
                         } else {
                             this.sendTo(obj.from, obj.command, [], obj.callback);
                         }
