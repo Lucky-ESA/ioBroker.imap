@@ -16,7 +16,6 @@ const format = require("util").format;
 const { convert } = require("html-to-text");
 const FORBIDDEN_CHARS = /[üäöÜÄÖ$@ß€*:.]|[^._\-/ :!#$%&()+=@^{}|~\p{Ll}\p{Lu}\p{Nd}]+/gu;
 const limited_reconnect = 5;
-
 const empty = {
     subject: "",
     date: "",
@@ -54,6 +53,7 @@ class Imap extends utils.Adapter {
         this.createRemote = helper.createRemote;
         this.createinbox = helper.createinbox;
         this.createSelect = helper.createSelect;
+        this.createQuota = helper.createQuota;
         this.qualityInterval = null;
         this.statusInterval = null;
         this.sleepTimer = null;
@@ -181,6 +181,9 @@ class Imap extends utils.Adapter {
         this.subscribeStates(`json_imap`);
     }
 
+    /**
+     * @param {object} dev
+     */
     async cleanupDatapoints(dev) {
         if (dev.user != null && dev.user != "") {
             const isDP = await this.getStateAsync(`${dev.user}.online`);
@@ -193,6 +196,9 @@ class Imap extends utils.Adapter {
         }
     }
 
+    /**
+     * @param {object} dev
+     */
     async setStateSearchRestart(dev) {
         this.setState(`${dev.user}.remote.criteria`, {
             val: dev.flag,
@@ -205,21 +211,30 @@ class Imap extends utils.Adapter {
         });
     }
 
+    /**
+     *
+     */
     async connectionCheck() {
         for (const dev of this.clientsID) {
-            if (this.clients[dev] != null) {
+            if (this.clients[dev] != null && this.clientsRaw[dev].activ) {
                 const check = await this.clients[dev].imap_namespaces();
                 this.log_translator("debug", "IMAP namespaces", dev, JSON.stringify(check));
                 const deli = await this.clients[dev].imap_delimiter();
                 this.log_translator("debug", "IMAP delimiter", dev, JSON.stringify(deli));
                 const state = await this.clients[dev].imap_state();
                 this.log_translator("debug", "IMAP connection", dev, state);
+                if (this.clients[dev].serverSupport("QUOTA")) {
+                    this.clients[dev].serverQuota();
+                }
             } else {
-                this.log_translator("info", "No connection", dev);
+                this.log_translator("debug", "No connection", dev);
             }
         }
     }
 
+    /**
+     * @param {object} dev
+     */
     async readHTML(dev) {
         try {
             const all_dp = await this.getObjectListAsync({
@@ -240,6 +255,9 @@ class Imap extends utils.Adapter {
         }
     }
 
+    /**
+     * @param {object} dev
+     */
     async checkMailFolder(dev) {
         try {
             const all_dp = await this.getObjectListAsync({
@@ -281,6 +299,9 @@ class Imap extends utils.Adapter {
         }
     }
 
+    /**
+     *
+     */
     async checkDeviceFolder() {
         try {
             const devices = await this.getDevicesAsync();
@@ -299,6 +320,9 @@ class Imap extends utils.Adapter {
         }
     }
 
+    /**
+     *
+     */
     async configcheck() {
         try {
             let isdecode = false;
@@ -344,6 +368,9 @@ class Imap extends utils.Adapter {
         }
     }
 
+    /**
+     * @param {object} dev
+     */
     async loadToken(dev) {
         const search_token = {};
         search_token["token"] = this.config.oauth_token;
@@ -398,6 +425,9 @@ class Imap extends utils.Adapter {
         dev.token = null;
     }
 
+    /**
+     * @param {object} dev
+     */
     async imap_connection(dev) {
         if (this.clients[dev.user] != null) {
             this.clients[dev.user].destroy();
@@ -448,9 +478,16 @@ class Imap extends utils.Adapter {
             this.log_translator(level, text, info, clientID);
         });
 
+        this.clients[dev.user].on("quota", (info, clientID) => {
+            this.log_translator("debug", "Storage_value", clientID, JSON.stringify(info));
+            if (info && info.data && info.data.storage) {
+                this.createQuota(clientID, info);
+            }
+        });
+
         this.clients[dev.user].on("sub", (folder, clientID) => {
             this.createinbox(clientID, folder);
-            if (Object.keys(this.boxfolder[clientID]).length > 0) {
+            if (Object.keys(this.boxfolder[clientID]).length === 0) {
                 this.log_translator("info", "INBOXFOLDER", clientID);
             }
             this.boxfolder[clientID] = folder;
@@ -479,6 +516,10 @@ class Imap extends utils.Adapter {
             this.setUpdate(clientID, { flags: [], new_mail: seqno }, "new mail");
         });
 
+        this.clients[dev.user].on("newmail", (box, info, clientID) => {
+            this.log_translator("info", "Type recent", clientID, JSON.stringify(box), JSON.stringify(info));
+        });
+
         this.clients[dev.user].on("total", (count_all, count_unseen, clientID) => {
             this.setTotal(clientID, count_all, count_unseen);
         });
@@ -490,14 +531,14 @@ class Imap extends utils.Adapter {
             if (what === "new") {
                 const del_seqno = this.save_json[clientID].pop();
                 this.save_json[clientID].push(mail);
-                this.clients[clientID].updateseqno(del_seqno["seqno"]);
+                this.clients[clientID].updateseqno(del_seqno["seqno"], false);
             } else {
                 const merge = this.save_json[clientID].findIndex((merge) => merge.seqno === seqno);
                 if (merge != -1) {
                     this.save_json[clientID][merge] = mail;
                 }
             }
-            this.updateIMAPData(clientID, false);
+            this.updateIMAPData(clientID, false, false);
         });
 
         this.clients[dev.user].on("uidvalidity", (uidvalidity, clientID) => {
@@ -517,6 +558,10 @@ class Imap extends utils.Adapter {
             this.log_translator("debug", "mailbox", `${clientID} - ${JSON.stringify(mailbox)}`);
             this.setState(`${clientID}.total`, {
                 val: mailbox.messages && mailbox.messages.total != null ? mailbox.messages.total : 0,
+                ack: true,
+            });
+            this.setState(`${clientID}.status`, {
+                val: JSON.stringify(mailbox),
                 ack: true,
             });
         });
@@ -563,8 +608,8 @@ class Imap extends utils.Adapter {
             this.sendTo(obj.from, obj.command, this.helper_translator(results), obj.callback);
         });
 
-        this.clients[dev.user].on("alert", (err, clientID) => {
-            this.log_translator("info", "Alert", clientID, err);
+        this.clients[dev.user].on("alert", (alert, clientID) => {
+            this.log_translator("info", "Alert", clientID, JSON.stringify(alert));
         });
 
         this.clients[dev.user].on("mail", (mail, seqno, attrs, info, clientID, count, all, sort) => {
@@ -582,7 +627,7 @@ class Imap extends utils.Adapter {
                 this.save_json[clientID].push(mail);
             }
             if (count == all || higher_max == count) {
-                this.updateIMAPData(clientID, sort);
+                this.updateIMAPData(clientID, sort, false);
             }
             this.log_translator(
                 "debug",
@@ -595,8 +640,12 @@ class Imap extends utils.Adapter {
         });
     }
 
+    /**
+     *
+     */
     async checksupport() {
         await this.sleep(5000);
+        let quota = false;
         const capabilitys = [
             "SORT",
             "ESEARCH",
@@ -615,15 +664,17 @@ class Imap extends utils.Adapter {
             "ID",
             "CONDSTORE",
             "UNSELECT",
-            "UNSELECT",
             "MOVE",
             "X-GM-EXT-1",
+            "SASL-IR",
         ];
         let common = {};
         for (const dev of this.clientsID) {
-            if (this.clients[dev]) {
+            quota = false;
+            if (this.clients[dev] && this.clientsRaw[dev].activ) {
                 for (const capability of capabilitys) {
                     const sorts = await this.clients[dev].serverSupport(capability);
+                    if (capability === "QUOTA") quota = sorts;
                     const dp_capability = capability.replace(/[=|-|+]/g, "_");
                     common = {
                         type: "boolean",
@@ -640,11 +691,36 @@ class Imap extends utils.Adapter {
                         ack: true,
                     });
                 }
+                const caps = await this.clients[dev].serverAllSupport();
+                if (caps != null) {
+                    common = {
+                        type: "string",
+                        role: "state",
+                        name: this.helper_translator("All support"),
+                        desc: "Create by Adapter",
+                        read: true,
+                        write: false,
+                        def: "",
+                    };
+                    await this.createDataPoint(`${dev}.infos.all_capability`, common, "state");
+                    await this.setStateAsync(`${dev}.infos.all_capability`, {
+                        val: JSON.stringify(caps),
+                        ack: true,
+                    });
+                }
+                if (quota) {
+                    this.clients[dev].serverQuota();
+                }
             }
         }
     }
 
-    updateIMAPData(clientID, sort, html) {
+    /**
+     * @param {string} clientID
+     * @param {boolean} sorts
+     * @param {boolean} html
+     */
+    updateIMAPData(clientID, sorts, html) {
         if (!this.save_json[clientID] || Object.keys(this.save_json[clientID]).length === 0) {
             return;
         }
@@ -664,8 +740,8 @@ class Imap extends utils.Adapter {
             }
             sort_seq.push(mail.seqno);
         }
-        if (sort) {
-            this.clients[clientID].updateSeqno(sort_seq);
+        if (sorts) {
+            this.clients[clientID].updateseqno(sort_seq, true);
         }
         ++count_all;
         if (count_all < max) {
@@ -675,6 +751,11 @@ class Imap extends utils.Adapter {
         }
     }
 
+    /**
+     * @param {string} clientID
+     * @param {number} count_all
+     * @param {number} count_unseen
+     */
     async setTotal(clientID, count_all, count_unseen) {
         await this.setStateAsync(`${clientID}.total`, {
             val: count_all,
@@ -686,6 +767,11 @@ class Imap extends utils.Adapter {
         });
     }
 
+    /**
+     * @param {string} clientID
+     * @param {object} info
+     * @param {string} trans
+     */
     async setUpdate(clientID, info, trans) {
         const activity = this.helper_translator(trans) != null ? this.helper_translator(trans) : "";
         await this.setStateAsync(`${clientID}.last_activity`, {
@@ -702,6 +788,14 @@ class Imap extends utils.Adapter {
         });
     }
 
+    /**
+     * @param {object} mail
+     * @param {number} seqno
+     * @param {string} clientID
+     * @param {number} count
+     * @param {object} attrs
+     * @param {object} info
+     */
     async setStatesValue(mail, seqno, clientID, count, attrs, info) {
         try {
             await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.subject`, {
@@ -954,6 +1048,11 @@ class Imap extends utils.Adapter {
         }
     }
 
+    /**
+     * @param {number} id
+     * @param {string} criteria
+     * @param {number} max
+     */
     async setStateSearch(id, criteria, max) {
         await this.setStateAsync(`${id}.remote.criteria`, {
             val: criteria,
@@ -969,6 +1068,9 @@ class Imap extends utils.Adapter {
         });
     }
 
+    /**
+     * @param {number} ms
+     */
     sleep(ms) {
         return new Promise((resolve) => {
             this.sleepTimer = this.setTimeout(() => {
@@ -1053,9 +1155,9 @@ class Imap extends utils.Adapter {
                     const value = state.val?.toString().split("<L>");
                     if (value != null && value[0] != null && value[1] != null && value[2] != null) {
                         if (value[0] === "copy" || value[0] === "move") {
-                            this.applyCopyMove(value[0], clientID, value[1], value[2]);
+                            this.applyCopyMove(value[0], clientID, Number(value[1]), value[2]);
                         } else {
-                            this.applyFlag(clientID, value[0], value[1], value[2]);
+                            this.applyFlag(clientID, value[0], Number(value[1]), value[2]);
                         }
                     }
                 }
@@ -1113,7 +1215,11 @@ class Imap extends utils.Adapter {
         }
     }
 
+    /**
+     * @param {ioBroker.State | null | undefined} state
+     */
     async setJson_table(state) {
+        if (state == null) return;
         const jsons = await this.getStateAsync(`${state.val}.json`);
         if (jsons && jsons.val) {
             this.setState(`json_table`, {
@@ -1123,19 +1229,25 @@ class Imap extends utils.Adapter {
         }
     }
 
+    /**
+     * @param {string} clientID
+     * @param {string} [set=""]
+     * @param {number} [uid=0]
+     * @param {string} [type=""]
+     */
     async applyFlag(clientID, set, uid, type) {
         if (this.clients[clientID]) {
-            if (!set) {
+            if (set == "") {
                 const sets = await this.getStateAsync(`${clientID}.remote.flag.set`);
-                set = sets && sets.val ? sets.val : "";
+                set = sets && sets.val ? sets.val.toString() : "";
             }
-            if (uid == null) {
+            if (uid === 0) {
                 const uids = await this.getStateAsync(`${clientID}.remote.flag.uid`);
-                uid = uids && uids.val != null ? uids.val : 0;
+                uid = uids && uids.val != null ? Number(uids.val) : 0;
             }
-            if (!type) {
+            if (type == "") {
                 const types = await this.getStateAsync(`${clientID}.remote.flag.type`);
-                type = types && types.val ? types.val : "";
+                type = types && types.val ? types.val.toString() : "";
             }
             if (set == "") {
                 this.log_translator("info", "Flag Type is empty");
@@ -1145,7 +1257,7 @@ class Imap extends utils.Adapter {
                 this.log_translator("info", "No UID specified");
                 return;
             }
-            if (type == "") {
+            if (type == "" || type == null) {
                 this.log_translator("info", "Type is empty");
                 return;
             }
@@ -1158,14 +1270,20 @@ class Imap extends utils.Adapter {
         }
     }
 
+    /**
+     * @param {string} command
+     * @param {string} clientID
+     * @param {number} [uid=0]
+     * @param {string | null | undefined} [folder=null]
+     */
     async applyCopyMove(command, clientID, uid, folder) {
         if (!folder) {
             const folders = await this.getStateAsync(`${clientID}.remote.${command}.folder`);
-            folder = folders && folders.val ? folders.val : "";
+            folder = folders && folders.val ? folders.val.toString() : "";
         }
-        if (uid == null) {
+        if (uid === 0) {
             const uids = await this.getStateAsync(`${clientID}.remote.${command}.uid`);
-            uid = uids && uids.val != null ? uids.val : 0;
+            uid = uids && uids.val != null ? Number(uids.val) : 0;
         }
         if (!folder || folder == "") {
             this.log_translator("info", "No folder selected");
@@ -1180,6 +1298,10 @@ class Imap extends utils.Adapter {
         }
     }
 
+    /**
+     * @param {string} id
+     * @param {object} [value=null]
+     */
     async setAckFlag(id, value) {
         try {
             if (id) {
@@ -1193,10 +1315,21 @@ class Imap extends utils.Adapter {
         }
     }
 
+    /**
+     * @param {string} level
+     * @param {string} text
+     * @param {string | number} [merge_1=null]
+     * @param {string | number} [merge_2=null]
+     * @param {string | number} [merge_3=null]
+     */
     log_translator(level, text, merge_1, merge_2, merge_3) {
         try {
-            const loglevel = !!this.log[level];
-            //if (loglevel && level != "debug") {
+            let loglevel = !!this.log[level];
+            if (text == "Error") {
+                if (text.includes("This socket has been ended by the other party")) {
+                    loglevel = !!this.log.debug;
+                }
+            }
             if (loglevel) {
                 if (tl.trans[text] != null) {
                     if (merge_3) {
@@ -1213,10 +1346,15 @@ class Imap extends utils.Adapter {
                 }
             }
         } catch (e) {
-            this.log.error("try log_translator: " + e + " - " + text);
+            this.log.error(`try log_translator: ${e} - ${text} - ${level}`);
         }
     }
 
+    /**
+     * @param {string} text
+     * @param {string | number} [merge=null]
+     * @param {string | number} [merge_1=null]
+     */
     helper_translator(text, merge, merge_1) {
         try {
             if (tl.trans[text][this.lang]) {
@@ -1231,10 +1369,19 @@ class Imap extends utils.Adapter {
                 return tl.trans["Unknown"][this.lang];
             }
         } catch (e) {
-            this.log.error("try helper_translator: " + e);
+            this.log.error(`try helper_translator: ${e} - ${text}`);
         }
     }
 
+    /**
+     * @param {object} mail
+     * @param {number} seqno
+     * @param {string} clientID
+     * @param {number} count
+     * @param {number} all
+     * @param {object} attrs
+     * @param {boolean} html
+     */
     async createHTMLRows(mail, seqno, clientID, count, all, attrs, html) {
         if (count == 1) {
             this.clientsRows[clientID] = "";
@@ -1347,6 +1494,13 @@ class Imap extends utils.Adapter {
         }
     }
 
+    /**
+     * @param {string} ident
+     * @param {string} htmltext
+     * @param {number} count
+     * @param {number} all
+     * @param {boolean} html
+     */
     async createHTML(ident, htmltext, count, all, html) {
         try {
             const id = this.clientsHTML[ident];
@@ -1488,6 +1642,11 @@ class Imap extends utils.Adapter {
         }
     }
 
+    /**
+     * @param {object} jsons
+     * @param {string} id
+     * @param {boolean} html
+     */
     async json_table(jsons, id, html) {
         try {
             if (typeof jsons != "object") {
@@ -1555,6 +1714,9 @@ class Imap extends utils.Adapter {
         }
     }
 
+    /**
+     * Datapoint qualitiy clean up
+     */
     async cleanupQuality() {
         this.log_translator("debug", "Data point quality is cleaned up");
         const quality = {

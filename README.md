@@ -53,6 +53,8 @@
 -   (Lucky-ESA) Added capabilities
 -   (Lucky-ESA) Criteria change without restart
 -   (Lucky-ESA) Added outlook.office365.com oauth2 login
+-   (Lucky-ESA) Added Connection.js from Module to Adapter
+-   (Lucky-ESA) Bug fixes
 
 ### 0.0.6 (2023-03-17)
 
