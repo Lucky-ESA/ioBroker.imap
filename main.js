@@ -1086,7 +1086,7 @@ class Imap extends utils.Adapter {
     onUnload(callback) {
         try {
             for (const dev of this.clientsID) {
-                this.clients[dev.user] && this.clients[dev.user].stop();
+                this.clients[dev.user] && this.clients[dev.user].destroy();
                 this.restartIMAPConnection[dev] && this.clearTimeout(this.restartIMAPConnection[dev]);
             }
             this.qualityInterval && this.clearInterval(this.qualityInterval);
