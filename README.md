@@ -2,6 +2,7 @@
 
 # ioBroker.imap
 
+**Infos:** </br>
 [![GitHub license](https://img.shields.io/github/license/Lucky-ESA/ioBroker.imap)](https://github.com/Lucky-ESA/ioBroker.imap/blob/main/LICENSE)
 [![NPM version](https://img.shields.io/npm/v/iobroker.imap.svg)](https://www.npmjs.com/package/iobroker.imap)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.imap.svg)](https://www.npmjs.com/package/iobroker.imap)
@@ -9,7 +10,9 @@
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/Lucky-ESA/ioBroker.imap)
 ![GitHub commits since latest release](https://img.shields.io/github/commits-since/Lucky-ESA/ioBroker.imap/latest)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Lucky-ESA/ioBroker.imap)
-![GitHub issues](https://img.shields.io/github/issues/Lucky-ESA/ioBroker.imap)
+![GitHub issues](https://img.shields.io/github/issues/Lucky-ESA/ioBroker.imap)</br>
+**Version:** </br>
+![Beta](https://img.shields.io/npm/v/iobroker.imap.svg?color=red&label=beta)
 
 [![NPM](https://nodei.co/npm/iobroker.imap.png?downloads=true)](https://nodei.co/npm/iobroker.imap/)
 

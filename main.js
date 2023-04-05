@@ -9,13 +9,13 @@
 const utils = require("@iobroker/adapter-core");
 
 // Load your modules here, e.g.:
-const { MailListener } = require("./lib/listener");
 const helper = require("./lib/helper");
 const tl = require("./lib/translator");
 const format = require("util").format;
 const { convert } = require("html-to-text");
+const imap_connect = require("./lib/Connection");
+const imap_event = require("./lib/imap_event");
 const FORBIDDEN_CHARS = /[üäöÜÄÖ$@ß€*:.]|[^._\-/ :!#$%&()+=@^{}|~\p{Ll}\p{Lu}\p{Nd}]+/gu;
-const limited_reconnect = 5;
 const empty = {
     subject: "",
     date: "",
@@ -54,6 +54,25 @@ class Imap extends utils.Adapter {
         this.createinbox = helper.createinbox;
         this.createSelect = helper.createSelect;
         this.createQuota = helper.createQuota;
+        this.getStatus = imap_event.getStatus;
+        this.setFolder = imap_event.setFolder;
+        this.subscribeBox = imap_event.subscribeBox;
+        this.readMailsSort = imap_event.readMailsSort;
+        this.readMails = imap_event.readMails;
+        this.findmail = imap_event.findmail;
+        this.loadAllSeqno = imap_event.loadAllSeqno;
+        this.setTotal = imap_event.setTotal;
+        this.newMailsSort = imap_event.newMailsSort;
+        this.newMails = imap_event.newMails;
+        this.readMails = imap_event.readMails;
+        this.diffArray = imap_event.diffArray;
+        this.updateseqno = imap_event.updateseqno;
+        this.updatemail = imap_event.updatemail;
+        this.change_events = imap_event.change_events;
+        this.changeFolder = imap_event.changeFolder;
+        this.custom_search = imap_event.custom_search;
+        this.loadUnseenSeqno = imap_event.loadUnseenSeqno;
+        this.changesearch = imap_event.changesearch;
         this.qualityInterval = null;
         this.statusInterval = null;
         this.sleepTimer = null;
@@ -69,6 +88,7 @@ class Imap extends utils.Adapter {
         this.restartIMAPConnection = {};
         this.clientsID = [];
         this.clientsIDdelete = [];
+        this.all_seqno = {};
         this.countOnline = 0;
         this.lang = "de";
     }
@@ -136,6 +156,7 @@ class Imap extends utils.Adapter {
                 this.log_translator("info", "missing password");
                 continue;
             }
+            dev["max"] = dev.maxi_html > dev.maxi ? dev.maxi_html : dev.maxi;
             dev["inbox_activ"] = dev.inbox;
             this.clientsIDdelete.push(dev);
             if (!dev.activ) {
@@ -149,6 +170,7 @@ class Imap extends utils.Adapter {
             selectbox["states"][dev.user] = dev.user;
             this.clients[dev.user] = null;
             this.clientsRaw[dev.user] = dev;
+            this.all_seqno[dev.user] = [];
             this.reconnect_count[dev.user] = 0;
             this.save_json[dev.user] = [];
             this.save_seqno[dev.user] = [];
@@ -201,7 +223,7 @@ class Imap extends utils.Adapter {
      */
     async setStateSearchRestart(dev) {
         this.setState(`${dev.user}.remote.criteria`, {
-            val: dev.flag,
+            val: JSON.stringify(dev.flag),
             ack: true,
         });
         const max = dev.maxi > dev.maxi_html ? dev.maxi : dev.maxi_html;
@@ -217,14 +239,20 @@ class Imap extends utils.Adapter {
     async connectionCheck() {
         for (const dev of this.clientsID) {
             if (this.clients[dev] != null && this.clientsRaw[dev].activ) {
-                const check = await this.clients[dev].imap_namespaces();
-                this.log_translator("debug", "IMAP namespaces", dev, JSON.stringify(check));
-                const deli = await this.clients[dev].imap_delimiter();
-                this.log_translator("debug", "IMAP delimiter", dev, JSON.stringify(deli));
-                const state = await this.clients[dev].imap_state();
-                this.log_translator("debug", "IMAP connection", dev, state);
-                if (this.clients[dev].serverSupport("QUOTA")) {
-                    this.clients[dev].serverQuota();
+                this.log_translator("debug", "IMAP namespaces", dev, this.clients[dev].namespaces);
+                this.log_translator("debug", "IMAP delimiter", dev, this.clients[dev].delimiter);
+                this.log_translator("debug", "IMAP connection", dev, this.clients[dev].state);
+                if (this.clients[dev].serverSupports("QUOTA")) {
+                    this.clients[dev].getQuotaRoot(this.clientsRaw[dev].inbox_activ, (error, info) => {
+                        if (error) {
+                            this.log_translator("error", "Error", dev, error);
+                        } else {
+                            this.log_translator("debug", "Storage_value", dev, JSON.stringify(info));
+                            if (info && info.data && info.data.storage) {
+                                this.createQuota(dev, info);
+                            }
+                        }
+                    });
                 }
             } else {
                 this.log_translator("debug", "No connection", dev);
@@ -457,187 +485,128 @@ class Imap extends utils.Adapter {
         } else {
             dev.token = null;
         }
-        this.clients[dev.user] = new MailListener(dev, this.log);
-        this.clients[dev.user].start();
-        this.clients[dev.user].on("connected", (clientID) => {
-            if (this.reconnect_count[clientID] === 0) {
-                this.log_translator("info", "connection", clientID);
+        try {
+            if (typeof dev.flag === "object") {
+                this.clientsRaw[dev.user].flag = JSON.parse(JSON.stringify(dev.flag));
+            } else {
+                this.clientsRaw[dev.user].flag = JSON.parse(dev.flag);
             }
-            ++this.countOnline;
-            if (this.countOnline === 1) {
-                this.setStateAsync("info.connection", true, true);
+        } catch (e) {
+            this.clientsRaw[dev.user].flag = ["ALL"];
+        }
+        //this.dir[dev.user] = `${__dirname}/lib/attachment`;
+        let tlsoption = {};
+        try {
+            if (typeof dev.tlsoption === "object") {
+                tlsoption = JSON.parse(JSON.stringify(dev.tlsoption));
+            } else {
+                tlsoption = JSON.parse(dev.tlsoption);
             }
-            this.reconnect_count[clientID] = 0;
-            this.setState(`${clientID}.online`, {
-                val: true,
-                ack: true,
-            });
+        } catch (e) {
+            this.log_translator("warn", "TLSOPTION", dev.user);
+        }
+        this.clientsRaw[dev.user].inbox_activ = dev.inbox;
+        this.clients[dev.user] = new imap_connect({
+            xoauth2: dev.token,
+            xoauth: null,
+            user: dev.username,
+            password: dev.password,
+            client: dev.user,
+            inbox: dev.inbox,
+            host: dev.host,
+            port: dev.port,
+            tls: dev.tls,
+            autotls: dev.autotls,
+            tlsOptions: tlsoption,
+            connTimeout: 10000,
+            authTimeout: 5000,
+            debug: this.log.debug,
+            socketTimeout: 0,
+            keepalive: {
+                interval: 10000,
+                idleInterval: 0,
+                forceNoop: true,
+            },
         });
+        this.clients[dev.user].once("isready", imap_event.onReadyImap.bind(this));
+        this.clients[dev.user].once("close", imap_event.onCloseImap.bind(this));
+        this.clients[dev.user].on("error", imap_event.onErrorImap.bind(this));
+        this.clients[dev.user].connect();
+    }
 
-        this.clients[dev.user].on("log", (level, text, info, clientID) => {
-            this.log_translator(level, text, info, clientID);
-        });
+    /**
+     * @param {string} client
+     */
+    setBinds(client) {
+        this.clients[client].on("alert", imap_event.onAlert.bind(this));
+        this.clients[client].on("update", imap_event.onUpdate.bind(this));
+        this.clients[client].on("mail", imap_event.onMail.bind(this));
+        this.clients[client].on("new", imap_event.onNew.bind(this));
+        this.clients[client].on("type", imap_event.onType.bind(this));
+        this.clients[client].on("uidvalidity", imap_event.onUidvalidity.bind(this));
+        this.clients[client].on("expunge", imap_event.onExpunge.bind(this));
+    }
 
-        this.clients[dev.user].on("quota", (info, clientID) => {
-            this.log_translator("debug", "Storage_value", clientID, JSON.stringify(info));
-            if (info && info.data && info.data.storage) {
-                this.createQuota(clientID, info);
+    /**
+     * @param {object} mail
+     * @param {number} seqno
+     * @param {object} attrs
+     * @param {object} info
+     * @param {string} clientID device id
+     * @param {string} what
+     */
+    updatejson(mail, seqno, attrs, info, clientID, what) {
+        mail.seqno = seqno;
+        mail.attrs = attrs;
+        mail.info = info;
+        if (what === "new") {
+            const del_seqno = this.save_json[clientID].pop();
+            this.save_json[clientID].push(mail);
+            this.updateseqno(clientID, del_seqno["seqno"], false);
+        } else {
+            const merge = this.save_json[clientID].findIndex((merge) => merge.seqno === seqno);
+            if (merge != -1) {
+                this.save_json[clientID][merge] = mail;
             }
-        });
+        }
+        this.updateIMAPData(clientID, false, false);
+    }
 
-        this.clients[dev.user].on("sub", (folder, clientID) => {
-            this.createinbox(clientID, folder);
-            if (Object.keys(this.boxfolder[clientID]).length === 0) {
-                this.log_translator("info", "INBOXFOLDER", clientID);
-            }
-            this.boxfolder[clientID] = folder;
-        });
-
-        this.clients[dev.user].on("update", (log, seqno, info, clientID) => {
-            this.log_translator("info", log, seqno, clientID, JSON.stringify(info));
-            info["seqno"] = seqno;
-            this.setUpdate(clientID, info, "update");
-        });
-
-        this.clients[dev.user].on("status", (info, clientID) => {
-            this.log_translator("debug", "Status eMail folder", clientID, JSON.stringify(info));
-            this.setState(`${clientID}.total`, {
-                val: info.messages && info.messages.total != null ? info.messages.total : 0,
-                ack: true,
-            });
-            this.setState(`${clientID}.total_unread`, {
-                val: info.messages && info.messages.unseen != null ? info.messages.unseen : 0,
-                ack: true,
-            });
-        });
-
-        this.clients[dev.user].on("mailevent", (seqno, clientID) => {
-            this.log_translator("info", "Start new Mail", clientID, seqno);
-            this.setUpdate(clientID, { flags: [], new_mail: seqno }, "new mail");
-        });
-
-        this.clients[dev.user].on("newmail", (box, info, clientID) => {
-            this.log_translator("info", "Type recent", clientID, JSON.stringify(box), JSON.stringify(info));
-        });
-
-        this.clients[dev.user].on("total", (count_all, count_unseen, clientID) => {
-            this.setTotal(clientID, count_all, count_unseen);
-        });
-
-        this.clients[dev.user].on("updatejson", (mail, seqno, attrs, info, clientID, what) => {
+    /**
+     * @param {object} mail
+     * @param {number} seqno
+     * @param {object} attrs
+     * @param {object} info
+     * @param {string} clientID device id
+     * @param {number} count
+     * @param {number} all
+     * @param {boolean} sort
+     */
+    setMail(mail, seqno, attrs, info, clientID, count, all, sort) {
+        if (count == 1) {
+            this.save_json[clientID] = [];
+        }
+        const higher_max =
+            this.clientsRaw[clientID].maxi > this.clientsRaw[clientID].maxi_html
+                ? this.clientsRaw[clientID].maxi
+                : this.clientsRaw[clientID].maxi_html;
+        if (count < higher_max || higher_max == count) {
             mail.seqno = seqno;
             mail.attrs = attrs;
             mail.info = info;
-            if (what === "new") {
-                const del_seqno = this.save_json[clientID].pop();
-                this.save_json[clientID].push(mail);
-                this.clients[clientID].updateseqno(del_seqno["seqno"], false);
-            } else {
-                const merge = this.save_json[clientID].findIndex((merge) => merge.seqno === seqno);
-                if (merge != -1) {
-                    this.save_json[clientID][merge] = mail;
-                }
-            }
-            this.updateIMAPData(clientID, false, false);
-        });
-
-        this.clients[dev.user].on("uidvalidity", (uidvalidity, clientID) => {
-            this.log_translator("info", "UID validity changes", clientID, uidvalidity);
-        });
-
-        this.clients[dev.user].on("expunge", (text, seqno, clientID) => {
-            this.log_translator("info", text, clientID, seqno);
-            this.setUpdate(clientID, { seqno: seqno }, "move_copy");
-        });
-
-        this.clients[dev.user].on("seqno", (seqno, clientID) => {
-            this.save_seqno[clientID] = seqno;
-        });
-
-        this.clients[dev.user].on("mailbox", (mailbox, clientID) => {
-            this.log_translator("debug", "mailbox", `${clientID} - ${JSON.stringify(mailbox)}`);
-            this.setState(`${clientID}.total`, {
-                val: mailbox.messages && mailbox.messages.total != null ? mailbox.messages.total : 0,
-                ack: true,
-            });
-            this.setState(`${clientID}.status`, {
-                val: JSON.stringify(mailbox),
-                ack: true,
-            });
-        });
-
-        this.clients[dev.user].on("disconnected", (error, clientID) => {
-            error = !error ? "FALSE" : "TRUE";
-            this.log_translator("debug", "disconnected", clientID, error);
-            this.log_translator("debug", "Restart", clientID, 60);
-            this.clients[clientID].stop();
-            this.clients[clientID] = null;
-            if (this.reconnect_count[clientID] == limited_reconnect) {
-                this.log_translator("warn", "Connection attempt", clientID);
-            } else {
-                this.restartIMAPConnection[clientID] = this.setTimeout(() => {
-                    this.log_translator("debug", "Restart now", clientID);
-                    this.imap_connection(this.clientsRaw[clientID]);
-                }, 1000 * 60);
-            }
-            ++this.reconnect_count[clientID];
-            --this.countOnline;
-            if (this.countOnline === 0) {
-                this.setStateAsync("info.connection", false, true);
-            }
-            this.setState(`${clientID}.online`, {
-                val: false,
-                ack: true,
-            });
-        });
-
-        this.clients[dev.user].on("info", (info, clientID) => {
-            this.log_translator("info", "Info", clientID, tl.trans[info][this.lang]);
-        });
-
-        this.clients[dev.user].on("error", (err, clientID) => {
-            this.log_translator("error", "Error", clientID, err);
-        });
-
-        this.clients[dev.user].on("sendTo", (obj, results, clientID) => {
-            this.log_translator("info", "BLOCKLY value", clientID);
-            this.sendTo(obj.from, obj.command, results, obj.callback);
-        });
-
-        this.clients[dev.user].on("sendToError", (obj, results) => {
-            this.sendTo(obj.from, obj.command, this.helper_translator(results), obj.callback);
-        });
-
-        this.clients[dev.user].on("alert", (alert, clientID) => {
-            this.log_translator("info", "Alert", clientID, JSON.stringify(alert));
-        });
-
-        this.clients[dev.user].on("mail", (mail, seqno, attrs, info, clientID, count, all, sort) => {
-            if (count == 1) {
-                this.save_json[clientID] = [];
-            }
-            const higher_max =
-                this.clientsRaw[clientID].maxi > this.clientsRaw[clientID].maxi_html
-                    ? this.clientsRaw[clientID].maxi
-                    : this.clientsRaw[clientID].maxi_html;
-            if (count < higher_max || higher_max == count) {
-                mail.seqno = seqno;
-                mail.attrs = attrs;
-                mail.info = info;
-                this.save_json[clientID].push(mail);
-            }
-            if (count == all || higher_max == count) {
-                this.updateIMAPData(clientID, sort, false);
-            }
-            this.log_translator(
-                "debug",
-                "Mail",
-                clientID,
-                `${JSON.stringify(mail)} Attributes: ${JSON.stringify(attrs)} Sequense: ${seqno} INFO: ${JSON.stringify(
-                    info,
-                )}`,
-            );
-        });
+            this.save_json[clientID].push(mail);
+        }
+        if (count == all || higher_max == count) {
+            this.updateIMAPData(clientID, sort, false);
+        }
+        this.log_translator(
+            "debug",
+            "Mail",
+            clientID,
+            `${JSON.stringify(mail)} Attributes: ${JSON.stringify(attrs)} Sequense: ${seqno} INFO: ${JSON.stringify(
+                info,
+            )}`,
+        );
     }
 
     /**
@@ -673,7 +642,7 @@ class Imap extends utils.Adapter {
             quota = false;
             if (this.clients[dev] && this.clientsRaw[dev].activ) {
                 for (const capability of capabilitys) {
-                    const sorts = await this.clients[dev].serverSupport(capability);
+                    const sorts = await this.clients[dev].serverSupports(capability);
                     if (capability === "QUOTA") quota = sorts;
                     const dp_capability = capability.replace(/[=|-|+]/g, "_");
                     common = {
@@ -709,10 +678,27 @@ class Imap extends utils.Adapter {
                     });
                 }
                 if (quota) {
-                    this.clients[dev].serverQuota();
+                    this.clients[dev].getQuotaRoot(this.clientsRaw[dev].inbox_activ, (error, info) => {
+                        if (error) {
+                            this.log_translator("error", "Error", dev, error);
+                        } else {
+                            this.log_translator("debug", "Storage_value", dev, JSON.stringify(info));
+                            if (info && info.data && info.data.storage) {
+                                this.createQuota(dev, info);
+                            }
+                        }
+                    });
                 }
             }
         }
+    }
+
+    /**
+     * @param {string} info
+     * @param {string} clientID
+     */
+    readinfo(info, clientID) {
+        this.log_translator("info", "Info", clientID, tl.trans[info][this.lang]);
     }
 
     /**
@@ -741,7 +727,7 @@ class Imap extends utils.Adapter {
             sort_seq.push(mail.seqno);
         }
         if (sorts) {
-            this.clients[clientID].updateseqno(sort_seq, true);
+            this.updateseqno(clientID, sort_seq, true);
         }
         ++count_all;
         if (count_all < max) {
@@ -749,22 +735,6 @@ class Imap extends utils.Adapter {
                 this.setStatesValue(empty, 0, clientID, i, empty, empty);
             }
         }
-    }
-
-    /**
-     * @param {string} clientID
-     * @param {number} count_all
-     * @param {number} count_unseen
-     */
-    async setTotal(clientID, count_all, count_unseen) {
-        await this.setStateAsync(`${clientID}.total`, {
-            val: count_all,
-            ack: true,
-        });
-        await this.setStateAsync(`${clientID}.total_unread`, {
-            val: count_unseen,
-            ack: true,
-        });
     }
 
     /**
@@ -990,7 +960,7 @@ class Imap extends utils.Adapter {
                     ) {
                         if (obj.message["name"] !== "all") {
                             const user = obj.message["name"].replace(FORBIDDEN_CHARS, "_");
-                            this.clients[user].custom_search(_obj);
+                            this.custom_search(user, _obj);
                         } else {
                             this.log_translator("info", "No IMAP selected");
                             this.sendTo(obj.from, obj.command, [], obj.callback);
@@ -1038,7 +1008,7 @@ class Imap extends utils.Adapter {
                         flags.push("\\" + flag);
                     }
                     if (obj.message["flag"] === "addFlags" && typeof this.clients[user] === "object") {
-                        this.clients[user].change_events(obj.message["flag"], obj.message["uid"], flags);
+                        this.change_events(user, obj.message["flag"], obj.message["uid"], flags);
                     }
                 }
                 break;
@@ -1170,8 +1140,9 @@ class Imap extends utils.Adapter {
                 if (criteria && criteria.val && show && show.val != null) {
                     this.clientsRaw[clientID].flag = criteria.val;
                     this.clientsRaw[clientID].maxi_html = show.val;
+                    this.clientsRaw[clientID].max = show.val;
                     if (this.clients[clientID]) {
-                        this.clients[clientID].changesearch(criteria.val, show.val);
+                        this.changesearch(clientID, criteria);
                     }
                 }
                 this.setAckFlag(id, { val: false });
@@ -1179,7 +1150,7 @@ class Imap extends utils.Adapter {
             }
             if (command === "change_folder" && state.val != "") {
                 if (this.clients[clientID]) {
-                    this.clients[clientID].changeFolder(state.val);
+                    this.changeFolder(clientID, state.val);
                     this.clientsRaw[clientID].inbox_activ = state.val;
                     this.setState(`${clientID}.active_inbox`, {
                         val: state.val,
@@ -1249,7 +1220,7 @@ class Imap extends utils.Adapter {
                 const types = await this.getStateAsync(`${clientID}.remote.flag.type`);
                 type = types && types.val ? types.val.toString() : "";
             }
-            if (set == "") {
+            if (set == "" || set == null) {
                 this.log_translator("info", "Flag Type is empty");
                 return;
             }
@@ -1266,7 +1237,9 @@ class Imap extends utils.Adapter {
             for (const flag of types) {
                 flags.push(flag);
             }
-            this.clients[clientID].change_events(set, uid, flags);
+            if (typeof this.clients[clientID] === "object") {
+                this.change_events(clientID, set, uid, flags);
+            }
         }
     }
 
@@ -1294,7 +1267,7 @@ class Imap extends utils.Adapter {
             return;
         }
         if (this.clients[clientID]) {
-            this.clients[clientID].change_events(command, uid, folder);
+            this.change_events(clientID, command, uid, folder);
         }
     }
 
@@ -1319,14 +1292,14 @@ class Imap extends utils.Adapter {
      * @param {string} level
      * @param {string} text
      * @param {string | number} [merge_1=null]
-     * @param {string | number} [merge_2=null]
+     * @param {string | number | boolean} [merge_2=null]
      * @param {string | number} [merge_3=null]
      */
     log_translator(level, text, merge_1, merge_2, merge_3) {
         try {
             let loglevel = !!this.log[level];
-            if (text == "Error") {
-                if (text.includes("This socket has been ended by the other party")) {
+            if (text === "Error") {
+                if (JSON.stringify(merge_2).indexOf("other party") !== -1) {
                     loglevel = !!this.log.debug;
                 }
             }
