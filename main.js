@@ -254,6 +254,9 @@ class Imap extends utils.Adapter {
                         }
                     });
                 }
+            } else if (this.clients[dev] == null && this.clientsRaw[dev].activ && this.reconnect_count[dev] > 0) {
+                this.reconnect_count[dev] = 0;
+                await this.imap_connection(this.clientsRaw[dev]);
             } else {
                 this.log_translator("debug", "No connection", dev);
             }
