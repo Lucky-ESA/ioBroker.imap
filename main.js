@@ -91,12 +91,18 @@ class Imap extends utils.Adapter {
         this.all_seqno = {};
         this.countOnline = 0;
         this.lang = "de";
+        this.loglevel;
+        this.seen = { markSeen: false };
     }
 
     /**
      * Is called when databases are connected and adapter received configuration.
      */
     async onReady() {
+        this.loglevel = await this.getForeignStateAsync(`system.adapter.${this.namespace}.logLevel`);
+        if (this.loglevel && this.loglevel.val) {
+            this.loglevel = this.loglevel.val;
+        }
         // Initialize your adapter here
         const devices = {};
         const selectbox = {};
@@ -1300,10 +1306,11 @@ class Imap extends utils.Adapter {
      */
     log_translator(level, text, merge_1, merge_2, merge_3) {
         try {
-            let loglevel = !!this.log[level];
+            let loglevel = true;
+            if (this.loglevel !== "debug" && level === "debug") loglevel = false;
             if (text === "Error") {
                 if (JSON.stringify(merge_2).indexOf("other party") !== -1) {
-                    loglevel = !!this.log.debug;
+                    level = "debug";
                 }
             }
             if (loglevel) {
