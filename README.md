@@ -48,8 +48,7 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 0.0.7 (2023-04-25)
 
 -   (Lucky-ESA) Fix correct counter for seen and unseen
 -   (Lucky-ESA) Added capabilities
