@@ -91,7 +91,7 @@ class Imap extends utils.Adapter {
         this.all_seqno = {};
         this.countOnline = 0;
         this.lang = "de";
-        this.loglevel;
+        this.loglevel = "info";
         this.seen = { markSeen: false };
     }
 
@@ -99,9 +99,9 @@ class Imap extends utils.Adapter {
      * Is called when databases are connected and adapter received configuration.
      */
     async onReady() {
-        this.loglevel = await this.getForeignStateAsync(`system.adapter.${this.namespace}.logLevel`);
-        if (this.loglevel && this.loglevel.val) {
-            this.loglevel = this.loglevel.val;
+        const loglevel = await this.getForeignStateAsync(`system.adapter.${this.namespace}.logLevel`);
+        if (loglevel && loglevel.val) {
+            this.loglevel = typeof loglevel.val == "string" ? loglevel.val : "info";
         }
         // Initialize your adapter here
         const devices = {};
