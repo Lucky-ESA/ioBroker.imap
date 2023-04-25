@@ -758,7 +758,7 @@ class Imap extends utils.Adapter {
             ack: true,
         });
         await this.setStateAsync(`${clientID}.last_activity_json`, {
-            val: typeof info === "object" ? JSON.stringify(info) : JSON.stringify({ seqno: "0" }),
+            val: typeof info === "object" ? JSON.stringify(info.text) : JSON.stringify({ seqno: "0" }),
             ack: true,
         });
         await this.setStateAsync(`${clientID}.last_activity_timestamp`, {
@@ -1308,11 +1308,6 @@ class Imap extends utils.Adapter {
         try {
             let loglevel = true;
             if (this.loglevel !== "debug" && level === "debug") loglevel = false;
-            if (text === "Error") {
-                if (JSON.stringify(merge_2).indexOf("other party") !== -1) {
-                    level = "debug";
-                }
-            }
             if (loglevel) {
                 if (tl.trans[text] != null) {
                     if (merge_3) {
