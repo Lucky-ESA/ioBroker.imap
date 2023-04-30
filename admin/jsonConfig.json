@@ -102,7 +102,7 @@
                             "width": 60,
                             "title": "max",
                             "tooltip": "MAX",
-                            "min": 0,
+                            "min": 1,
                             "max": 99,
                             "filter": false,
                             "sort": false,
@@ -118,7 +118,7 @@
                             "width": 60,
                             "title": "max_html",
                             "tooltip": "MAX_HTML",
-                            "min": 0,
+                            "min": 1,
                             "max": 99,
                             "filter": false,
                             "sort": false,
@@ -234,6 +234,73 @@
                             }
                         }
                     ]
+                },
+                "dividerafterdevice": {
+                    "newLine": true,
+                    "type": "divider"
+                },
+                "max_mb": {
+                    "type": "number",
+                    "newLine": true,
+                    "sm": 3,
+                    "label": "MAX_MB",
+                    "default": 400,
+                    "min": 100,
+                    "max": 600,
+                    "step": 1
+                },
+                "max_mb_selection": {
+                    "type": "select",
+                    "newLine": true,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 3,
+                    "label": "selection",
+                    "default": 2,
+                    "options": [
+                        { "label": "TELEGRAM", "value": 1 },
+                        { "label": "RESTART", "value": 2 },
+                        { "label": "DATAPOINT", "value": 3 }
+                    ]
+                },
+                "max_mb_telegram": {
+                    "newLine": true,
+                    "type": "text",
+                    "label": "telegram",
+                    "tooltip": "telegram_tooltip",
+                    "disabled": "data.max_mb_selection !== 1",
+                    "hidden": "data.max_mb_selection !== 1",
+                    "hideOnlyControl": false,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 3,
+                    "adapter": "telegram",
+                    "default": ""
+                },
+                "max_mb_telegram_user": {
+                    "newLine": true,
+                    "type": "text",
+                    "label": "telegram_user",
+                    "tooltip": "telegram_user_tooltip",
+                    "disabled": "data.max_mb_selection !== 1",
+                    "hidden": "data.max_mb_selection !== 1",
+                    "hideOnlyControl": false,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 3,
+                    "default": ""
+                },
+                "max_mb_object": {
+                    "newLine": true,
+                    "type": "objectId",
+                    "label": "objectId",
+                    "disabled": "data.max_mb_selection !== 3",
+                    "hidden": "data.max_mb_selection !== 3",
+                    "hideOnlyControl": false,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 3,
+                    "default": ""
                 }
             }
         },

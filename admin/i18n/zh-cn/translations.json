@@ -13,7 +13,7 @@
     "max": "最大限度。",
     "MAX": "应创建多少封电子邮件作为数据点？",
     "max_html": "最大限度。",
-    "MAX_HTML": "应将多少封电子邮件创建为 HTML？",
+    "MAX_HTML": "应将多少电子邮件创建为 HTML？",
     "token": "代币",
     "TOKEN": "xoauth2 登录的令牌",
     "tls": "TLS",
@@ -62,5 +62,15 @@
     "secureid": "密码",
     "SECUREID": "密码",
     "pathid": "目录编号",
-    "PATHID": "目录编号"
+    "PATHID": "目录编号",
+    "MAX_MB": "最大限度。适配器重启的 MEMRSS 限制（100-600 MB - 24 小时检查）",
+    "objectId": "对象ID",
+    "telegram_user": "实例用户",
+    "telegram_user_tooltip": "实例用户（用逗号分隔倍数 - 例如 Peter, Olaf）",
+    "telegram": "实例",
+    "selection": "选择",
+    "TELEGRAM": "发送",
+    "RESTART": "重新开始",
+    "DATAPOINT": "数据点",
+    "telegram_tooltip": "实例（用逗号分隔倍数 - 例如 telegram.0, telegram.1）"
 }

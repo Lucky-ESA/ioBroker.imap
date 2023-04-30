@@ -62,5 +62,15 @@
     "secureid": "ID secreto",
     "SECUREID": "ID secreto",
     "pathid": "ID do diretório",
-    "PATHID": "ID do diretório"
+    "PATHID": "ID do diretório",
+    "MAX_MB": "máx. Limite de MEMRSS para uma reinicialização do adaptador (100-600 MB - verificação de 24 horas)",
+    "objectId": "ID do objeto",
+    "telegram_user": "Usuário da instância",
+    "telegram_user_tooltip": "Usuário da instância (separe os múltiplos com uma vírgula - por exemplo, Peter, Olaf)",
+    "telegram": "Instância",
+    "selection": "Seleção",
+    "TELEGRAM": "Enviar",
+    "RESTART": "Reiniciar",
+    "DATAPOINT": "Ponto de dados",
+    "telegram_tooltip": "Instância (separe os múltiplos com uma vírgula - por exemplo, telegram.0, telegram.1)"
 }

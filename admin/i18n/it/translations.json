@@ -62,5 +62,15 @@
     "secureid": "ID segreto",
     "SECUREID": "ID segreto",
     "pathid": "ID rubrica",
-    "PATHID": "ID rubrica"
+    "PATHID": "ID rubrica",
+    "MAX_MB": "Massimo. Limite MEMRSS per il riavvio di un adattatore (100-600 MB - controllo 24 ore)",
+    "objectId": "ID oggetto",
+    "telegram_user": "Utente istanza",
+    "telegram_user_tooltip": "Utente istanza (separa i multipli con una virgola, ad esempio Peter, Olaf)",
+    "telegram": "Esempio",
+    "selection": "Selezione",
+    "TELEGRAM": "Inviare",
+    "RESTART": "Ricomincia",
+    "DATAPOINT": "Punto dati",
+    "telegram_tooltip": "Istanza (separare i multipli con una virgola - ad es. telegramma.0, telegramma.1)"
 }

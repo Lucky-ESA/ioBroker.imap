@@ -62,5 +62,15 @@
     "secureid": "Secret ID",
     "SECUREID": "Secret ID",
     "pathid": "Directory ID",
-    "PATHID": "Directory ID"
+    "PATHID": "Directory ID",
+    "MAX_MB": "Max. MEMRSS limit for an adapter restart (100-600 MB - 24h check)",
+    "objectId": "Object-ID",
+    "telegram_user": "Instance User",
+    "telegram_user_tooltip": "Instance User (separate multiples with a comma - e.g. Peter, Olaf)",
+    "telegram": "Instance",
+    "selection": "Selection",
+    "TELEGRAM": "Send",
+    "RESTART": "Restart",
+    "DATAPOINT": "Datapoint",
+    "telegram_tooltip": "Instance (separate multiples with a comma - e.g. telegram.0, telegram.1)"
 }

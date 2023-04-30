@@ -106,6 +106,8 @@ class Imap extends utils.Adapter {
         // Initialize your adapter here
         const devices = {};
         const selectbox = {};
+        this.config.max_mb = this.config.max_mb > 600 ? 600 : this.config.max_mb;
+        this.config.max_mb = this.config.max_mb < 100 ? 100 : this.config.max_mb;
         if (Object.keys(this.config.hosts).length === 0) {
             this.log_translator("info", "No imap");
             return;
@@ -162,6 +164,10 @@ class Imap extends utils.Adapter {
                 this.log_translator("info", "missing password");
                 continue;
             }
+            dev.maxi_html = dev.maxi_html > 99 ? 99 : dev.maxi_html;
+            dev.maxi_html = dev.maxi_html < 1 ? 1 : dev.maxi_html;
+            dev.maxi = dev.maxi > 99 ? 99 : dev.maxi;
+            dev.maxi = dev.maxi < 1 ? 1 : dev.maxi;
             dev["max"] = dev.maxi_html > dev.maxi ? dev.maxi_html : dev.maxi;
             dev["inbox_activ"] = dev.inbox;
             this.clientsIDdelete.push(dev);
@@ -199,6 +205,7 @@ class Imap extends utils.Adapter {
         await this.checkDeviceFolder();
         this.qualityInterval = this.setInterval(() => {
             this.cleanupQuality();
+            this.memrsscheck();
         }, 60 * 60 * 24 * 1000);
         this.statusInterval = this.setInterval(() => {
             this.connectionCheck();
@@ -777,24 +784,25 @@ class Imap extends utils.Adapter {
      */
     async setStatesValue(mail, seqno, clientID, count, attrs, info) {
         try {
-            await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.subject`, {
+            const id = `${clientID}.email.email_${("0" + count).slice(-2)}`;
+            await this.setStateAsync(`${id}.subject`, {
                 val: mail.subject != null ? mail.subject : this.helper_translator("Unknown"),
                 ack: true,
             });
             //const receive_date = mail.date.toISOString().replace("T", " ").replace(/\..+/, "");
-            await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.receive`, {
+            await this.setStateAsync(`${id}.receive`, {
                 val: mail.date != null ? mail.date.toString() : this.helper_translator("Unknown"),
                 ack: true,
             });
-            await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.content`, {
+            await this.setStateAsync(`${id}.content`, {
                 val: mail.html != null && mail.html ? mail.html : this.helper_translator("Unknown"),
                 ack: true,
             });
-            await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.text`, {
+            await this.setStateAsync(`${id}.text`, {
                 val: mail.text != null ? mail.text : this.helper_translator("Unknown"),
                 ack: true,
             });
-            await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.texthtml`, {
+            await this.setStateAsync(`${id}.texthtml`, {
                 val: mail.textAsHtml != null ? mail.textAsHtml : this.helper_translator("Unknown"),
                 ack: true,
             });
@@ -806,7 +814,7 @@ class Imap extends utils.Adapter {
                     }
                 }
             }
-            await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.to`, {
+            await this.setStateAsync(`${id}.to`, {
                 val: JSON.stringify(add),
                 ack: true,
             });
@@ -818,32 +826,30 @@ class Imap extends utils.Adapter {
                     }
                 }
             }
-            await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.from`, {
+            await this.setStateAsync(`${id}.from`, {
                 val: JSON.stringify(add),
                 ack: true,
             });
-            await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.flag`, {
-                val: attrs.flags != null ? JSON.stringify(attrs.flags) : "",
+            await this.setStateAsync(`${id}.flag`, {
+                val: attrs.flags != null ? JSON.stringify(attrs.flags) : this.helper_translator("Unknown"),
                 ack: true,
             });
-            await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.uid`, {
+            await this.setStateAsync(`${id}.uid`, {
                 val: attrs.uid != null ? attrs.uid : 0,
                 ack: true,
             });
-            await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.seq`, {
+            await this.setStateAsync(`${id}.seq`, {
                 val: seqno != null ? seqno : 0,
                 ack: true,
             });
-            await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.size`, {
+            await this.setStateAsync(`${id}.size`, {
                 val: info.size != null ? info.size : 0,
                 ack: true,
             });
-            if (mail && mail.attachments != null) {
-                await this.setStateAsync(`${clientID}.email.email_${("0" + count).slice(-2)}.attach`, {
-                    val: mail.attachments,
-                    ack: true,
-                });
-            }
+            await this.setStateAsync(`${id}.attach`, {
+                val: mail.attachments != null ? mail.attachments : 0,
+                ack: true,
+            });
         } catch (e) {
             this.log_translator("error", "try", `setStatesValue: ${e}`);
         }
@@ -1174,7 +1180,11 @@ class Imap extends utils.Adapter {
                     if (this.save_json[clientID] && Object.keys(this.save_json[clientID]).length > 0) {
                         this.updateIMAPData(clientID, false, true);
                     } else {
-                        this.clients[clientID].onNewRead();
+                        if (this.clients[clientID].serverSupports("SORT")) {
+                            this.readMailsSort(clientID);
+                        } else {
+                            this.readMails(clientID);
+                        }
                     }
                     this.setAckFlag(id, { val: false });
                 }
@@ -1182,7 +1192,11 @@ class Imap extends utils.Adapter {
             }
             if (command === "reload_emails" && state.val) {
                 if (this.clients[clientID]) {
-                    this.clients[clientID].onNewRead();
+                    if (this.clients[clientID].serverSupports("SORT")) {
+                        this.readMailsSort(clientID);
+                    } else {
+                        this.readMails(clientID);
+                    }
                     this.setAckFlag(id, { val: false });
                 }
                 return;
@@ -1772,6 +1786,69 @@ class Imap extends utils.Adapter {
             }
         } catch (e) {
             this.log_translator("error", "try", `cleanupQuality: ${e}`);
+        }
+    }
+
+    async memrsscheck() {
+        const memrss = await this.getForeignStateAsync(`system.adapter.${this.namespace}.memRss`);
+        const memrss_value = memrss != null && typeof memrss.val === "number" ? memrss.val : 0;
+        this.log.info(JSON.stringify(memrss));
+        if (memrss_value > this.config.max_mb) {
+            if (this.config.max_mb_selection === 1) {
+                const instances = this.config.max_mb_telegram.replace(/ /g, "").split(",");
+                const instancesUser = this.config.max_mb_telegram_user.replace(/ /g, "").split(",");
+                for (const instance of instances) {
+                    const text = this.helper_translator("Restart Adapter Text", memrss_value);
+                    const title = this.helper_translator("Restart Adapter Header");
+                    if (instancesUser.length > 0) {
+                        for (const user of instancesUser) {
+                            if (instance.includes("pushover")) {
+                                await this.sendToAsync(instance, {
+                                    device: user,
+                                    message: text,
+                                    title: title,
+                                });
+                            } else if (instance.includes("signal-cmb")) {
+                                await this.sendToAsync(instance, "send", {
+                                    text: text,
+                                    phone: user,
+                                });
+                            } else {
+                                await this.sendToAsync(instance, { user: user, text: text });
+                            }
+                        }
+                    } else {
+                        if (instance.includes("pushover")) {
+                            await this.sendToAsync(instance, { message: text, title: title });
+                        } else if (instance.includes("signal-cmb")) {
+                            await this.sendToAsync(instance, "send", {
+                                text: text,
+                            });
+                        } else {
+                            await this.sendToAsync(instance, text);
+                        }
+                    }
+                }
+            } else if (this.config.max_mb_selection === 2) {
+                this.log_translator("info", "Restart Adapter", memrss_value, this.config.max_mb);
+                //this.restart();
+                try {
+                    await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
+                        native: { max_mb_last_restart: Date.now() },
+                    });
+                } catch (e) {
+                    this.log_translator("info", "Adapter could not restart", e.message);
+                }
+            } else if (this.config.max_mb_selection === 3) {
+                if (this.config.max_mb_object != "") {
+                    await this.setStateAsync(this.config.max_mb_object, true, false);
+                    this.log_translator("info", "Restart Adapter Text", memrss_value);
+                } else {
+                    this.log_translator("info", "Restart Adapter Text NO DP", memrss_value);
+                }
+            }
+        } else {
+            this.log_translator("info", "No threshold", memrss_value);
         }
     }
 }

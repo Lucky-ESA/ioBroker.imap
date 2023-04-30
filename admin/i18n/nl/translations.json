@@ -62,5 +62,15 @@
     "secureid": "Geheime ID",
     "SECUREID": "Geheime ID",
     "pathid": "Directory-ID",
-    "PATHID": "Directory-ID"
+    "PATHID": "Directory-ID",
+    "MAX_MB": "Max. MEMRSS-limiet voor het opnieuw opstarten van een adapter (100-600 MB - 24-uurs controle)",
+    "objectId": "Object-ID",
+    "telegram_user": "Instantie Gebruiker",
+    "telegram_user_tooltip": "Instantiegebruiker (scheid veelvouden met een komma - bijv. Peter, Olaf)",
+    "telegram": "Voorbeeld",
+    "selection": "Selectie",
+    "TELEGRAM": "Versturen",
+    "RESTART": "Herstarten",
+    "DATAPOINT": "Data punt",
+    "telegram_tooltip": "Instantie (scheid veelvouden met een komma - bijv. telegram.0, telegram.1)"
 }

@@ -22,7 +22,7 @@
     "ATTACH": "Accesorio de carga",
     "upload": "ICONO",
     "UPLOAD": "icono de carpeta",
-    "flag": "banderas",
+    "flag": "Banderas",
     "FLAG": "Elija Banderas (por ejemplo, TODAS para todos los correos electrónicos)",
     "ALL": "todo",
     "ANSWERED": "contestada",
@@ -62,5 +62,15 @@
     "secureid": "identificación secreta",
     "SECUREID": "identificación secreta",
     "pathid": "Id. de directorio",
-    "PATHID": "Id. de directorio"
+    "PATHID": "Id. de directorio",
+    "MAX_MB": "máx. Límite de MEMRSS para un reinicio del adaptador (100-600 MB - verificación de 24 horas)",
+    "objectId": "ID de objeto",
+    "telegram_user": "Usuario de instancia",
+    "telegram_user_tooltip": "Usuario de instancia (separe los múltiplos con una coma, por ejemplo, Peter, Olaf)",
+    "telegram": "Instancia",
+    "selection": "Selección",
+    "TELEGRAM": "Enviar",
+    "RESTART": "Reanudar",
+    "DATAPOINT": "Punto de datos",
+    "telegram_tooltip": "Instancia (separe los múltiplos con una coma, por ejemplo, telegram.0, telegram.1)"
 }

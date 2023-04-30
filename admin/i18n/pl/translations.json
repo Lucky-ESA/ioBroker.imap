@@ -62,5 +62,15 @@
     "secureid": "Tajny identyfikator",
     "SECUREID": "Tajny identyfikator",
     "pathid": "Identyfikator katalogu",
-    "PATHID": "Identyfikator katalogu"
+    "PATHID": "Identyfikator katalogu",
+    "MAX_MB": "Maks. Limit MEMRSS dla ponownego uruchomienia adaptera (100-600 MB - sprawdzanie 24h)",
+    "objectId": "Identyfikator obiektu",
+    "telegram_user": "Użytkownik instancji",
+    "telegram_user_tooltip": "Użytkownik instancji (oddziel wielokrotności przecinkiem - np. Piotr, Olaf)",
+    "telegram": "Instancja",
+    "selection": "Wybór",
+    "TELEGRAM": "Wysłać",
+    "RESTART": "Uruchom ponownie",
+    "DATAPOINT": "Punkt danych",
+    "telegram_tooltip": "Instancja (oddziel wielokrotności przecinkiem - np. telegram.0, telegram.1)"
 }
