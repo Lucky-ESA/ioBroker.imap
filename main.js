@@ -73,6 +73,8 @@ class Imap extends utils.Adapter {
         this.custom_search = imap_event.custom_search;
         this.loadUnseenSeqno = imap_event.loadUnseenSeqno;
         this.changesearch = imap_event.changesearch;
+        this.startReadMails = imap_event.startReadMails;
+        this.readAllMails = imap_event.readAllMails;
         this.qualityInterval = null;
         this.statusInterval = null;
         this.sleepTimer = null;
