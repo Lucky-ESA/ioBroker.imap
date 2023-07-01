@@ -22,7 +22,7 @@
     "node": ">= 16"
   },
   "dependencies": {
-    "@azure/msal-node": "^1.16.0",
+    "@azure/msal-node": "^1.17.3",
     "@iobroker/adapter-core": "^2.6.8",
     "mailparser": "^3.6.3",
     "node-imap": "^0.9.6"
