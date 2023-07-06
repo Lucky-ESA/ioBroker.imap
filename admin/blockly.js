@@ -457,7 +457,7 @@ Blockly.JavaScript["imap"] = function (block) {
     var logText;
     if (logLevel) {
         logText =
-            "console." + logLevel + '("imap: " + ' + value_search + " + " + value_max + " + " + value_name + ");\n";
+            "console." + logLevel + "(\"imap: " + value_max + " + " + value_name + "\");\n";
     } else {
         logText = "";
     }
@@ -614,14 +614,7 @@ Blockly.JavaScript["imap_request"] = function (block) {
     args.push('\n   "parse": ' + value_parse);
     var logText;
     if (logLevel) {
-        logText =
-            "console." +
-            logLevel +
-            '("' +
-            dropdown_instance +
-            ': " + "' +
-            (args.length ? args.join(",") + "\n" : "") +
-            '");\n';
+        logText = "console." + logLevel + "(\"imap_request: " + value_max + " + " + value_name + "\");\n";
     } else {
         logText = "";
     }
@@ -736,14 +729,7 @@ Blockly.JavaScript["imap_data"] = function (block) {
     args.push('\n   "value": "' + value_value + '"');
     var logText;
     if (logLevel) {
-        logText =
-            "console." +
-            logLevel +
-            '("' +
-            dropdown_instance +
-            ': " + "' +
-            (args.length ? args.join(",") + "\n" : "") +
-            '");\n';
+        logText = "console." + logLevel + "(\"imap_data: " + value_name + "\");\n";
     } else {
         logText = "";
     }
@@ -856,7 +842,7 @@ Blockly.JavaScript["imap_flag"] = function (block) {
     var logText;
     if (logLevel) {
         logText =
-            "console." + logLevel + '("imap: " + ' + value_flag + " + " + value_uid + " + " + value_name + ");\n";
+            "console." + logLevel + "(\"imap_flag: " + value_flag + " + " + value_uid + " + " + value_name + "\");\n";
     } else {
         logText = "";
     }
