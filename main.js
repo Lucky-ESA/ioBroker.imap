@@ -1139,7 +1139,7 @@ class Imap extends utils.Adapter {
             }
             if (command === "vis_command") {
                 if (state.val != "") {
-                    const value = state.val?.toString().split("<L>");
+                    const value = state.val != null ? state.val.toString().split("<L>") : [];
                     if (value != null && value[0] != null && value[1] != null && value[2] != null) {
                         if (value[0] === "copy" || value[0] === "move") {
                             this.applyCopyMove(value[0], clientID, Number(value[1]), value[2]);
@@ -1279,7 +1279,7 @@ class Imap extends utils.Adapter {
             const folders = await this.getStateAsync(`${clientID}.remote.${command}.folder`);
             folder = folders && folders.val ? folders.val.toString() : "";
         }
-        if (uid === 0) {
+        if (uid === 0 || uid == null) {
             const uids = await this.getStateAsync(`${clientID}.remote.${command}.uid`);
             uid = uids && uids.val != null ? Number(uids.val) : 0;
         }
