@@ -216,6 +216,7 @@ class Imap extends utils.Adapter {
         this.checksupport();
         await this.createSelect(selectbox);
         this.subscribeStates(`json_imap`);
+        this.subscribeForeignStates(`system.adapter.${this.namespace}.memRss`);
     }
 
     /**
@@ -292,7 +293,7 @@ class Imap extends utils.Adapter {
                     const last = element.id.split(".").pop();
                     const html = await this.getStateAsync(`${dev.user}.remote.html.${last}`);
                     if (html != undefined && last != undefined && this.clientsHTML[dev.user] != null) {
-                        this.clientsHTML[dev.user][last] = html?.val;
+                        this.clientsHTML[dev.user][last] = html.val;
                     }
                 }
             }
@@ -1091,6 +1092,18 @@ class Imap extends utils.Adapter {
      * @param {ioBroker.State | null | undefined} state
      */
     async onStateChange(id, state) {
+        if (state && state.ack) {
+            const command = id.split(".").pop();
+            if (command === "memRss") {
+                if (
+                    typeof state.val === "number" &&
+                    state.val > this.config.max_mb &&
+                    this.config.max_mb_selection === 1
+                ) {
+                    this.memrsscheck();
+                }
+            }
+        }
         if (state && !state.ack) {
             const command = id.split(".").pop();
             const clientID = id.split(".")[2];
@@ -1794,7 +1807,6 @@ class Imap extends utils.Adapter {
     async memrsscheck() {
         const memrss = await this.getForeignStateAsync(`system.adapter.${this.namespace}.memRss`);
         const memrss_value = memrss != null && typeof memrss.val === "number" ? memrss.val : 0;
-        this.log.info(JSON.stringify(memrss));
         if (memrss_value > this.config.max_mb) {
             if (this.config.max_mb_selection === 1) {
                 const instances = this.config.max_mb_telegram.replace(/ /g, "").split(",");
