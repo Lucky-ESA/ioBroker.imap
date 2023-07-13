@@ -37,10 +37,13 @@
 -   vodafone
 -   strato
 
-## Description and Questions
+## Description
 
-🇬🇧 [Description](/docs/en/README.md)</br>
-🇩🇪 [Beschreibung & Fragen](https://forum.iobroker.net/topic/63400/test-adapter-iobroker-imap-v0-0-1-github)
+🇬🇧 [Description](/docs/en/README.md)
+
+## Questions
+
+🇩🇪 [Fragen](https://forum.iobroker.net/topic/63400/test-adapter-iobroker-imap-v0-0-1-github)
 
 ## Changelog
 
@@ -48,6 +51,7 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+
 ### 0.0.8 (2023-07-13)
 
 -   (Lucky-ESA) Fix refresh crash
