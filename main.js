@@ -588,6 +588,8 @@ class Imap extends utils.Adapter {
                 this.save_json[clientID][merge] = mail;
             }
         }
+        //this.log.info("COUNT SINGLE: " + Object.keys(this.save_json[clientID]).length);
+        //this.log.info("COUNT ALL: " + Object.keys(this.save_json).length);
         this.updateIMAPData(clientID, false, false);
     }
 
@@ -1690,6 +1692,7 @@ class Imap extends utils.Adapter {
                         }
                     }
                 }
+                new_json["attach"] = element.attachments != null ? element.attachments : 0;
                 new_json["to"] = addaddress;
                 new_json["to_name"] = addname;
                 new_json["subject"] = element.subject ? element.subject : "";

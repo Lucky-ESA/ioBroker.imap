@@ -52,6 +52,11 @@
     ### **WORK IN PROGRESS**
 -->
 
+### **WORK IN PROGRESS**
+
+-   (Lucky-ESA) Fixed RAM consumption of new emails
+-   (Lucky-ESA) Added counter attachments in JSON
+
 ### 0.0.8 (2023-07-13)
 
 -   (Lucky-ESA) Fix refresh crash
