@@ -51,8 +51,7 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 0.0.9 (2023-07-26)
 
 -   (Lucky-ESA) Fixed RAM consumption of new emails
 -   (Lucky-ESA) Added counter attachments in JSON
