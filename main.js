@@ -33,6 +33,7 @@ const empty = {
     size: 0,
     attachments: 0,
 };
+const limited_history = 10;
 
 class Imap extends utils.Adapter {
     /**
@@ -1077,17 +1078,55 @@ class Imap extends utils.Adapter {
         try {
             for (const dev of this.clientsID) {
                 this.clients[dev.user] && this.clients[dev.user].destroy();
-                this.restartIMAPConnection[dev] && this.clearTimeout(this.restartIMAPConnection[dev]);
+                this.restartIMAPConnection[dev.user] && this.clearTimeout(this.restartIMAPConnection[dev.user]);
+                this.setState(`${dev.user}.online`, {
+                    val: false,
+                    ack: true,
+                });
             }
             this.qualityInterval && this.clearInterval(this.qualityInterval);
             this.statusInterval && this.clearInterval(this.statusInterval);
             this.sleepTimer && this.clearTimeout(this.sleepTimer);
+            this.setState("online_counter", 0, true);
+            this.setState("info.connection", false, true);
             callback();
         } catch (e) {
             callback();
         }
     }
 
+    async setCounterHistory(client, count, err) {
+        this.log.warn(client);
+        this.log.warn(count);
+        this.log.warn(err);
+        this.setState("online_counter", count, true);
+        let history_value;
+        history_value = await this.getStateAsync("online_history");
+        try {
+            if (history_value != null && history_value.val != null && typeof history_value.val == "string") {
+                history_value = JSON.parse(history_value.val);
+            } else {
+                history_value = [];
+            }
+        } catch (e) {
+            history_value = [];
+        }
+        if (Object.keys(history_value).length > limited_history) {
+            history_value.pop();
+        }
+        const new_data = {
+            client: client,
+            time: Date.now(),
+            status: err,
+        };
+        history_value.push(new_data);
+        history_value = history_value.sort((a, b) => {
+            if (a.time > b.time) {
+                return -1;
+            }
+        });
+        this.setState("online_history", JSON.stringify(history_value), true);
+    }
     /**
      * Is called if a subscribed state changes
      * @param {string} id

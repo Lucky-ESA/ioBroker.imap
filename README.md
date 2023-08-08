@@ -52,6 +52,10 @@
     ### **WORK IN PROGRESS**
 -->
 
+### **WORK IN PROGRESS**
+
+-   (Lucky-ESA) Added counter history
+
 ### 0.0.9 (2023-07-26)
 
 -   (Lucky-ESA) Fixed RAM consumption of new emails
