@@ -6,7 +6,8 @@
 [![GitHub license](https://img.shields.io/github/license/Lucky-ESA/ioBroker.imap)](https://github.com/Lucky-ESA/ioBroker.imap/blob/main/LICENSE)
 [![NPM version](https://img.shields.io/npm/v/iobroker.imap.svg)](https://www.npmjs.com/package/iobroker.imap)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.imap.svg)](https://www.npmjs.com/package/iobroker.imap)
-![Number of Installations](https://iobroker.live/badges/imap-installed.svg)</br>
+![Number of Installations](https://iobroker.live/badges/imap-installed.svg)
+![GitHub size](https://img.shields.io/github/repo-size/Lucky-ESA/ioBroker.imap)</br>
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/Lucky-ESA/ioBroker.imap)
 ![GitHub commits since latest release](https://img.shields.io/github/commits-since/Lucky-ESA/ioBroker.imap/latest)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Lucky-ESA/ioBroker.imap)
