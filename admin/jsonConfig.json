@@ -78,6 +78,7 @@
                             "tooltip": "USERNAME",
                             "filter": false,
                             "sort": false,
+                            "hidden": "_alive",
                             "default": "",
                             "style": {
                                 "width": 200
@@ -91,6 +92,7 @@
                             "tooltip": "PASSWORD",
                             "filter": false,
                             "sort": false,
+                            "hidden": "_alive",
                             "default": "",
                             "style": {
                                 "width": 200
@@ -219,16 +221,30 @@
                             }
                         },
                         {
+                            "type": "checkbox",
+                            "attr": "att",
+                            "width": 60,
+                            "title": "attach",
+                            "tooltip": "ATTACH",
+                            "filter": true,
+                            "sort": true,
+                            "default": false,
+                            "style": {
+                                "width": 60
+                            }
+                        },
+                        {
                             "type": "selectSendTo",
-                            "attr": "token",
+                            "attr": "node_option",
                             "width": 200,
-                            "title": "token",
-                            "tooltip": "TOKEN",
+                            "title": "node_option",
+                            "tooltip": "node_option_tt",
+                            "disabled": "!data.activ",
                             "filter": false,
                             "sort": false,
-                            "jsonData": "{\"token\":{\"tokens\":${JSON.stringify(globalData.oauth_token)}}}",
-                            "command": "getTokenList",
-                            "alsoDependsOn": ["oauth_token"],
+                            "jsonData": "{\"node_option\":{\"node_options\":${JSON.stringify(globalData.nodemailer_options)}}}",
+                            "command": "getNodeList",
+                            "alsoDependsOn": ["nodemailer_options"],
                             "style": {
                                 "width": 200
                             }
@@ -350,10 +366,11 @@
         "tab3": {
             "type": "panel",
             "label": "Tab oauth",
+            "hidden": "true",
             "items": {
                 "_headerAlexa": {
                     "type": "header",
-                    "text": "Info oauth2",
+                    "text": "Tab oauth2",
                     "size": 2
                 },
                 "oauth_token": {
@@ -425,6 +442,92 @@
                             "filter": true,
                             "sort": true,
                             "default": ""
+                        }
+                    ]
+                }
+            }
+        },
+        "tab4": {
+            "type": "panel",
+            "label": "Tab Nodemailer",
+            "items": {
+                "_headerNode": {
+                    "type": "header",
+                    "text": "Info Nodemailer",
+                    "size": 2
+                },
+                "nodemailer_options": {
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "noDelete": false,
+                    "type": "table",
+                    "style": {
+                        "textAlign": "center"
+                    },
+                    "items": [
+                        {
+                            "type": "text",
+                            "attr": "nodename",
+                            "width": "50%",
+                            "title": "nodename",
+                            "tooltip": "ICONNAME",
+                            "filter": true,
+                            "sort": true,
+                            "default": "",
+                            "style": {
+                                "textAlign": "center"
+                            }
+                        },
+                        {
+                            "type": "checkbox",
+                            "attr": "skipHtmlToText",
+                            "width": "20%",
+                            "title": "skipHtmlToText",
+                            "tooltip": "skipHtmlToText_tt",
+                            "filter": false,
+                            "sort": false,
+                            "default": false
+                        },
+                        {
+                            "type": "number",
+                            "attr": "maxHtmlLengthToParse",
+                            "width": "20%",
+                            "title": "maxHtmlLengthToParse",
+                            "tooltip": "maxHtmlLengthToParse_tt",
+                            "filter": false,
+                            "sort": false,
+                            "default": 0
+                        },
+                        {
+                            "type": "checkbox",
+                            "attr": "skipImageLinks",
+                            "width": "15%",
+                            "title": "skipImageLinks",
+                            "tooltip": "skipImageLinks_tt",
+                            "filter": false,
+                            "sort": false,
+                            "default": false
+                        },
+                        {
+                            "type": "checkbox",
+                            "attr": "skipTextToHtml",
+                            "width": "15%",
+                            "title": "skipTextToHtml",
+                            "tooltip": "skipTextToHtml_tt",
+                            "filter": false,
+                            "sort": false,
+                            "default": false
+                        },
+                        {
+                            "type": "checkbox",
+                            "attr": "skipTextLinks",
+                            "width": "15%",
+                            "title": "skipTextLinks",
+                            "tooltip": "skipTextLinks_tt",
+                            "filter": false,
+                            "sort": false,
+                            "default": false
                         }
                     ]
                 }
