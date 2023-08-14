@@ -197,7 +197,6 @@ class Imap extends utils.Adapter {
             dev.node_option = config_array.find((node) => node.nodename === dev.node_option);
             if (dev.node_option == -1) dev.node_option = {};
             else delete dev.node_option["nodename"];
-            this.log.info("NODENAME: " + JSON.stringify(dev.node_option));
             dev.maxi_html = dev.maxi_html > 99 ? 99 : dev.maxi_html;
             dev.maxi_html = dev.maxi_html < 1 ? 1 : dev.maxi_html;
             dev.maxi = dev.maxi > 99 ? 99 : dev.maxi;
@@ -1149,7 +1148,7 @@ class Imap extends utils.Adapter {
     onUnload(callback) {
         try {
             for (const dev of this.clientsID) {
-                this.clients[dev] && this.clients[dev].destroy();
+                this.clients[dev] = null;
                 this.restartIMAPConnection[dev] && this.clearTimeout(this.restartIMAPConnection[dev]);
                 this.setState(`${dev}.online`, {
                     val: false,
