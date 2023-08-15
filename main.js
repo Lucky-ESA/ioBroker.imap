@@ -195,6 +195,13 @@ class Imap extends utils.Adapter {
             //    continue;
             //}
             dev.node_option = config_array.find((node) => node.nodename === dev.node_option);
+            if (
+                dev.node_option &&
+                dev.node_option.maxHtmlLengthToParse != null &&
+                dev.node_option.maxHtmlLengthToParse == 0
+            ) {
+                dev.node_option.maxHtmlLengthToParse = undefined;
+            }
             if (dev.node_option == -1) dev.node_option = {};
             else delete dev.node_option["nodename"];
             dev.maxi_html = dev.maxi_html > 99 ? 99 : dev.maxi_html;
