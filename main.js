@@ -404,12 +404,7 @@ class Imap extends utils.Adapter {
     async configcheck() {
         try {
             let isdecode = false;
-            let adapterconfigs;
-            adapterconfigs = await this.getForeignObjectAsync(`system.adapter.${this.namespace}`);
-            if (!adapterconfigs) {
-                // @ts-ignore
-                adapterconfigs = this.adapterConfig;
-            }
+            const adapterconfigs = await this.getForeignObjectAsync(`system.adapter.${this.namespace}`);
             if (adapterconfigs && adapterconfigs.native && adapterconfigs.native.hosts) {
                 for (const pw of adapterconfigs.native.hosts) {
                     if (pw.password != "" && !pw.password.includes("<LUCKY-ESA>")) {
@@ -428,14 +423,14 @@ class Imap extends utils.Adapter {
             }
             if (isdecode) {
                 this.log_translator("info", "Encrypt");
-                if (adapterconfigs.native.hosts[0] === null) {
+                if (adapterconfigs && adapterconfigs.native.hosts[0] === null) {
                     adapterconfigs.native.hosts = [];
                 }
-                if (adapterconfigs.native.oauth_token[0] === null) {
+                if (adapterconfigs && adapterconfigs.native.oauth_token[0] === null) {
                     adapterconfigs.native.oauth_token = [];
                 }
                 await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
-                    native: adapterconfigs.native,
+                    native: adapterconfigs ? adapterconfigs.native : [],
                 });
                 //this.updateConfig(adapterconfigs);
                 return true;
@@ -447,8 +442,6 @@ class Imap extends utils.Adapter {
     }
 
     /**
-     * @param {object} dev
-     */
     async loadToken(dev) {
         const search_token = {};
         search_token["token"] = this.config.oauth_token;
@@ -502,6 +495,7 @@ class Imap extends utils.Adapter {
         }
         dev.token = null;
     }
+    */
 
     /**
      * @param {object} dev
@@ -514,6 +508,7 @@ class Imap extends utils.Adapter {
         }
         this.restartIMAPConnection[dev.user] && this.clearTimeout(this.restartIMAPConnection[dev.user]);
         this.restartIMAPConnection[dev.user] = null;
+        /**
         if (
             dev.token &&
             dev.token != "" &&
@@ -535,6 +530,7 @@ class Imap extends utils.Adapter {
         } else {
             dev.token = null;
         }
+        */
         try {
             if (typeof dev.flag === "object") {
                 this.clientsRaw[dev.user].flag = JSON.parse(JSON.stringify(dev.flag));
@@ -556,6 +552,7 @@ class Imap extends utils.Adapter {
             this.log_translator("warn", "TLSOPTION", dev.user);
         }
         this.clientsRaw[dev.user].inbox_activ = dev.inbox;
+        dev.token = null;
         this.clients[dev.user] = new imap_connect({
             xoauth2: dev.token,
             xoauth: null,
