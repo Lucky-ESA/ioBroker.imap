@@ -40,6 +40,7 @@
 ## Description
 
 🇬🇧 [Description](/docs/en/README.md)
+🇩🇪 [Beschreibung](/docs/de/README.md)
 
 ## Questions
 
@@ -54,6 +55,9 @@
 
 ### **WORK IN PROGRESS**
 
+-   (Lucky-ESA) Added RAM consumption - Instance Config
+-   (Lucky-ESA) Added german documention
+-   (Lucky-ESA) Added Mailparser options
 -   (Lucky-ESA) Added counter history
 
 ### 0.0.9 (2023-07-26)
