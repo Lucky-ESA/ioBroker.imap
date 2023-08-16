@@ -8,9 +8,11 @@
 
 # Zusammenfassung
 
--   Instanz Einstellungen - [Einstellungen TAB IMAP](#instanz-konfiguration-tab-imap-erstellen) - [Einstellungen TAB Symbole](#instanz-konfiguration-tab-symbole-erstellen) - [Einstellungen TAB Mailparser](#instanz-konfiguration-tab-mailparser-optionen-erstellen)
-    [Test](#datenpunkte-`imap.0.benutzername.remote.move`)
-    [Test](#datenpunkte-imap.0.benutzername.remote.move)
+-   Instanz Einstellungen
+    -   [Einstellungen TAB IMAP](#instanz-konfiguration-tab-imap-erstellen)
+    -   [Einstellungen TAB Symbole](#instanz-konfiguration-tab-symbole-erstellen)
+    -   [Einstellungen TAB Mailparser](#instanz-konfiguration-tab-mailparser-optionen-erstellen)
+    -   [Test](#datenpunkte-imap.0.benutzername.remote.move)
 
 # Beschreibungen
 
@@ -277,7 +279,7 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 | imap.0.xxx.remote.html.top_text                  |                                                                                                 |
 | imap.0.xxx.remote.html.top_text_color            |                                                                                                 |
 
-### Datenpunkte `imap.0.benutzername.remote.move`
+### Datenpunkte imap.0.benutzername.remote.move
 
 | Object                            | Description |
 | --------------------------------- | ----------- |
