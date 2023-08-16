@@ -2,7 +2,7 @@
 
 # ioBroker.imap
 
-```:warning:
+```:warning: ⚠
 Dieser Adapter kann das System sehr schnell zum Absturz bringen.
 Daher bitte diese Beschreibung aufmerksam durchlesen.
 ```
@@ -42,7 +42,7 @@ Daher bitte diese Beschreibung aufmerksam durchlesen.
 -   `max.`: Maximale Anlage als Datenpunkte email_01...email_02... (1-99)
 -   `max. HTML`: Maximale Anzahl von eMails als HTML. Spööte größer sein als max. Datenpunkte (1-99)
 -   `TLS`: TLS-Verbindung verwenden - Standard ist true
--   `Flaggen`:
+-   `Flaggen`: Mögliche Flags im Code
 
 ```
 ALL - alle – Alle Nachrichten.
@@ -151,20 +151,20 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 
 [Zusammenfassung](#zusammenfassung)
 
-| Objekt                                | Beschreibung |
-| ------------------------------------- | ------------ |
-| imap.0.xxx.email.email_01.attach      |              |
-| imap.0.xxx.email.email_01.attach_json |              |
-| imap.0.xxx.email.email_01.attach_json |              |
-| imap.0.xxx.email.email_01.flag        |              |
-| imap.0.xxx.email.email_01.from        |              |
-| imap.0.xxx.email.email_01.receive     |              |
-| imap.0.xxx.email.email_01.seq         |              |
-| imap.0.xxx.email.email_01.size        |              |
-| imap.0.xxx.email.email_01.subject     |              |
-| imap.0.xxx.email.email_01.texthtml    |              |
-| imap.0.xxx.email.email_01.to          |              |
-| imap.0.xxx.email.email_01.uid         |              |
+| Objekt                                | Beschreibung                          |
+| ------------------------------------- | ------------------------------------- |
+| imap.0.xxx.email.email_01.attach      | Anzahl der Anhänge und Bilder im Body |
+| imap.0.xxx.email.email_01.attach_json | Infos der Anhänge als JSON            |
+| imap.0.xxx.email_01.content           | Inhalt der eMail                      |
+| imap.0.xxx.email.email_01.flag        | Flags der eMail                       |
+| imap.0.xxx.email.email_01.from        | Versender als Array                   |
+| imap.0.xxx.email.email_01.receive     | Datum wann erhalten                   |
+| imap.0.xxx.email.email_01.seq         | Sequenznummer                         |
+| imap.0.xxx.email.email_01.size        | Größe der eMail in Byte               |
+| imap.0.xxx.email.email_01.subject     | Betreff der eMail                     |
+| imap.0.xxx.email.email_01.texthtml    | Inhalt als HTML                       |
+| imap.0.xxx.email.email_01.to          | Empfänger als Array                   |
+| imap.0.xxx.email.email_01.uid         | Eindeutige UID                        |
 
 ![imap_overview_email_single.png](img/imap_overview_email_single.png)
 ![imap_overview_email.png](img/imap_overview_email.png)
@@ -173,29 +173,29 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 
 [Zusammenfassung](#zusammenfassung)
 
-| Objekt                                      | Beschreibung |
-| ------------------------------------------- | ------------ |
-| imap.0.xxx.infos.all_capability             |              |
-| imap.0.xxx.infos.auth_cram-md5              |              |
-| imap.0.xxx.infos.auth_xoauth                |              |
-| imap.0.xxx.infos.auth_xoauth2               |              |
-| imap.0.xxx.infos.condstore                  |              |
-| imap.0.xxx.infos.esearch                    |              |
-| imap.0.xxx.infos.id                         |              |
-| imap.0.xxx.infos.idle                       |              |
-| imap.0.github*luckyskills_de.infos.literal* |              |
-| imap.0.xxx.infos.logindisabled              |              |
-| imap.0.xxx.infos.logindisabled              |              |
-| imap.0.xxx.infos.namespace                  |              |
-| imap.0.xxx.infos.quota                      |              |
-| imap.0.xxx.infos.sasl-ir                    |              |
-| imap.0.xxx.infos.sort                       |              |
-| imap.0.xxx.infos.sort_display               |              |
-| imap.0.xxx.infos.starttls                   |              |
-| imap.0.xxx.infos.thread_orderedsubject      |              |
-| imap.0.xxx.infos.thread_references          |              |
-| imap.0.xxx.infos.unselect                   |              |
-| imap.0.xxx.infos.x-gm-ext-1                 |              |
+| Objekt                                      | Beschreibung                      |
+| ------------------------------------------- | --------------------------------- |
+| imap.0.xxx.infos.all_capability             | Alle Features der IMAP Verbindung |
+| imap.0.xxx.infos.auth_cram-md5              |                                   |
+| imap.0.xxx.infos.auth_xoauth                |                                   |
+| imap.0.xxx.infos.auth_xoauth2               |                                   |
+| imap.0.xxx.infos.condstore                  |                                   |
+| imap.0.xxx.infos.esearch                    |                                   |
+| imap.0.xxx.infos.id                         |                                   |
+| imap.0.xxx.infos.idle                       |                                   |
+| imap.0.github*luckyskills_de.infos.literal* |                                   |
+| imap.0.xxx.infos.logindisabled              |                                   |
+| imap.0.xxx.infos.logindisabled              |                                   |
+| imap.0.xxx.infos.namespace                  |                                   |
+| imap.0.xxx.infos.quota                      |                                   |
+| imap.0.xxx.infos.sasl-ir                    |                                   |
+| imap.0.xxx.infos.sort                       |                                   |
+| imap.0.xxx.infos.sort_display               |                                   |
+| imap.0.xxx.infos.starttls                   |                                   |
+| imap.0.xxx.infos.thread_orderedsubject      |                                   |
+| imap.0.xxx.infos.thread_references          |                                   |
+| imap.0.xxx.infos.unselect                   |                                   |
+| imap.0.xxx.infos.x-gm-ext-1                 |                                   |
 
 ![imap_overview_capability.png](img/imap_overview_capability.png)
 
