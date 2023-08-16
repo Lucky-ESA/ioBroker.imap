@@ -12,7 +12,7 @@
     "PASSWORD": "Wachtwoord",
     "max": "max.",
     "MAX": "Hoeveel e-mails moeten als datapunten worden aangemaakt?",
-    "max_html": "max.",
+    "max_html": "max. HTML",
     "MAX_HTML": "Hoeveel e-mails moeten als HTML worden gemaakt?",
     "token": "Token",
     "TOKEN": "Token voor xoauth2 login",
@@ -73,10 +73,10 @@
     "RESTART": "Herstarten",
     "DATAPOINT": "Data punt",
     "telegram_tooltip": "Instantie (scheid veelvouden met een komma - bijv. telegram.0, telegram.1)",
-    "Tab Nodemailer": "Nodemailer-opties",
-    "Info Nodemailer": "Nodemailer-opties",
+    "Tab Nodemailer": "Mailparser-opties",
+    "Info Nodemailer": "Mailparser-opties",
     "node_option": "Mail optie",
-    "node_option_tt": "Nodemailer-optie",
+    "node_option_tt": "Mailparser-optie",
     "skipHtmlToText": "sla Html naar tekst over",
     "skipHtmlToText_tt": "Genereer geen platte tekst uit HTML",
     "maxHtmlLengthToParse": "maximale HTML-lengte om te parseren",
@@ -88,5 +88,5 @@
     "skipTextLinks": "sla tekstlinks over",
     "skipTextLinks_tt": "Koppel geen koppelingen in inhoud zonder opmaak",
     "nodename": "Naam",
-    "NODENAME": "Naam van nodemailer"
+    "NODENAME": "Naam van Mailparser"
 }

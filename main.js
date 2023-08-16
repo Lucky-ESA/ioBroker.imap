@@ -1924,6 +1924,30 @@ class Imap extends utils.Adapter {
         }
     }
 
+    /**
+     * @param {string} client
+     */
+    current_date(client) {
+        return {
+            id: 0,
+            date: this.formatDate(new Date(), "TT.MM.JJJJ hh:mm:ss"),
+            from: [],
+            from_name: [],
+            attach: 0,
+            attach_info: [],
+            to: [],
+            to_name: [],
+            subject: this.helper_translator("greater_than", this.clientsRaw[client].node_option.maxHtmlLengthToParse),
+            text: "",
+            html: "",
+            textAsHtml: "",
+            seqno: 0,
+            uid: 0,
+            size: 0,
+            flag: "",
+        };
+    }
+
     async memrsscheck() {
         const memrss = await this.getForeignStateAsync(`system.adapter.${this.namespace}.memRss`);
         const memrss_value = memrss != null && typeof memrss.val === "number" ? memrss.val : 0;

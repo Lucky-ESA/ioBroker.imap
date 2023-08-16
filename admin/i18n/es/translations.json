@@ -12,7 +12,7 @@
     "PASSWORD": "Contraseña",
     "max": "máx.",
     "MAX": "¿Cuántos correos electrónicos deben crearse como puntos de datos?",
-    "max_html": "máx.",
+    "max_html": "máx. HTML",
     "MAX_HTML": "¿Cuántos correos electrónicos se deben crear como HTML?",
     "token": "Simbólico",
     "TOKEN": "Token para inicio de sesión xoauth2",
@@ -73,10 +73,10 @@
     "RESTART": "Reanudar",
     "DATAPOINT": "Punto de datos",
     "telegram_tooltip": "Instancia (separe los múltiplos con una coma, por ejemplo, telegram.0, telegram.1)",
-    "Tab Nodemailer": "Opciones de correo de nodo",
-    "Info Nodemailer": "Opciones de correo de nodo",
+    "Tab Nodemailer": "Opciones del analizador de correo",
+    "Info Nodemailer": "Opciones del analizador de correo",
     "node_option": "opción de correo",
-    "node_option_tt": "Opción de correo de nodo",
+    "node_option_tt": "Opción de analizador de correo",
     "skipHtmlToText": "saltar Html a texto",
     "skipHtmlToText_tt": "No genere texto sin formato a partir de HTML",
     "maxHtmlLengthToParse": "Longitud máxima de Html para analizar",
@@ -88,5 +88,5 @@
     "skipTextLinks": "omitir enlaces de texto",
     "skipTextLinks_tt": "No vincular enlaces en contenido de texto sin formato",
     "nodename": "Nombre",
-    "NODENAME": "Nombre del nodemailer"
+    "NODENAME": "Nombre de Mailparser"
 }

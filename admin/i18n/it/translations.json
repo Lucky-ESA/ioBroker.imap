@@ -12,7 +12,7 @@
     "PASSWORD": "Parola d'ordine",
     "max": "max.",
     "MAX": "Quante email devono essere create come punti dati?",
-    "max_html": "max.",
+    "max_html": "max. HTML",
     "MAX_HTML": "Quante email devono essere create come HTML?",
     "token": "Gettone",
     "TOKEN": "Token per l'accesso xoauth2",
@@ -73,10 +73,10 @@
     "RESTART": "Ricomincia",
     "DATAPOINT": "Punto dati",
     "telegram_tooltip": "Istanza (separare i multipli con una virgola - ad es. telegramma.0, telegramma.1)",
-    "Tab Nodemailer": "Opzioni Nodemailer",
-    "Info Nodemailer": "Opzioni Nodemailer",
+    "Tab Nodemailer": "Opzioni del programma di posta",
+    "Info Nodemailer": "Opzioni del programma di posta",
     "node_option": "Opzione posta",
-    "node_option_tt": "Opzione Nodemailer",
+    "node_option_tt": "Opzione analizzatore di posta",
     "skipHtmlToText": "salta Html in testo",
     "skipHtmlToText_tt": "Non generare testo in chiaro da HTML",
     "maxHtmlLengthToParse": "max lunghezza Html da analizzare",
@@ -88,5 +88,5 @@
     "skipTextLinks": "salta i collegamenti testuali",
     "skipTextLinks_tt": "Non linkificare i collegamenti nei contenuti in chiaro",
     "nodename": "Nome",
-    "NODENAME": "Nome da nodemailer"
+    "NODENAME": "Nome da Mailparser"
 }

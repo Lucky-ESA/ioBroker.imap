@@ -12,7 +12,7 @@
     "PASSWORD": "Пароль",
     "max": "Макс.",
     "MAX": "Сколько электронных писем должно быть создано в качестве точек данных?",
-    "max_html": "Макс.",
+    "max_html": "Макс. HTML",
     "MAX_HTML": "Сколько писем должно быть создано в формате HTML?",
     "token": "Токен",
     "TOKEN": "Токен для входа xoauth2",
@@ -73,10 +73,10 @@
     "RESTART": "Перезапуск",
     "DATAPOINT": "Точка данных",
     "telegram_tooltip": "Экземпляр (разделяйте кратные запятой - например, телеграмма.0, телеграмма.1)",
-    "Tab Nodemailer": "Опции Nodemailer",
-    "Info Nodemailer": "Опции Nodemailer",
+    "Tab Nodemailer": "Параметры парсера почты",
+    "Info Nodemailer": "Параметры парсера почты",
     "node_option": "Вариант почты",
-    "node_option_tt": "Опция почтовой программы",
+    "node_option_tt": "Опция парсера почты",
     "skipHtmlToText": "пропустить HTML в текст",
     "skipHtmlToText_tt": "Не генерируйте открытый текст из HTML",
     "maxHtmlLengthToParse": "максимальная длина HTML для анализа",
@@ -88,5 +88,5 @@
     "skipTextLinks": "пропустить текстовые ссылки",
     "skipTextLinks_tt": "Не связывайте ссылки в текстовом содержимом",
     "nodename": "Имя",
-    "NODENAME": "Имя от nodemailer"
+    "NODENAME": "Имя из Mailparser"
 }

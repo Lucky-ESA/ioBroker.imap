@@ -226,8 +226,8 @@
                             "width": 60,
                             "title": "attach",
                             "tooltip": "ATTACH",
-                            "filter": true,
-                            "sort": true,
+                            "filter": false,
+                            "sort": false,
                             "default": false,
                             "style": {
                                 "width": 60

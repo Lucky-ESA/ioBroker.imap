@@ -12,10 +12,10 @@
     "PASSWORD": "Пароль",
     "max": "макс.",
     "MAX": "Скільки електронних листів потрібно створити як точки даних?",
-    "max_html": "макс.",
+    "max_html": "макс. HTML",
     "MAX_HTML": "Скільки електронних листів потрібно створити як HTML?",
     "token": "Токен",
-    "TOKEN": "Маркер для входу в систему xoauth2",
+    "TOKEN": "Токен для входу в систему xoauth2",
     "tls": "TLS",
     "TLS": "Увімкнути TLS",
     "attach": "Att.",
@@ -73,10 +73,10 @@
     "RESTART": "Перезапустіть",
     "DATAPOINT": "Точка даних",
     "telegram_tooltip": "Екземпляр (розділяйте кратні комами, наприклад, telegram.0, telegram.1)",
-    "Tab Nodemailer": "Параметри Nodemailer",
-    "Info Nodemailer": "Параметри Nodemailer",
+    "Tab Nodemailer": "Параметри аналізатора пошти",
+    "Info Nodemailer": "Параметри аналізатора пошти",
     "node_option": "Варіант пошти",
-    "node_option_tt": "Параметр Nodemailer",
+    "node_option_tt": "Параметр аналізатора пошти",
     "skipHtmlToText": "пропуск Html до тексту",
     "skipHtmlToText_tt": "Не створюйте відкритий текст із HTML",
     "maxHtmlLengthToParse": "максимальна довжина Html для аналізу",
@@ -88,5 +88,5 @@
     "skipTextLinks": "пропускати текстові посилання",
     "skipTextLinks_tt": "Не створюйте посилання у відкритому текстовому вмісті",
     "nodename": "Ім'я",
-    "NODENAME": "Ім'я з nodemailer"
+    "NODENAME": "Назва з Mailparser"
 }

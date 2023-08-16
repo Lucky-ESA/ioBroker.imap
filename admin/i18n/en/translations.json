@@ -12,7 +12,7 @@
     "PASSWORD": "Password",
     "max": "max.",
     "MAX": "How many emails should be created as data points?",
-    "max_html": "max.",
+    "max_html": "max. HTML",
     "MAX_HTML": "How many emails should be created as HTML?",
     "token": "Token",
     "TOKEN": "Token for xoauth2 login",
@@ -73,10 +73,10 @@
     "RESTART": "Restart",
     "DATAPOINT": "Datapoint",
     "telegram_tooltip": "Instance (separate multiples with a comma - e.g. telegram.0, telegram.1)",
-    "Tab Nodemailer": "Nodemailer options",
-    "Info Nodemailer": "Nodemailer options",
+    "Tab Nodemailer": "Mailparser options",
+    "Info Nodemailer": "Mailparser options",
     "node_option": "Mail option",
-    "node_option_tt": "Nodemailer Option",
+    "node_option_tt": "Mailparser Option",
     "skipHtmlToText": "skip Html To Text",
     "skipHtmlToText_tt": "Don’t generate plaintext from HTML",
     "maxHtmlLengthToParse": "max Html Length To Parse",
@@ -88,5 +88,5 @@
     "skipTextLinks": "skip Text Links",
     "skipTextLinks_tt": "Do not linkify links in plaintext content",
     "nodename": "Name",
-    "NODENAME": "Name from nodemailer"
+    "NODENAME": "Name from Mailparser"
 }
