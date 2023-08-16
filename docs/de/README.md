@@ -2,9 +2,10 @@
 
 # ioBroker.imap
 
-> [!WARNING]
-> Dieser Adapter kann das System sehr schnell zum Absturz bringen.
-> Daher bitte diese Beschreibung aufmerksam durchlesen.
+```:warning:
+Dieser Adapter kann das System sehr schnell zum Absturz bringen.
+Daher bitte diese Beschreibung aufmerksam durchlesen.
+```
 
 # Zusammenfassung
 
@@ -116,7 +117,7 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 
 [Zusammenfassung](#zusammenfassung)
 
-| Object                | Description                                                        |
+| Objekt                | Beschreibung                                                       |
 | --------------------- | ------------------------------------------------------------------ |
 | imap.0.json_imap      | Name der IMAP Verbindung mit der letzten Aktivität                 |
 | imap.0.json_table     | Letzte Aktualisierung einer IMAP Verbindung als JSON Table für VIS |
@@ -129,7 +130,7 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 
 [Zusammenfassung](#zusammenfassung)
 
-| Object                             | Description                                                      |
+| Objekt                             | Beschreibung                                                     |
 | ---------------------------------- | ---------------------------------------------------------------- |
 | imap.0.xxx.active_inbox            | Aktive Inbox                                                     |
 | imap.0.xxx.host                    | Hostname                                                         |
@@ -150,89 +151,100 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 
 [Zusammenfassung](#zusammenfassung)
 
-| Object                                | Description |
-| ------------------------------------- | ----------- |
-| imap.0.xxx.email.email_01.attach      |             |
-| imap.0.xxx.email.email_01.attach_json |             |
-| imap.0.xxx.email.email_01.attach_json |             |
-| imap.0.xxx.email.email_01.flag        |             |
-| imap.0.xxx.email.email_01.from        |             |
-| imap.0.xxx.email.email_01.receive     |             |
-| imap.0.xxx.email.email_01.seq         |             |
-| imap.0.xxx.email.email_01.size        |             |
-| imap.0.xxx.email.email_01.subject     |             |
-| imap.0.xxx.email.email_01.texthtml    |             |
-| imap.0.xxx.email.email_01.to          |             |
-| imap.0.xxx.email.email_01.uid         |             |
+| Objekt                                | Beschreibung |
+| ------------------------------------- | ------------ |
+| imap.0.xxx.email.email_01.attach      |              |
+| imap.0.xxx.email.email_01.attach_json |              |
+| imap.0.xxx.email.email_01.attach_json |              |
+| imap.0.xxx.email.email_01.flag        |              |
+| imap.0.xxx.email.email_01.from        |              |
+| imap.0.xxx.email.email_01.receive     |              |
+| imap.0.xxx.email.email_01.seq         |              |
+| imap.0.xxx.email.email_01.size        |              |
+| imap.0.xxx.email.email_01.subject     |              |
+| imap.0.xxx.email.email_01.texthtml    |              |
+| imap.0.xxx.email.email_01.to          |              |
+| imap.0.xxx.email.email_01.uid         |              |
+
+![imap_overview_email_single.png](img/imap_overview_email_single.png)
+![imap_overview_email.png](img/imap_overview_email.png)
 
 ### Datenpunkte `imap.0.benutzername.infos`
 
 [Zusammenfassung](#zusammenfassung)
 
-| Object                                      | Description |
-| ------------------------------------------- | ----------- |
-| imap.0.xxx.infos.all_capability             |             |
-| imap.0.xxx.infos.auth_cram-md5              |             |
-| imap.0.xxx.infos.auth_xoauth                |             |
-| imap.0.xxx.infos.auth_xoauth2               |             |
-| imap.0.xxx.infos.condstore                  |             |
-| imap.0.xxx.infos.esearch                    |             |
-| imap.0.xxx.infos.id                         |             |
-| imap.0.xxx.infos.idle                       |             |
-| imap.0.github*luckyskills_de.infos.literal* |             |
-| imap.0.xxx.infos.logindisabled              |             |
-| imap.0.xxx.infos.logindisabled              |             |
-| imap.0.xxx.infos.namespace                  |             |
-| imap.0.xxx.infos.quota                      |             |
-| imap.0.xxx.infos.sasl-ir                    |             |
-| imap.0.xxx.infos.sort                       |             |
-| imap.0.xxx.infos.sort_display               |             |
-| imap.0.xxx.infos.starttls                   |             |
-| imap.0.xxx.infos.thread_orderedsubject      |             |
-| imap.0.xxx.infos.thread_references          |             |
-| imap.0.xxx.infos.unselect                   |             |
-| imap.0.xxx.infos.x-gm-ext-1                 |             |
+| Objekt                                      | Beschreibung |
+| ------------------------------------------- | ------------ |
+| imap.0.xxx.infos.all_capability             |              |
+| imap.0.xxx.infos.auth_cram-md5              |              |
+| imap.0.xxx.infos.auth_xoauth                |              |
+| imap.0.xxx.infos.auth_xoauth2               |              |
+| imap.0.xxx.infos.condstore                  |              |
+| imap.0.xxx.infos.esearch                    |              |
+| imap.0.xxx.infos.id                         |              |
+| imap.0.xxx.infos.idle                       |              |
+| imap.0.github*luckyskills_de.infos.literal* |              |
+| imap.0.xxx.infos.logindisabled              |              |
+| imap.0.xxx.infos.logindisabled              |              |
+| imap.0.xxx.infos.namespace                  |              |
+| imap.0.xxx.infos.quota                      |              |
+| imap.0.xxx.infos.sasl-ir                    |              |
+| imap.0.xxx.infos.sort                       |              |
+| imap.0.xxx.infos.sort_display               |              |
+| imap.0.xxx.infos.starttls                   |              |
+| imap.0.xxx.infos.thread_orderedsubject      |              |
+| imap.0.xxx.infos.thread_references          |              |
+| imap.0.xxx.infos.unselect                   |              |
+| imap.0.xxx.infos.x-gm-ext-1                 |              |
+
+![imap_overview_capability.png](img/imap_overview_capability.png)
 
 ### Datenpunkte `imap.0.benutzername.remote`
 
 [Zusammenfassung](#zusammenfassung)
 
-| Object                          | Description |
-| ------------------------------- | ----------- |
-| imap.0.xxx.remote.apply_html    |             |
-| imap.0.xxx.remote.change_folder |             |
-| imap.0.xxx.remote.criteria      |             |
-| imap.0.xxx.remote.reload_emails |             |
-| imap.0.xxx.remote.search_start  |             |
-| imap.0.xxx.remote.show_mails    |             |
-| imap.0.xxx.remote.vis_command   |             |
+| Objekt                          | Beschreibung |
+| ------------------------------- | ------------ |
+| imap.0.xxx.remote.apply_html    |              |
+| imap.0.xxx.remote.change_folder |              |
+| imap.0.xxx.remote.criteria      |              |
+| imap.0.xxx.remote.reload_emails |              |
+| imap.0.xxx.remote.search_start  |              |
+| imap.0.xxx.remote.show_mails    |              |
+| imap.0.xxx.remote.vis_command   |              |
+
+![imap_overview_remote.png](img/imap_overview_remote.png)
 
 ### Datenpunkte `imap.0.benutzername.remote.copy`
 
 [Zusammenfassung](#zusammenfassung)
 
-| Object                            | Description |
-| --------------------------------- | ----------- |
-| imap.0.xxx.remote.copy.apply_copy |             |
-| imap.0.xxx.remote.copy.folder     |             |
-| imap.0.xxx.remote.copy.uid        |             |
+| Objekt                            | Beschreibung |
+| --------------------------------- | ------------ |
+| imap.0.xxx.remote.copy.apply_copy |              |
+| imap.0.xxx.remote.copy.folder     |              |
+| imap.0.xxx.remote.copy.uid        |              |
+
+![imap_overview_remote_copy.png](img/imap_overview_remote_copy.png)
 
 ### Datenpunkte `imap.0.benutzername.remote.flag`
 
 [Zusammenfassung](#zusammenfassung)
 
-| Object                            | Description |
-| --------------------------------- | ----------- |
-| imap.0.xxx.remote.flag.apply_flag |             |
-| imap.0.xxx.remote.flag.set        |             |
-| imap.0.xxx.remote.flag.type       |             |
-| imap.0.xxx.remote.flag.uid        |             |
+| Objekt                            | Beschreibung |
+| --------------------------------- | ------------ |
+| imap.0.xxx.remote.flag.apply_flag |              |
+| imap.0.xxx.remote.flag.set        |              |
+| imap.0.xxx.remote.flag.type       |              |
+| imap.0.xxx.remote.flag.uid        |              |
+
+![imap_overview_remote_flag.png](img/imap_overview_remote_flag.png)
 
 ### Datenpunkte `imap.0.benutzername.remote.html`
 
 [Zusammenfassung](#zusammenfassung)
 
-| Object                                         | Description                                                                                     |
+| Objekt                                         | Beschreibung                                                                                    |
 | ---------------------------------------------- | ----------------------------------------------------------------------------------------------- |
 | imap.0.xxx.remote.html.body_background         | Tabelle Hintergrundfarbe - Standard #000000                                                     |
 | imap.0.xxx.remote.html.choose_content          | Feld aus der eMail anzeigen. </br>Mögliche Felder sind html, text, textAsHtml und html convert. |
@@ -248,7 +260,7 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 
 ![imap_overview_remote_html_1.png](img/imap_overview_remote_html_1.png)
 
-| Object                                          | Description                                                                                   |
+| Objekt                                          | Beschreibung                                                                                  |
 | ----------------------------------------------- | --------------------------------------------------------------------------------------------- |
 | imap.0.xxx.remote.html.headline_align_column_2  | Textausrichtung Header Spalte 2 - Standard center </br> Möglich center, left, right unf auto  |
 | imap.0.xxx.remote.html.headline_align_column_3  | Textausrichtung Header Spalte 3 - Standard center </br> Möglich center, left, right unf auto  |
@@ -265,7 +277,7 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 
 ![imap_overview_remote_html_2.png](img/imap_overview_remote_html_2.png)
 
-| Object                                         | Description                                                   |
+| Objekt                                         | Beschreibung                                                  |
 | ---------------------------------------------- | ------------------------------------------------------------- |
 | imap.0.xxx.remote.html.headline_column_width_2 | Spaltenbreite Spalte 2 - Standard auto - Möglich px oder %    |
 | imap.0.xxx.remote.html.headline_column_width_3 | Spaltenbreite Spalte 3 - Standard auto - Möglich px oder %    |
@@ -281,7 +293,7 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 
 ![imap_overview_remote_html_3.png](img/imap_overview_remote_html_3.png)
 
-| Object                                           | Description                                                                                    |
+| Objekt                                           | Beschreibung                                                                                   |
 | ------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
 | imap.0.xxx.remote.html.headline_underlined       | Zellenrand - Standard 3 px                                                                     |
 | imap.0.xxx.remote.html.headline_underlined_color | Farbe Zellenrand - Standard #ffffff                                                            |
@@ -299,7 +311,7 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 
 ![imap_overview_remote_html_4.png](img/imap_overview_remote_html_4.png)
 
-| Object                                      | Description                                                           |
+| Objekt                                      | Beschreibung                                                          |
 | ------------------------------------------- | --------------------------------------------------------------------- |
 | imap.0.xxx.remote.html.table_tag_cell       | Abstand zwischen Zellen - Standard 6 px                               |
 | imap.0.xxx.remote.html.table_tag_text_align | Tabelle Textausrichtung - Standard auto - Möglich px oder %           |
@@ -316,7 +328,7 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 
 ![imap_overview_remote_html_5.png](img/imap_overview_remote_html_5.png)
 
-| Object                                     | Description                                         |
+| Objekt                                     | Beschreibung                                        |
 | ------------------------------------------ | --------------------------------------------------- |
 | imap.0.xxx.remote.html.text_id             | Header Text Spalte 1 - Standard ID                  |
 | imap.0.xxx.remote.html.text_move_or_copy   | Header Text Spalte 9 - Standard kopie/paste         |
@@ -333,11 +345,11 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 
 ![imap_overview_remote_html_6.png](img/imap_overview_remote_html_6.png)
 
-| Object                                 | Description                                                                  |
+| Objekt                                 | Beschreibung                                                                 |
 | -------------------------------------- | ---------------------------------------------------------------------------- |
 | imap.0.xxx.remote.html.top_font_size   | Schriftgröße Header und Footer - Standard 20 px                              |
 | imap.0.xxx.remote.html.top_font_weight | Schriftstärke Header und Footer - Standard normal - Möglich normal oder bold |
-| imap.0.xxx.remote.html.top_text        | Headertext - Standard der Username                                           |
+| imap.0.xxx.remote.html.top_text        | Headertext Standard der Username                                             |
 | imap.0.xxx.remote.html.top_text_color  | Farbe Headertext - Standard #ffffff                                          |
 
 ![imap_overview_remote_html_7.png](img/imap_overview_remote_html_7.png)
@@ -346,8 +358,10 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 
 [Zusammenfassung](#zusammenfassung)
 
-| Object                            | Description |
-| --------------------------------- | ----------- |
-| imap.0.xxx.remote.move.apply_move |             |
-| imap.0.xxx.remote.move.folder     |             |
-| imap.0.xxx.remote.move.uid        |             |
+| Objekt                            | Beschreibung |
+| --------------------------------- | ------------ |
+| imap.0.xxx.remote.move.apply_move |              |
+| imap.0.xxx.remote.move.folder     |              |
+| imap.0.xxx.remote.move.uid        |              |
+
+![imap_overview_remote_move.png](img/imap_overview_remote_move.png)
