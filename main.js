@@ -1286,7 +1286,8 @@ class Imap extends utils.Adapter {
                 const criteria = await this.getStateAsync(`${clientID}.remote.criteria`);
                 const show = await this.getStateAsync(`${clientID}.remote.show_mails`);
                 if (criteria && criteria.val && show && show.val != null) {
-                    this.clientsRaw[clientID].flag = criteria.val;
+                    this.clientsRaw[clientID].flag =
+                        typeof criteria.val == "string" ? JSON.parse(criteria.val) : criteria.val;
                     this.clientsRaw[clientID].maxi_html = show.val;
                     this.clientsRaw[clientID].max = show.val;
                     if (this.clients[clientID]) {
