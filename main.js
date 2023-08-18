@@ -55,6 +55,7 @@ class Imap extends utils.Adapter {
         this.createinbox = helper.createinbox;
         this.createSelect = helper.createSelect;
         this.createQuota = helper.createQuota;
+        this.createCounter = helper.createCounter;
         this.getStatus = imap_event.getStatus;
         this.setFolder = imap_event.setFolder;
         this.subscribeBox = imap_event.subscribeBox;
@@ -153,6 +154,7 @@ class Imap extends utils.Adapter {
         }
         devices["data"] = this.config.hosts;
         selectbox["states"] = {};
+        await this.createCounter();
         for (const dev of devices.data) {
             if (dev.inbox == "") {
                 this.log_translator("info", "no inbox");
@@ -241,6 +243,7 @@ class Imap extends utils.Adapter {
             this.subscribeStates(`${dev.user}.remote.*`);
             this.setStateSearchRestart(dev);
         }
+        await this.createSelect(selectbox);
         this.log_translator("info", "IMAP check start");
         await this.checkDeviceFolder();
         this.qualityInterval = this.setInterval(() => {
@@ -252,7 +255,6 @@ class Imap extends utils.Adapter {
         }, 60 * 60 * 1000);
         this.cleanupQuality();
         this.checksupport();
-        await this.createSelect(selectbox);
         this.subscribeStates(`json_imap`);
         this.subscribeForeignStates(`system.adapter.${this.namespace}.memRss`);
     }
@@ -807,8 +809,9 @@ class Imap extends utils.Adapter {
             val: activity,
             ack: true,
         });
+        this.log.info("TEXT: " + info);
         await this.setStateAsync(`${clientID}.last_activity_json`, {
-            val: typeof info === "object" ? JSON.stringify(info.text) : JSON.stringify({ seqno: "0" }),
+            val: typeof info === "object" ? JSON.stringify(info) : JSON.stringify({ seqno: "0" }),
             ack: true,
         });
         await this.setStateAsync(`${clientID}.last_activity_timestamp`, {
@@ -1090,6 +1093,8 @@ class Imap extends utils.Adapter {
                     obj.message["flagtype"] != "" &&
                     obj.message["name"] !== "all"
                 ) {
+                    const user = obj.message["name"].replace(FORBIDDEN_CHARS, "_");
+                    const check_flag = obj.message["flag"];
                     this.log_translator(
                         "info",
                         "Set Flags",
@@ -1097,13 +1102,16 @@ class Imap extends utils.Adapter {
                         obj.message["uid"],
                         obj.message["flagtype"],
                     );
-                    const user = obj.message["name"].replace(FORBIDDEN_CHARS, "_");
                     const flags = [];
                     const types = obj.message["flagtype"].replace(/ /g, "").split(",");
                     for (const flag of types) {
-                        flags.push("\\" + flag);
+                        if (check_flag == "setFlags" || check_flag == "addFlags" || check_flag == "delFlags") {
+                            flags.push("\\" + flag);
+                        } else {
+                            flags.push(flag);
+                        }
                     }
-                    if (obj.message["flag"] === "addFlags" && typeof this.clients[user] === "object") {
+                    if (typeof this.clients[user] === "object") {
                         this.change_events(user, obj.message["flag"], obj.message["uid"], flags);
                     }
                 }
@@ -1288,10 +1296,13 @@ class Imap extends utils.Adapter {
                 if (criteria && criteria.val && show && show.val != null) {
                     this.clientsRaw[clientID].flag =
                         typeof criteria.val == "string" ? JSON.parse(criteria.val) : criteria.val;
+                    show.val = typeof show.val === "number" ? show.val : Number(show.val);
+                    show.val = show.val > 99 ? 99 : show.val;
+                    show.val = show.val < 1 ? 1 : show.val;
                     this.clientsRaw[clientID].maxi_html = show.val;
                     this.clientsRaw[clientID].max = show.val;
                     if (this.clients[clientID]) {
-                        this.changesearch(clientID, criteria);
+                        this.changesearch(clientID);
                     }
                 }
                 this.setAckFlag(id, { val: false });

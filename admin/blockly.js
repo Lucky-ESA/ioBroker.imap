@@ -293,6 +293,19 @@ Blockly.Words["imap_tooltip"] = {
     uk: "Зміна запиту запиту",
     "zh-cn": "改变搜寻",
 };
+Blockly.Words["imap_tooltip_data"] = {
+    en: "Use current search query.",
+    de: "Aktuelle Suchanfrage verwenden.",
+    ru: "Используйте текущий запрос поиска.",
+    pt: "Use a consulta de pesquisa atual.",
+    nl: "Gebruik de huidige zoektocht.",
+    fr: "Utilisez la requête de recherche actuelle.",
+    it: "Utilizzare query di ricerca corrente.",
+    es: "Utilice la consulta de búsqueda actual.",
+    pl: "Użycie aktualnych zapytań.",
+    uk: "Використовуйте поточний пошук запиту.",
+    "zh-cn": "使用目前的搜寻。."
+};
 Blockly.Words["imap_tooltip_request"] = {
     en: "Own search query",
     de: "Eigene Suchanfrage",
@@ -489,7 +502,7 @@ Blockly.Sendto.blocks["imap_request"] =
     "     </value>" +
     '     <value name="FETCH">' +
     '         <shadow type="text">' +
-    '             <field name="TEXT">{"fetch": false, "seqno": [1,2,3,4]}</field>' +
+    '             <field name="TEXT">{"fetch": false, "uid": [1,2,3,4]}</field>' +
     "         </shadow>" +
     "     </value>" +
     '     <value name="BODIES">' +
@@ -708,7 +721,7 @@ Blockly.Blocks["imap_data"] = {
         this.setNextStatement(true, null);
 
         this.setColour(Blockly.Sendto.HUE);
-        this.setTooltip(Blockly.Translate("imap_tooltip"));
+        this.setTooltip(Blockly.Translate("imap_tooltip_data"));
         this.setHelpUrl(Blockly.Translate("imap_help"));
     },
 };

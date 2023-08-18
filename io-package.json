@@ -121,15 +121,8 @@
             "zh-cn": "imap 接收您的电子邮件",
             "uk": "imap для отримання ваших електронних листів"
         },
-        "authors": [
-            "Lucky-ESA <github@luckyskills.de>"
-        ],
-        "keywords": [
-            "imap",
-            "mail",
-            "email",
-            "receive"
-        ],
+        "authors": ["Lucky-ESA <github@luckyskills.de>"],
+        "keywords": ["imap", "mail", "email", "receive"],
         "license": "MIT",
         "platform": "Javascript/Node.js",
         "main": "main.js",
@@ -149,9 +142,8 @@
             "config": "json"
         },
         "docs": {
-            "en": [
-                "docs/en/README.md"
-            ]
+            "en": ["docs/en/README.md"],
+            "de": ["docs/de/README.md"]
         },
         "dependencies": [
             {
@@ -176,14 +168,8 @@
         "max_mb_object": "",
         "max_mb_last_restart": 0
     },
-    "encryptedNative": [
-        "password",
-        "secureid"
-    ],
-    "protectedNative": [
-        "password",
-        "secureid"
-    ],
+    "encryptedNative": ["password", "secureid"],
+    "protectedNative": ["password", "secureid"],
     "objects": [],
     "instanceObjects": [
         {

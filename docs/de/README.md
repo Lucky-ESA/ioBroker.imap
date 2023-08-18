@@ -24,7 +24,10 @@
     -   [Datenpunkte imap.0.benutzername.remote.html](#datenpunkte-imap0benutzernameremotehtml)
     -   [Datenpunkte imap.0.benutzername.remote.move](#datenpunkte-imap0benutzernameremotemove)
 -   [Blocklys](#blocklys)
--   [Javascript](#javascript)
+    -   [Blockly Instanzeinstellungen ändern](#blockly-imap-abfrage-mit-instanz-einstellungen)
+    -   [Eigene Abfrage erstellen](#blockly-imap-abfrage-ändern)
+    -   [Abfrage mit Instanzeinstellungen](#blockly-imap-eigene-abfrage)
+    -   [Flags setzen](#blockly-imap-flags-setzen)
 -   [Array JSON](#array-json)
     -   [imap.0.xxx.email.email_xx.attach_json](#array-json-imap0xxxemailemail_xxattach_json)
     -   [imap.0.xxx.json](#array-json-imap0xxxjson)
@@ -32,6 +35,7 @@
     -   [imap.0.xxx.quality](#json-imap0xxxquality)
     -   [imap.0.xxx.status](#json-imap0xxxstatus)
     -   [imap.0.online_history](#array-json-imap0online_history)
+-   [Beispiel Javascripte und Blockly](/docs/de/EXAMPLE.md)
 
 # Instanz Einstellungen
 
@@ -90,7 +94,7 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 
 ![imap_create_restart.png](img/imap_create_restart.png)
 
--   `Datenpunkt:` Ist das MEMRSS Limit erreicht wird der ausgewählt Datenpunkt auf `true` gesetzt. Dieser muss manuell zurückhesetzt werden. Es wird allerdings nur alle 24h geprüft.
+-   `Datenpunkt:` Ist das MEMRSS Limit erreicht wird der ausgewählt Datenpunkt auf `true` gesetzt. Dieser muss manuell zurückgesetzt werden. Es wird allerdings nur alle 24h geprüft.
 
 ![imap_create_datapoint.png](img/imap_create_datapoint.png)
 
@@ -214,15 +218,15 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 
 [Zusammenfassung](#zusammenfassung)
 
-| Objekt                          | Beschreibung                                                                                                              |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| imap.0.xxx.remote.apply_html    | Änderung von imap.0.xxx.remote.html anwenden.                                                                             |
-| imap.0.xxx.remote.change_folder | Instanz Konfig: Postfolder wechseln der überwacht und angezeigt werden soll. Wird erst nach einem Neustart zurückgesetzt. |
-| imap.0.xxx.remote.criteria      | Instanz Konfig: Suche ändern. Wird erst nach einem Neustart zurückgesetzt.                                                |
-| imap.0.xxx.remote.reload_emails | Emails neu laden.                                                                                                         |
-| imap.0.xxx.remote.search_start  | Änderungen von change_folder, criteria und show_mails anwenden                                                            |
-| imap.0.xxx.remote.show_mails    | Instanz Konfig: Anzahl der eMails die geladen werden sollen. Wird erst nach einem Neustart zurückgesetzt.                 |
-| imap.0.xxx.remote.vis_command   | Kommando aus der VIS von den Auswahlboxen Mails zu verschieben. Wird nur von VIS verwendet.                               |
+| Objekt                          | Beschreibung                                                                                                                                                         |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| imap.0.xxx.remote.apply_html    | Änderung von imap.0.xxx.remote.html anwenden.                                                                                                                        |
+| imap.0.xxx.remote.change_folder | Instanz Konfig: Postfolder wechseln der überwacht und angezeigt werden soll. Wird erst nach einem Neustart zurückgesetzt.                                            |
+| imap.0.xxx.remote.criteria      | Instanz Konfig: Suche ändern. Wird erst nach einem Neustart zurückgesetzt.                                                                                           |
+| imap.0.xxx.remote.reload_emails | Emails neu laden.                                                                                                                                                    |
+| imap.0.xxx.remote.search_start  | Änderungen von change_folder, criteria und show_mails anwenden                                                                                                       |
+| imap.0.xxx.remote.show_mails    | Instanz Konfig: Anzahl der eMails (max. HTML) die geladen werden sollen. Wird erst nach einem Neustart zurückgesetzt. Sollte natürlich grüßer sein als der Wert max. |
+| imap.0.xxx.remote.vis_command   | Kommando aus der VIS von den Auswahlboxen Mails zu verschieben. Wird nur von VIS verwendet.                                                                          |
 
 ![imap_overview_remote.png](img/imap_overview_remote.png)
 
@@ -379,7 +383,45 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 
 # Blocklys
 
-# Javascript
+### Blockly IMAP Abfrage ändern
+
+-   Hiermit könnt ihr diese [Datenpunkte](#datenpunkte-imap0benutzernameremote) setzen.
+-   Mögliche Flags findet man [in der Instanz Konfig](#instanz-konfiguration-tab-imap-erstellen).
+-   Auswahl der IMAP Verbindung möglich oder für alle anwenden.
+
+![blockly_imap_1.png](img/blockly_imap_1.png)
+![blockly_imap_2.png](img/blockly_imap_2.png)
+
+### Blockly IMAP eigene Abfrage
+
+-   ACHTUNG! Hier kommen alle Daten wie z. Bsp. Anhänge. Diese Abfrage kann den RAM oder CPU ans Limit bringen. Wird ein fehlerhaftes Kriterium erstellt, kann dieses zum iobroker Absturtz führen!!!
+-   Die Daten werden dann als JSON geliefert.
+-   Bei Logausgaben wird das Logfile sehr groß. Daher später die Logausgaben wieder löschen.
+-   Es muss eine Variable mit dem Namen `result` erstellt werden.
+-   [Beispiele](/docs/de/EXAMPLE.md)
+
+![blockly_imap_request.png](img/blockly_imap_request.png)
+
+### Blockly IMAP Abfrage mit Instanz Einstellungen
+
+-   Alle Daten von der IMAP Verbindung laden und selber verarbeiten. Als Suchkriterium wird die Instanz Einstellung verwendet.
+-   ACHTUNG! Hoher RAM Verbrauch
+-   Die Daten werden dann als JSON geliefert.
+-   Bei Logausgaben wird das Logfile sehr groß. Daher später die Logausgaben wieder löschen.
+-   Es muss eine Variable mit dem Namen `result` erstellt werden.
+-   [Beispiele](/docs/de/EXAMPLE.md)
+
+![blockly_imap_current.png](img/blockly_imap_current.png)
+
+### Blockly IMAP Flags setzen
+
+-   Bei einer eMail ein Flag setFlag=setzen, addFlag=hinzufügen oder delFlag=löschen.
+-   Postfach auswählen.
+-   Auswählen setFlag=setzen, addFlag=hinzufügen oder delFlag=löschen.
+-   Flag auswählen.
+-   [Mögliche Flags siehe imap.0.xxx.status](#json-imap0xxxstatus)
+
+![blockly_imap_flag.png](img/blockly_imap_flag.png)
 
 # Array JSON
 
