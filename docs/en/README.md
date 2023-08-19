@@ -3,31 +3,31 @@
 # ioBroker.imap
 
 ```:warning:
- ⚠ Dieser Adapter kann das System sehr schnell zum Absturz bringen.
- ⚠ Daher bitte diese Beschreibung aufmerksam durchlesen.
+ ⚠ This adapter can crash the system very quickly.
+ ⚠ So please read this description carefully.
 ```
 
-# Zusammenfassung
+# Summary
 
--   [Instanz Einstellungen](#instanz-einstellungen)
-    -   [Einstellungen TAB IMAP](#instanz-konfiguration-tab-imap-erstellen)
-    -   [Einstellungen TAB Symbole](#instanz-konfiguration-tab-symbole-erstellen)
-    -   [Einstellungen TAB Mailparser](#instanz-konfiguration-tab-mailparser-optionen-erstellen)
+-   [Instance Settings](#instance-settings)
+    -   [Settings TAB IMAP](#instance-settings-tab---create-imaps)
+    -   [Settings TAB Icons](#instance-settings-tab---create-icons)
+    -   [Settings TAB Mailparser](#instance-settings-tab---mailparser-options)
 -   [Datenpunkte](#datenpunkte)
-    -   [Datenpunkte imap.0](#datenpunkte-imap0)
-    -   [Datenpunkte imap.0.benutzername](#datenpunkte-imap0benutzername)
-    -   [Datenpunkte imap.0.benutzername.email.emails_xx](#datenpunkte-imap0benutzernameemailemail_xx)
-    -   [Datenpunkte imap.0.benutzername.infos](#datenpunkte-imap0benutzernameinfos)
-    -   [Datenpunkte imap.0.benutzername.remote](#datenpunkte-imap0benutzernameremote)
-    -   [Datenpunkte imap.0.benutzername.remote.copy](#datenpunkte-imap0benutzernameremotecopy)
-    -   [Datenpunkte imap.0.benutzername.remote.flag](#datenpunkte-imap0benutzernameremoteflag)
-    -   [Datenpunkte imap.0.benutzername.remote.html](#datenpunkte-imap0benutzernameremotehtml)
-    -   [Datenpunkte imap.0.benutzername.remote.move](#datenpunkte-imap0benutzernameremotemove)
+    -   [Data points imap.0](#data-point-imap0)
+    -   [Data points imap.0.username](#data-point-imap0username)
+    -   [Data points imap.0.username.email.emails_xx](#data-point-imap0usernameemailemail_xx)
+    -   [Data points imap.0.username.infos](#data-point-imap0usernameinfos)
+    -   [Data points imap.0.username.remote](#data-point-imap0usernameremote)
+    -   [Data points imap.0.username.remote.copy](#data-point-imap0usernameremotecopy)
+    -   [Data points imap.0.username.remote.flag](#data-point-imap0usernameremoteflag)
+    -   [Data points imap.0.username.remote.html](#data-point-imap0usernameremotehtml)
+    -   [Data points imap.0.username.remote.move](#data-point-imap0usernameremotemove)
 -   [Blocklys](#blocklys)
-    -   [Blockly Instanzeinstellungen ändern](#blockly-imap-abfrage-mit-instanz-einstellungen)
-    -   [Eigene Abfrage erstellen](#blockly-imap-abfrage-ändern)
-    -   [Abfrage mit Instanzeinstellungen](#blockly-imap-eigene-abfrage)
-    -   [Flags setzen](#blockly-imap-flags-setzen)
+    -   [Blockly - Change Instance settings](#blockly---change-imap-query)
+    -   [Blockly - Own query](#blockly---imap-own-query)
+    -   [Blockly - Query with instance settings](#blockly---imap-query-with-instance-settings)
+    -   [Blockly - Set flags](#blockly---set-imap-flags)
 -   [Array JSON](#array-json)
     -   [imap.0.xxx.email.email_xx.attach_json](#array-json-imap0xxxemailemail_xxattach_json)
     -   [imap.0.xxx.json](#array-json-imap0xxxjson)
@@ -35,391 +35,400 @@
     -   [imap.0.xxx.quality](#json-imap0xxxquality)
     -   [imap.0.xxx.status](#json-imap0xxxstatus)
     -   [imap.0.online_history](#array-json-imap0online_history)
--   [Beispiel Javascripte und Blockly](/docs/de/EXAMPLE.md)
+-   [Example Javascripts and Blocklys](/docs/en/EXAMPLE.md)
 
-# Instanz Einstellungen
+# Instance Settings
 
-### Instanz Konfiguration TAB IMAP erstellen
+### Instance settings TAB - Create IMAP`s
 
-[Zusammenfassung](#zusammenfassung)
+[Summary](#summary)
 
--   `Aktiv`: IMAP Verbindung aktivieren
--   `Host`: z. Bsp. imap.gmail.com
--   `Posteingang`: Standard INBOX - Box die Überwacht werden soll - Mögliche Auswahl siehe imap.0.xxx.remote.change_folder
--   `Port`: Standard 993
--   `Nutzername`: Benutzername - Instanz muss aktiviert sein!!!
--   `Passwort`: Passwort - Instanz muss aktiviert sein!!!
+-   `Activ`: Enable IMAP connection
+-   `Host`: Host - e.g. imap.gmail.com
+-   `Inbox`: Default INBOX - Box to be monitored - Possible selection see imap.0.xxx.remote.change_folder
+-   `Port`: Port - Default 993
+-   `Username`: Username - Instance must be activated!!!
+-   `Password`: Password - Instance must be activated!!!
 
 ![imap_create_1.png](img/imap_create_1.png)
 
--   `max.`: Maximale Anlage als Datenpunkte email_01...email_02... (1-99)
--   `max. HTML`: Maximale Anzahl von eMails als HTML. Spööte größer sein als max. Datenpunkte (1-99)
--   `TLS`: TLS-Verbindung verwenden - Standard ist true
--   `Flaggen`: Mögliche Flags im Code
+-   `max.`: Create maximum as data points - email_01...email_02... (1-99)
+-   `max. HTML`: Maximum number of emails as HTML. Should be greater than max data points (1-99)
+-   `TLS`: Use TLS-Connection - Default true
+-   `Flags`: Flags for the query - Possible flags:
 
 ```
-ALL - alle – Alle Nachrichten.
-ANSWERED - geantwortet – Nachrichten mit gesetzter Beantwortet-Flagge.
-DELETED - gelöscht – Nachrichten mit gesetzter Gelöscht-Flagge.
-DRAFT - Entwurf – Nachrichten mit gesetzter Entwurfsflagge.
-FLAGGED - gekennzeichnet – Nachrichten mit gesetzter Flagge.
-NEW - neu – Nachrichten, bei denen das Flag „Zuletzt verwendet“ gesetzt ist, aber nicht das Flag „Gesehen“.
-SEEN - gesehen – Nachrichten, bei denen das Flag „Gesehen“ gesetzt ist.
-RECENT - jüngste – Nachrichten, bei denen das Flag „Zuletzt verwendet“ gesetzt ist.
-OLD - alt – Nachrichten, für die das Flag „Zuletzt verwendet“ nicht gesetzt ist. Dies entspricht funktional !RECENT (im Gegensatz zu „!NEW“).
-UNANSWERED - unbeantwortet – Nachrichten, bei denen das Flag „Beantwortet“ nicht gesetzt ist.
-UNDELETED - ungelöscht – Nachrichten, für die das Flag „Gelöscht“ nicht gesetzt ist.
-UNDRAFT - kein Entwurf – Nachrichten, bei denen das Draft-Flag nicht gesetzt ist.
-UNFLAGGED - ungekennzeichnet – Nachrichten, für die das Flag „Markiert“ nicht gesetzt ist.
-UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht gesetzt ist.
+ALL - All messages.
+ANSWERED - Messages with the Answered flag set.
+DELETED - Messages with the Deleted flag set.
+DRAFT - Messages with the Draft flag set.
+FLAGGED - Messages with the Flagged flag set.
+NEW - Messages that have the Recent flag set but not the Seen flag.
+SEEN - Messages that have the Seen flag set.
+RECENT - Messages that have the Recent flag set.
+OLD - Messages that do not have the Recent flag set. This is functionally equivalent to "!RECENT" (as opposed to "!NEW").
+UNANSWERED - Messages that do not have the Answered flag set.
+UNDELETED - Messages that do not have the Deleted flag set.
+UNDRAFT - Messages that do not have the Draft flag set.
+UNFLAGGED - Messages that do not have the Flagged flag set.
+UNSEEN - Messages that do not have the Seen flag set.
 ```
 
--   `Symbol auswählen`: Symbol für den Ordner (unter TAB `Symbole erstellen` hochladen)
+-   `Choose icon`: Folder icon (upload under TAB `CREATE ICON`)
 
-![imap_create_icon.png](img/imap_create_icon.png)
+![imap_create_icon.png](img/../../de/img/imap_create_icon.png)
 
--   `tls-Option`: Standard ist {"rejectUnauthorized": false}
--   `Auto-TLS`: Mögliche Auswahl ist `always`, `required` and `never`. Standard ist never
-    **Für mehr Informationen bitte [hier](https://www.npmjs.com/package/node-imap) lesen.**
+-   `tls Option`: Default {"rejectUnauthorized": false}
+-   `auto tls`: Set to `always` to always attempt connection upgrades via STARTTLS, `required` only if upgrading is required, or `never` to never attempt upgrading. Default: `never`
+    **[For more information](https://www.npmjs.com/package/node-imap)**
 
 ![imap_create_2.png](img/imap_create_2.png)
 
--   `Att.`: Um das Feld HTML zu füllen müssen Anhänge mit geladen werden. Das verbraucht sehr viel RAM!!! Daher Standard `false`
--   `Mailparser-Option`: Mailparser-Option (erst unter TAB `MAILPARSER-OPTIONEN` erstellen)
+-   `Att.`: In order to fill the HTML field, attachments must also be loaded. Very high RAM consumption!!! Default `false`
+-   `Mail option`: Mailparser-Option (Create under TAB `MAILPARSER OPTIONEN`)
 
 ![imap_create_3.png](img/imap_create_3.png)
 
--   `max. MEMRSS-Limit:` Ab wann die u. a. Aktion ausgelöst wird.
--   `Neu starten:` Ist das MEMRSS Limit erreicht wird der Adapter neu gestartet. Es wird allerdings nur alle 24h geprüft.
+-   `max. MEMRSS-Limit:` From when the actions listed below should be triggered. Default 400 MB
+-   `Restart:` When the MEMRSS limit is reached, the adapter restarts. It is checked every 24 hours.
 
 ![imap_create_restart.png](img/imap_create_restart.png)
 
--   `Datenpunkt:` Ist das MEMRSS Limit erreicht wird der ausgewählt Datenpunkt auf `true` gesetzt. Dieser muss manuell zurückgesetzt werden. Es wird allerdings nur alle 24h geprüft.
+-   `Datapoint:` When the MEMRSS limit is reached, the selected data point is set to `true`. This must be reset manually. It is checked every 24 hours.
 
 ![imap_create_datapoint.png](img/imap_create_datapoint.png)
 
--   `Senden:` Ist das MEMRSS Limit erreicht wird eine Nachricht versendet. Es wird dann bei jeder Aktualisierung von `MEMRSS` eine Nachricht versendet.
-    -   `Instanzen:` Beispiel: telegram.0,telegram.1,pushover.0
-    -   `Instanzen Benutzer:` Beispiel: Peter,Olaf,Thomas
+-   `Send:` A message is sent when the MEMRSS limit is reached. A message will then be sent whenever `MEMRSS` is updated.
+    -   `Instance:` e. g. telegram.0,telegram.1,pushover.0
+    -   `Instance User:` e. g. Peter,Olaf,Thomas
 
 ![imap_create_send.png](img/imap_create_send.png)
 
-### Instanz Konfiguration TAB Symbole erstellen
+### Instance settings TAB - Create ICONS
 
-[Zusammenfassung](#zusammenfassung)
+[Summary](#summary)
 
--   `Symbolname:` Name für das Symbol. Bitte keine doppelten Namen verwenden. Es wird dann bei Adapterstart ein Error im Logeintrag generiert.
--   `Upload:` Das Icon hochladen.
+-   `Icon Name:` Name for the icon. Please do not use duplicate names. An error message is output when the adapter starts.
+-   `Upload:` Upload icon.
 
 ![imap_create_icon.png](img/imap_create_symbol.png)
 
-### Instanz Konfiguration TAB Mailparser Optionen erstellen
+### Instance settings TAB - MAILPARSER OPTIONS
 
-[Zusammenfassung](#zusammenfassung)
+[Summary](#summary)
 
--   `Name:` Name vom Mailparser. Bitte keine doppelten Namen verwenden. Es wird dann bei Adapterstart ein Error im Logeintrag generiert. Genaue Beschreibung kann [hier](https://nodemailer.com/extras/mailparser/) gelesen werden.
--   `HTML in Text überspringen:` Generiert keinen Klartext aus HTML
--   `Maximale HTML-Länge zum Parsen:` Die maximale Menge an zu analysierendem HTML in Bytes. Wird diese überschritten werden nur Header Daten generiert.
--   `Bildlinks überspringen:` Überspringt die Konvertierung von CID-Anhängen in Daten-URL-Bilder. Bilder werden nicht als base64 konvertiert was `enormen RAM Verbrauch` einspart.
--   `Text in HTML überspringen:` Generiert kein HTML aus Klartextnachrichten
--   `Textlinks überspringen:` Verlink keine Links in Klartextinhalten
+-   `Name:` Name for the Mailparser. Please do not use duplicate names. An error message is output when the adapter starts. [There is a detailed description here](https://nodemailer.com/extras/mailparser/).
+-   `skip Html To Text:` Don’t generate plaintext from HTML.
+-   `max Html Length To Parse:` The maximum amount of HTML to parse in bytes. If this is exceeded, only header data is generated.
+-   `skip Image Links:` Skip converting CID attachments to data URL images. Images are not converted as base64 which saves `huge RAM usage`.
+-   `skip Text To Html:` Don’t generate HTML from plaintext message.
+-   `skip Text Links:` Do not linkify links in plaintext content.
 
 ![imap_create_mailparser.png](img/imap_create_mailparser.png)
 
-# Datenpunkte
+# Data points
 
-### Datenpunkte `imap.0`
+### Data point `imap.0`
 
-[Zusammenfassung](#zusammenfassung)
+[Summary](#summary)
 
-| Objekt                | Beschreibung                                                                              |
-| --------------------- | ----------------------------------------------------------------------------------------- |
-| imap.0.json_imap      | Name der IMAP Verbindung mit der letzten Aktivität                                        |
-| imap.0.json_table     | Letzte Aktualisierung einer IMAP Verbindung als JSON Table für VIS                        |
-| imap.0.online_counter | Anzahl der aktiven IMAP Verbindungen                                                      |
-| imap.0.online_history | History der Verbindungsaktivitäten als JSON - [Beispiel](#array-json-imap0online_history) |
+| Object                | Description                                                                      |
+| --------------------- | -------------------------------------------------------------------------------- |
+| imap.0.json_imap      | Name of the IMAP connection of the last activity                                 |
+| imap.0.json_table     | Last update of an IMAP connection as a JSON table for VIS                        |
+| imap.0.online_counter | Number of active IMAP connections                                                |
+| imap.0.online_history | Connection activity history as JSON - [Example](#array-json-imap0online_history) |
 
 ![imap_total_overview.png](img/imap_total_overview.png)
 
-### Datenpunkte `imap.0.benutzername`
+### Data point `imap.0.username`
 
-[Zusammenfassung](#zusammenfassung)
+[Summary](#summary)
 
-| Objekt                             | Beschreibung                                                                                        |
-| ---------------------------------- | --------------------------------------------------------------------------------------------------- |
-| imap.0.xxx.active_inbox            | Aktive Inbox                                                                                        |
-| imap.0.xxx.host                    | Hostname                                                                                            |
-| imap.0.xxx.html                    | HTML Code für VIS                                                                                   |
-| imap.0.xxx.json                    | JSON Table für VIS - [Beispiel](#array-json)                                                        |
-| imap.0.xxx.last_activity           | Letzte Aktivität                                                                                    |
-| imap.0.xxx.last_activity_json      | Welche Aktivität als Attay JSON - [Beispiel](#json-imap0xxxlast_activity_json)                      |
-| imap.0.xxx.last_activity_timestamp | Zeitstempel der letzten Aktivität                                                                   |
-| imap.0.xxx.online                  | Status der IMAP Verbindung                                                                          |
-| imap.0.xxx.quality                 | Qualität aller Datenpunkte als JSON. Wird alle 24h aktualisiert - [Beispiel](#json-imap0xxxquality) |
-| imap.0.xxx.status                  | Infos zur IMAP Verbindung als JSON - [Beispiel](#json-imap0xxxstatus)                               |
-| imap.0.xxx.total                   | Anzahl der Mails der aktiven Inbox                                                                  |
-| imap.0.xxx.total_unread            | Anzahl der ungelesenen Mails der aktiven Inbox                                                      |
+| Object                             | Description                                                                                      |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------ |
+| imap.0.xxx.active_inbox            | Active Inbox                                                                                     |
+| imap.0.xxx.host                    | Hostname                                                                                         |
+| imap.0.xxx.html                    | HTML Code for VIS                                                                                |
+| imap.0.xxx.json                    | JSON Table for VIS - [Example](#array-json)                                                      |
+| imap.0.xxx.last_activity           | Last activity                                                                                    |
+| imap.0.xxx.last_activity_json      | Activity as array JSON - [Example](#json-imap0xxxlast_activity_json)                             |
+| imap.0.xxx.last_activity_timestamp | Last activity timestamp                                                                          |
+| imap.0.xxx.online                  | IMAP status Verbindung                                                                           |
+| imap.0.xxx.quality                 | Quality of all data points as JSON. Is updated every 24 hours - [Example](#json-imap0xxxquality) |
+| imap.0.xxx.status                  | Information about the IMAP connection as JSON - [Example](#json-imap0xxxstatus)                  |
+| imap.0.xxx.total                   | Total eMails                                                                                     |
+| imap.0.xxx.total_unread            | Total unread eMails                                                                              |
 
 ![imap_overview_1.png](img/imap_overview_1.png)
 
-### Datenpunkte `imap.0.benutzername.email.email_xx`
+### Data point `imap.0.username.email.email_xx`
 
-[Zusammenfassung](#zusammenfassung)
+[Summary](#summary)
 
-| Objekt                                | Beschreibung                                                                          |
+| Object                                | Description                                                                           |
 | ------------------------------------- | ------------------------------------------------------------------------------------- |
-| imap.0.xxx.email.email_01.attach      | Anzahl der Anhänge und Bilder im Body                                                 |
+| imap.0.xxx.email.email_01.attach      | Number of attachments and images in the body                                          |
 | imap.0.xxx.email.email_01.attach_json | Infos der Anhänge als JSON - [Beispiel](#array-json-imap0xxxemailemail_xxattach_json) |
-| imap.0.xxx.email_01.content           | Inhalt der eMail                                                                      |
-| imap.0.xxx.email.email_01.flag        | Flags der eMail                                                                       |
-| imap.0.xxx.email.email_01.from        | Versender als Array                                                                   |
-| imap.0.xxx.email.email_01.receive     | Datum wann erhalten                                                                   |
-| imap.0.xxx.email.email_01.seq         | Sequenznummer                                                                         |
-| imap.0.xxx.email.email_01.size        | Größe der eMail in Byte                                                               |
-| imap.0.xxx.email.email_01.subject     | Betreff der eMail                                                                     |
-| imap.0.xxx.email.email_01.texthtml    | Inhalt als HTML                                                                       |
-| imap.0.xxx.email.email_01.to          | Empfänger als Array                                                                   |
-| imap.0.xxx.email.email_01.uid         | Eindeutige UID                                                                        |
+| imap.0.xxx.email_01.content           | Content of the email                                                                  |
+| imap.0.xxx.email.email_01.flag        | Email flags                                                                           |
+| imap.0.xxx.email.email_01.from        | All sender as Array                                                                   |
+| imap.0.xxx.email.email_01.receive     | Received date                                                                         |
+| imap.0.xxx.email.email_01.seq         | Sequence number                                                                       |
+| imap.0.xxx.email.email_01.size        | Size of the email in bytes                                                            |
+| imap.0.xxx.email.email_01.subject     | Subject                                                                               |
+| imap.0.xxx.email.email_01.texthtml    | Content as HTML                                                                       |
+| imap.0.xxx.email.email_01.to          | Recipient as Array                                                                    |
+| imap.0.xxx.email.email_01.uid         | Unique UID                                                                            |
 
 ![imap_overview_email_single.png](img/imap_overview_email_single.png)
 ![imap_overview_email.png](img/imap_overview_email.png)
 
-### Datenpunkte `imap.0.benutzername.infos`
+### Data point `imap.0.username.infos`
 
-[Zusammenfassung](#zusammenfassung)
+[Summary](#summary)
 
-| Objekt                                 | Beschreibung                                                                                                                                                          |
-| -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| imap.0.xxx.infos.all_capability        | Alle Features der IMAP Verbindung                                                                                                                                     |
-| imap.0.xxx.infos.auth_cram-md5         | Authentifizierungsmethode auth_cram-md5                                                                                                                               |
-| imap.0.xxx.infos.auth_xoauth           | Authentifizierungsmethode xoauth                                                                                                                                      |
-| imap.0.xxx.infos.auth_xoauth2          | Authentifizierungsmethode xoauth2                                                                                                                                     |
-| imap.0.xxx.infos.condstore             | MODSEQ Anfrage möglich [siehe](https://datatracker.ietf.org/doc/html/rfc4551#page-18)                                                                                 |
-| imap.0.xxx.infos.esearch               | Mit einem Befehl mehrere Postfächer durchsuchen                                                                                                                       |
-| imap.0.xxx.infos.id                    | [Siehe](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                                   |
-| imap.0.xxx.infos.idle                  | [Siehe](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                                   |
-| imap.0.xxx.infos.literal\*             |                                                                                                                                                                       |
-| imap.0.xxx.infos.logindisabled         | [Siehe](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                                   |
-| imap.0.xxx.infos.move                  | eMails können verschoben werden. [Siehe](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                  |
-| imap.0.xxx.infos.namespace             | [Siehe](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                                   |
-| imap.0.xxx.infos.quota                 | [Siehe](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                                   |
-| imap.0.xxx.infos.sasl-ir               | [Siehe](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                                   |
-| imap.0.xxx.infos.sort                  | eMail werden sortiert abgerufen werden [Siehe](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                            |
-| imap.0.xxx.infos.sort_display          | Header Infos sind sortiert.[Siehe](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                        |
-| imap.0.xxx.infos.starttls              | Es wird starttls unterstützt. Kann dann in der Instanz Konfig eingestellt werden. [Siehe](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml) |
-| imap.0.xxx.infos.thread_orderedsubject | [Siehe](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                                   |
-| imap.0.xxx.infos.thread_references     | [Siehe](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                                   |
-| imap.0.xxx.infos.unselect              | [Siehe](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                                   |
-| imap.0.xxx.infos.x-gm-ext-1            | [Siehe](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                                   |
+| Object                                 | Description                                                                                                                                           |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| imap.0.xxx.infos.all_capability        | All capability from IMAP connection                                                                                                                   |
+| imap.0.xxx.infos.auth_cram-md5         | Authentication method auth_cram-md5                                                                                                                   |
+| imap.0.xxx.infos.auth_xoauth           | Authentication method xoauth                                                                                                                          |
+| imap.0.xxx.infos.auth_xoauth2          | Authentication method xoauth2                                                                                                                         |
+| imap.0.xxx.infos.condstore             | MODSEQ request possible [lookup](https://datatracker.ietf.org/doc/html/rfc4551#page-18)                                                               |
+| imap.0.xxx.infos.esearch               | Search multiple mailboxes with one command                                                                                                            |
+| imap.0.xxx.infos.id                    | [lookup](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                  |
+| imap.0.xxx.infos.idle                  | [lookup](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                  |
+| imap.0.xxx.infos.literal\*             | [lookup](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                  |
+| imap.0.xxx.infos.logindisabled         | [lookup](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                  |
+| imap.0.xxx.infos.move                  | Emails can be moved. [lookup](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                             |
+| imap.0.xxx.infos.namespace             | [lookup](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                  |
+| imap.0.xxx.infos.quota                 | [lookup](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                  |
+| imap.0.xxx.infos.sasl-ir               | [lookup](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                  |
+| imap.0.xxx.infos.sort                  | e-mails are retrieved sorted [lookup](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                     |
+| imap.0.xxx.infos.sort_display          | Header info is sorted. [lookup](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                           |
+| imap.0.xxx.infos.starttls              | Starttls is supported. Can then be set in the instance settings. [lookup](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml) |
+| imap.0.xxx.infos.thread_orderedsubject | [lookup](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                  |
+| imap.0.xxx.infos.thread_references     | [lookup](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                  |
+| imap.0.xxx.infos.unselect              | [lookup](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                  |
+| imap.0.xxx.infos.x-gm-ext-1            | [lookup](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                  |
 
 ![imap_overview_capability.png](img/imap_overview_capability.png)
+![imap_overview_capability_1.png](img/imap_overview_capability_1.png)
 
-### Datenpunkte `imap.0.benutzername.remote`
+### Data point `imap.0.username.remote`
 
-[Zusammenfassung](#zusammenfassung)
+[Summary](#summary)
 
-| Objekt                          | Beschreibung                                                                                                                                                         |
-| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| imap.0.xxx.remote.apply_html    | Änderung von imap.0.xxx.remote.html anwenden.                                                                                                                        |
-| imap.0.xxx.remote.change_folder | Instanz Konfig: Postfolder wechseln der überwacht und angezeigt werden soll. Wird erst nach einem Neustart zurückgesetzt.                                            |
-| imap.0.xxx.remote.criteria      | Instanz Konfig: Suche ändern. Wird erst nach einem Neustart zurückgesetzt.                                                                                           |
-| imap.0.xxx.remote.reload_emails | Emails neu laden.                                                                                                                                                    |
-| imap.0.xxx.remote.search_start  | Änderungen von change_folder, criteria und show_mails anwenden                                                                                                       |
-| imap.0.xxx.remote.show_mails    | Instanz Konfig: Anzahl der eMails (max. HTML) die geladen werden sollen. Wird erst nach einem Neustart zurückgesetzt. Sollte natürlich grüßer sein als der Wert max. |
-| imap.0.xxx.remote.vis_command   | Kommando aus der VIS von den Auswahlboxen Mails zu verschieben. Wird nur von VIS verwendet.                                                                          |
+| Object                          | Description                                                                                                                                      |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| imap.0.xxx.remote.apply_html    | Apply change in imap.0.xxx.remote.html.                                                                                                          |
+| imap.0.xxx.remote.change_folder | Instance settings: Change post folder to be monitored and displayed. Will only be reset after a reboot.                                          |
+| imap.0.xxx.remote.criteria      | Instance settings: Change search. Will only be reset after a reboot.                                                                             |
+| imap.0.xxx.remote.reload_emails | Reload emails.                                                                                                                                   |
+| imap.0.xxx.remote.search_start  | Apply changes from change_folder, criteria and show_mails                                                                                        |
+| imap.0.xxx.remote.show_mails    | Instance settings: Number of emails (max. HTML) to be loaded. Will only be reset after a reboot. Should of course be greater than the value max. |
+| imap.0.xxx.remote.vis_command   | Command from the VIS to move mails from the selection boxes. Only used by VIS.                                                                   |
 
 ![imap_overview_remote.png](img/imap_overview_remote.png)
 
-### Datenpunkte `imap.0.benutzername.remote.copy`
+### Data point `imap.0.username.remote.copy`
 
-[Zusammenfassung](#zusammenfassung)
+[Summary](#summary)
 
-| Objekt                            | Beschreibung                                                                                                              |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| imap.0.xxx.remote.copy.apply_copy | Änderung von folder und uid anwenden.                                                                                     |
-| imap.0.xxx.remote.copy.folder     | Ordner auswählen in dem die ausgewählt Mail kopiert werden soll.                                                          |
-| imap.0.xxx.remote.copy.uid        | Hier die UID der eMail eintragen die kopiert werden soll. Die UID findet ihr im imap.0.xxx.json oder in den email Ordnern |
+| Object                            | Description                                                                                                   |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| imap.0.xxx.remote.copy.apply_copy | Apply change of copy.folder and copy.uid.                                                                     |
+| imap.0.xxx.remote.copy.folder     | Select folder in which the selected mail should be copied.                                                    |
+| imap.0.xxx.remote.copy.uid        | Enter the UID of the email to be copied here. You can find the UID in imap.0.xxx.json or in the email folders |
 
 ![imap_overview_remote_copy.png](img/imap_overview_remote_copy.png)
 
-### Datenpunkte `imap.0.benutzername.remote.flag`
+### Data point `imap.0.username.remote.flag`
 
-[Zusammenfassung](#zusammenfassung)
+[Summary](#summary)
 
-| Objekt                            | Beschreibung                                                                                                              |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| imap.0.xxx.remote.flag.apply_flag | Änderung von set, type und uid anwenden.                                                                                  |
-| imap.0.xxx.remote.flag.set        | Auswahl setFlag für Flag setzen, addFlag für ein Flag hinzuzufügen und delFlag für ein Flag zu löschen                    |
-| imap.0.xxx.remote.flag.type       | Flag auswählen der hinzu, gesetzt oder gelöscht werden soll                                                               |
-| imap.0.xxx.remote.flag.uid        | Die UID an der die Flag Änderung vorgenommen werden soll. Die UID findet ihr im imap.0.xxx.json oder in den email Ordnern |
+| Object                            | Description                                                                                                       |
+| --------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| imap.0.xxx.remote.flag.apply_flag | Apply change of set, type and uid.                                                                                |
+| imap.0.xxx.remote.flag.set        | Select setFlag, addFlag and delFlag.                                                                              |
+| imap.0.xxx.remote.flag.type       | Select flag to add, set or delete.                                                                                |
+| imap.0.xxx.remote.flag.uid        | The UID to which the flag change should be made. You can find the UID in imap.0.xxx.json or in the email folders. |
 
 ![imap_overview_remote_flag.png](img/imap_overview_remote_flag.png)
 
-### Datenpunkte `imap.0.benutzername.remote.html`
+### Data point `imap.0.username.remote.html`
 
-[Zusammenfassung](#zusammenfassung)
+[Summary](#summary)
 
-| Objekt                                         | Beschreibung                                                                                    |
+| Object                                         | Description                                                                                     |
 | ---------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| imap.0.xxx.remote.html.body_background         | Tabelle Hintergrundfarbe - Standard #000000                                                     |
-| imap.0.xxx.remote.html.choose_content          | Feld aus der eMail anzeigen. </br>Mögliche Felder sind html, text, textAsHtml und html convert. |
-| imap.0.xxx.remote.html.header_border           | Randstärke Header - Standard 2 px                                                               |
-| imap.0.xxx.remote.html.header_font             | Schriftart Header - Standard Helvetica                                                          |
-| imap.0.xxx.remote.html.header_font_size        | Schriftgröße Header - Standard 15 px                                                            |
-| imap.0.xxx.remote.html.header_linear_color_1   | Farbverlauf Hintergrund Header Wert 1 - Standard #424242                                        |
-| imap.0.xxx.remote.html.header_linear_color_2   | Farbverlauf Hintergrund Header Wert 2 - Standard #424242                                        |
-| imap.0.xxx.remote.html.header_tag_border_color | Randfarbe Header - Standard #424242 - Alles möglich                                             |
-| imap.0.xxx.remote.html.header_text_color       | Header Textfarbe - Standard #BDBDBD                                                             |
-| imap.0.xxx.remote.html.header_width            | Header Breite - Standard auto - Möglich px oder %                                               |
-| imap.0.xxx.remote.html.headline_align_column_1 | Textausrichtung Header Spalte 1 - Standard center </br> Möglich center, left, right unf auto    |
+| imap.0.xxx.remote.html.body_background         | Background Body - Default #000000                                                               |
+| imap.0.xxx.remote.html.choose_content          | Display attribute from email. </br>Possible fields are html, text, textAsHtml and html convert. |
+| imap.0.xxx.remote.html.header_border           | Header border - Default 2 px                                                                    |
+| imap.0.xxx.remote.html.header_font             | Header font - Default Helvetica                                                                 |
+| imap.0.xxx.remote.html.header_font_size        | Header font size - Default 15 px                                                                |
+| imap.0.xxx.remote.html.header_linear_color_1   | Gradient background header value 1 - Default #424242                                            |
+| imap.0.xxx.remote.html.header_linear_color_2   | Gradient background header value 2 - Default #424242                                            |
+| imap.0.xxx.remote.html.header_tag_border_color | Header border color - Default #424242 - Everything possible                                     |
+| imap.0.xxx.remote.html.header_text_color       | Header text color - Default #BDBDBD                                                             |
+| imap.0.xxx.remote.html.header_width            | Header width - Default auto - Possible px or %                                                  |
+| imap.0.xxx.remote.html.headline_align_column_1 | Header align column 1 - Default center </br> Possible center, left, right and auto              |
 
 ![imap_overview_remote_html_1.png](img/imap_overview_remote_html_1.png)
 
-| Objekt                                          | Beschreibung                                                                                  |
-| ----------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| imap.0.xxx.remote.html.headline_align_column_2  | Textausrichtung Header Spalte 2 - Standard center </br> Möglich center, left, right unf auto  |
-| imap.0.xxx.remote.html.headline_align_column_3  | Textausrichtung Header Spalte 3 - Standard center </br> Möglich center, left, right unf auto  |
-| imap.0.xxx.remote.html.headline_align_column_4  | Textausrichtung Header Spalte 4 - Standard center </br> Möglich center, left, right unf auto  |
-| imap.0.xxx.remote.html.headline_align_column_5  | Textausrichtung Header Spalte 5 - Standard center </br> Möglich center, left, right unf auto  |
-| imap.0.xxx.remote.html.headline_align_column_6  | Textausrichtung Header Spalte 6 - Standard center </br> Möglich center, left, right unf auto  |
-| imap.0.xxx.remote.html.headline_align_column_7  | Textausrichtung Header Spalte 7 - Standard center </br> Möglich center, left, right unf auto  |
-| imap.0.xxx.remote.html.headline_align_column_8  | Textausrichtung Header Spalte 8 - Standard center </br> Möglich center, left, right unf auto  |
-| imap.0.xxx.remote.html.headline_align_column_9  | Textausrichtung Header Spalte 9 - Standard center </br> Möglich center, left, right unf auto  |
-| imap.0.xxx.remote.html.headline_align_column_10 | Textausrichtung Header Spalte 10 - Standard center </br> Möglich center, left, right unf auto |
-| imap.0.xxx.remote.html.headline_color           | Randfarbe Body - Standard #BD5A3C                                                             |
-| imap.0.xxx.remote.html.headline_column_width_1  | Spaltenbreite Spalte 1 - Standard auto - Möglich px oder %                                    |
-| imap.0.xxx.remote.html.headline_column_width_10 | Spaltenbreite Spalte 10 - Standard auto - Möglich px oder %                                   |
+| Object                                          | Description                                                                                  |
+| ----------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| imap.0.xxx.remote.html.headline_align_column_2  | Text alignment header column 2 - Default center </br> Possible center, left, right and auto  |
+| imap.0.xxx.remote.html.headline_align_column_3  | Text alignment header column 3 - Default center </br> Possible center, left, right and auto  |
+| imap.0.xxx.remote.html.headline_align_column_4  | Text alignment header column 4 - Default center </br> Possible center, left, right and auto  |
+| imap.0.xxx.remote.html.headline_align_column_5  | Text alignment header column 5 - Default center </br> Possible center, left, right and auto  |
+| imap.0.xxx.remote.html.headline_align_column_6  | Text alignment header column 6 - Default center </br> Possible center, left, right and auto  |
+| imap.0.xxx.remote.html.headline_align_column_7  | Text alignment header column 7 - Default center </br> Possible center, left, right and auto  |
+| imap.0.xxx.remote.html.headline_align_column_8  | Text alignment header column 8 - Default center </br> Possible center, left, right and auto  |
+| imap.0.xxx.remote.html.headline_align_column_9  | Text alignment header column 9 - Default center </br> Possible center, left, right and auto  |
+| imap.0.xxx.remote.html.headline_align_column_10 | Text alignment header column 10 - Default center </br> Possible center, left, right and auto |
+| imap.0.xxx.remote.html.headline_color           | Border color Body - Default #BD5A3C                                                          |
+| imap.0.xxx.remote.html.headline_column_width_1  | column width column 1 - Default auto - Possible px or %                                      |
+| imap.0.xxx.remote.html.headline_column_width_10 | column width column 10 - Default auto - Possible px or %                                     |
 
 ![imap_overview_remote_html_2.png](img/imap_overview_remote_html_2.png)
 
-| Objekt                                         | Beschreibung                                                  |
-| ---------------------------------------------- | ------------------------------------------------------------- |
-| imap.0.xxx.remote.html.headline_column_width_2 | Spaltenbreite Spalte 2 - Standard auto - Möglich px oder %    |
-| imap.0.xxx.remote.html.headline_column_width_3 | Spaltenbreite Spalte 3 - Standard auto - Möglich px oder %    |
-| imap.0.xxx.remote.html.headline_column_width_4 | Spaltenbreite Spalte 4 - Standard auto - Möglich px oder %    |
-| imap.0.xxx.remote.html.headline_column_width_5 | Spaltenbreite Spalte 5 - Standard auto - Möglich px oder %    |
-| imap.0.xxx.remote.html.headline_column_width_6 | Spaltenbreite Spalte 6 - Standard auto - Möglich px oder %    |
-| imap.0.xxx.remote.html.headline_column_width_7 | Spaltenbreite Spalte 7 - Standard auto - Möglich px oder %    |
-| imap.0.xxx.remote.html.headline_column_width_8 | Spaltenbreite Spalte 8 - Standard auto - Möglich px oder %    |
-| imap.0.xxx.remote.html.headline_column_width_9 | Spaltenbreite Spalte 9 - Standard auto - Möglich px oder %    |
-| imap.0.xxx.remote.html.headline_font_size      | Textgröße in den Zeilen - Standard 16 px                      |
-| imap.0.xxx.remote.html.headline_height         | Zellenhöhe - Standard 35 px                                   |
-| imap.0.xxx.remote.html.headline_style          | Style der Zellen - Standard normal - Möglich normal oder bold |
+| Objekt                                         | Description                                             |
+| ---------------------------------------------- | ------------------------------------------------------- |
+| imap.0.xxx.remote.html.headline_column_width_2 | column width column 2 - Default auto - Possible px or % |
+| imap.0.xxx.remote.html.headline_column_width_3 | column width column 3 - Default auto - Possible px or % |
+| imap.0.xxx.remote.html.headline_column_width_4 | column width column 4 - Default auto - Possible px or % |
+| imap.0.xxx.remote.html.headline_column_width_5 | column width column 5 - Default auto - Possible px or % |
+| imap.0.xxx.remote.html.headline_column_width_6 | column width column 6 - Default auto - Possible px or % |
+| imap.0.xxx.remote.html.headline_column_width_7 | column width column 7 - Default auto - Possible px or % |
+| imap.0.xxx.remote.html.headline_column_width_8 | column width column 8 - Default auto - Possible px or % |
+| imap.0.xxx.remote.html.headline_column_width_9 | column width column 9 - Default auto - Possible px or % |
+| imap.0.xxx.remote.html.headline_font_size      | Font size in the cell - Default 16 px                   |
+| imap.0.xxx.remote.html.headline_height         | Cell height - Default 35 px                             |
+| imap.0.xxx.remote.html.headline_style          | Style Cell - Default normal - Possible normal or bold   |
 
 ![imap_overview_remote_html_3.png](img/imap_overview_remote_html_3.png)
 
-| Objekt                                           | Beschreibung                                                                                   |
-| ------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
-| imap.0.xxx.remote.html.headline_underlined       | Zellenrand - Standard 3 px                                                                     |
-| imap.0.xxx.remote.html.headline_underlined_color | Farbe Zellenrand - Standard #ffffff                                                            |
-| imap.0.xxx.remote.html.jarvis                    | Codeanpassung für Ansicht in Jarvis                                                            |
-| imap.0.xxx.remote.html.mails_even_color          | Zeilen Hintergrundfarbe bei graden ID`s - Standard #333333                                     |
-| imap.0.xxx.remote.html.mails_nextday_color_even  | Zeilen Hintergrundfarbe bei graden ID`s gestern - Standard #F7FFE0                             |
-| imap.0.xxx.remote.html.mails_nextday_color_odd   | Zeilen Hintergrundfarbe bei ungraden ID`s gestern - Standard #F7FFE0                           |
-| imap.0.xxx.remote.html.mails_odd_color           | Zeilen Hintergrundfarbe bei ungraden ID`s - Standard #FFE32E                                   |
-| imap.0.xxx.remote.html.mails_today_color         | Zeilen Hintergrundfarbe bei graden ID`s aktueller Tag - Standard #ffffff                       |
-| imap.0.xxx.remote.html.mails_today_color_odd     | Zeilen Hintergrundfarbe bei ungraden ID`s aktueller Tag - Standard #ffffff                     |
-| imap.0.xxx.remote.html.p_tag_text_align          | Textausrichtung Header und Footer - Standard center </br> Möglich center, left, right unf auto |
-| imap.0.xxx.remote.html.short_content             | Buchstabenbegrenzung in Inhalt - Standard 35                                                   |
-| imap.0.xxx.remote.html.short_subject             | Buchstabenbegrenzung in Betreff - Standard 35                                                  |
-| imap.0.xxx.remote.html.table_tag_border_color    | Tabelle Randfarbe - Standard #424242                                                           |
+| Objekt                                           | Description                                                                               |
+| ------------------------------------------------ | ----------------------------------------------------------------------------------------- |
+| imap.0.xxx.remote.html.headline_underlined       | Cell border - Default 3 px                                                                |
+| imap.0.xxx.remote.html.headline_underlined_color | Cell border color - Default #ffffff                                                       |
+| imap.0.xxx.remote.html.jarvis                    | Code customization for View in Jarvis                                                     |
+| imap.0.xxx.remote.html.mails_even_color          | Line background color for even IDs - Default #333333                                      |
+| imap.0.xxx.remote.html.mails_nextday_color_even  | Line background color for even IDs yesterday - Default #F7FFE0                            |
+| imap.0.xxx.remote.html.mails_nextday_color_odd   | Line background color for odd IDs yesterday - Default #F7FFE0                             |
+| imap.0.xxx.remote.html.mails_odd_color           | Line background color for odd IDs - Default #FFE32E                                       |
+| imap.0.xxx.remote.html.mails_today_color         | Line background color for even IDs today - Default #ffffff                                |
+| imap.0.xxx.remote.html.mails_today_color_odd     | Line background color for odd IDs today - Default #ffffff                                 |
+| imap.0.xxx.remote.html.p_tag_text_align          | Text align Header and Footer - Default center </br> Possible center, left, right and auto |
+| imap.0.xxx.remote.html.short_content             | Character limitation in the `Content` - Default 35                                        |
+| imap.0.xxx.remote.html.short_subject             | Character limitation in the `Subject` - Default 35                                        |
+| imap.0.xxx.remote.html.table_tag_border_color    | Table border color - Default #424242                                                      |
 
 ![imap_overview_remote_html_4.png](img/imap_overview_remote_html_4.png)
 
-| Objekt                                      | Beschreibung                                                          |
-| ------------------------------------------- | --------------------------------------------------------------------- |
-| imap.0.xxx.remote.html.table_tag_cell       | Abstand zwischen Zellen - Standard 6 px                               |
-| imap.0.xxx.remote.html.table_tag_text_align | Tabelle Textausrichtung - Standard auto - Möglich px oder %           |
-| imap.0.xxx.remote.html.table_tag_width      | Tabellengröße - Standard auto - Möglich px oder %                     |
-| imap.0.xxx.remote.html.td_tag_2_colums      | Zeilenumrandung von Zeile 1 und 2 - Standard auto - Möglich px oder % |
-| imap.0.xxx.remote.html.td_tag_border_bottom | Zeilenrand unten - Standard 1 px                                      |
-| imap.0.xxx.remote.html.td_tag_border_color  | Farbe Zeilenrand unten - Standard #424242                             |
-| imap.0.xxx.remote.html.td_tag_border_right  | Zeilenrand rechts - Standard 1 px                                     |
-| imap.0.xxx.remote.html.td_tag_cell          | Zellenabstand in den Zeilen - Standard 6 px                           |
-| imap.0.xxx.remote.html.text_content         | Header Text Spalte 5 - Standard Inhalt                                |
-| imap.0.xxx.remote.html.text_date            | Header Text Spalte 4 - Standard Datum                                 |
-| imap.0.xxx.remote.html.text_flag            | Header Text Spalte 7 - Standard Flaggen                               |
-| imap.0.xxx.remote.html.text_from            | Header Text Spalte 2 - Standard Von                                   |
+| Objekt                                      | Description                                                   |
+| ------------------------------------------- | ------------------------------------------------------------- |
+| imap.0.xxx.remote.html.table_tag_cell       | Table border spacing - Default 6 px                           |
+| imap.0.xxx.remote.html.table_tag_text_align | Table margin - Default auto - Possible px or %                |
+| imap.0.xxx.remote.html.table_tag_width      | Table width - Default auto - Possible px or %                 |
+| imap.0.xxx.remote.html.td_tag_2_colums      | Line border of line 1 and 2 - Default auto - Possible px or % |
+| imap.0.xxx.remote.html.td_tag_border_bottom | Line under border - Default 1 px                              |
+| imap.0.xxx.remote.html.td_tag_border_color  | Line under border color - Default #424242                     |
+| imap.0.xxx.remote.html.td_tag_border_right  | Cell border right - Default 1 px                              |
+| imap.0.xxx.remote.html.td_tag_cell          | Cell spacing in the rows - Default 6 px                       |
+| imap.0.xxx.remote.html.text_content         | Header text column 5 - Default Content                        |
+| imap.0.xxx.remote.html.text_date            | Header text column 4 - Default Date                           |
+| imap.0.xxx.remote.html.text_flag            | Header text column 7 - Default Flags                          |
+| imap.0.xxx.remote.html.text_from            | Header text column 2 - Default From                           |
 
 ![imap_overview_remote_html_5.png](img/imap_overview_remote_html_5.png)
 
-| Objekt                                     | Beschreibung                                        |
-| ------------------------------------------ | --------------------------------------------------- |
-| imap.0.xxx.remote.html.text_id             | Header Text Spalte 1 - Standard ID                  |
-| imap.0.xxx.remote.html.text_move_or_copy   | Header Text Spalte 9 - Standard kopie/paste         |
-| imap.0.xxx.remote.html.text_select_addflag | Starttext in Flag Auswahlbox - Standard addFlags -  |
-| imap.0.xxx.remote.html.text_select_copy    | Starttext in Kopie Auswahlbox - Standard kopie      |
-| imap.0.xxx.remote.html.text_select_delflag | Starttext in Flag Auswahlbox - Standard delFlags -  |
-| imap.0.xxx.remote.html.text_select_move    | Starttext in Kopie Auswahlbox - Standard verschiebe |
-| imap.0.xxx.remote.html.text_select_setflag | Starttext in Flag Auswahlbox - Standard setFlags -  |
-| imap.0.xxx.remote.html.text_seq            | Header Text Spalte 6 - Standard SEQ                 |
-| imap.0.xxx.remote.html.text_setflag        | Header Text Spalte 10 - Standard Flaggenaktion      |
-| imap.0.xxx.remote.html.text_subject        | Header Text Spalte 3 - Standard Betreff             |
-| imap.0.xxx.remote.html.text_uid            | Header Text Spalte 8 - Standard UID                 |
-| imap.0.xxx.remote.html.top_font            | Schriftart Header und Footer - Standard Helvetica   |
+| Objekt                                     | Description                                     |
+| ------------------------------------------ | ----------------------------------------------- |
+| imap.0.xxx.remote.html.text_id             | Header text column 1 - Default ID               |
+| imap.0.xxx.remote.html.text_move_or_copy   | Header text column 9 - Default copy/paste       |
+| imap.0.xxx.remote.html.text_select_addflag | Text in flag selection box - Default addFlags - |
+| imap.0.xxx.remote.html.text_select_copy    | Text in Kopie selection box - Default copy      |
+| imap.0.xxx.remote.html.text_select_delflag | Text in Flag selection box - Default delFlags - |
+| imap.0.xxx.remote.html.text_select_move    | Text in Kopie selection box - Default move      |
+| imap.0.xxx.remote.html.text_select_setflag | Text in Flag selection box - Default setFlags - |
+| imap.0.xxx.remote.html.text_seq            | Header text column 6 - Default SEQ              |
+| imap.0.xxx.remote.html.text_setflag        | Header text column 10 - Default Flag action     |
+| imap.0.xxx.remote.html.text_subject        | Header text column 3 - Default Subject          |
+| imap.0.xxx.remote.html.text_uid            | Header text column 8 - Default UID              |
+| imap.0.xxx.remote.html.top_font            | Font Header und Footer - Default Helvetica      |
 
 ![imap_overview_remote_html_6.png](img/imap_overview_remote_html_6.png)
 
-| Objekt                                 | Beschreibung                                                                 |
-| -------------------------------------- | ---------------------------------------------------------------------------- |
-| imap.0.xxx.remote.html.top_font_size   | Schriftgröße Header und Footer - Standard 20 px                              |
-| imap.0.xxx.remote.html.top_font_weight | Schriftstärke Header und Footer - Standard normal - Möglich normal oder bold |
-| imap.0.xxx.remote.html.top_text        | Headertext Standard der Username                                             |
-| imap.0.xxx.remote.html.top_text_color  | Farbe Headertext - Standard #ffffff                                          |
+| Objekt                                 | Description                                                                |
+| -------------------------------------- | -------------------------------------------------------------------------- |
+| imap.0.xxx.remote.html.top_font_size   | Font size Header und Footer - Default 20 px                                |
+| imap.0.xxx.remote.html.top_font_weight | Schriftstärke Header und Footer - Default normal - Possible normal or bold |
+| imap.0.xxx.remote.html.top_text        | Header text Default the Username                                           |
+| imap.0.xxx.remote.html.top_text_color  | Header text color - Default #ffffff                                        |
 
 ![imap_overview_remote_html_7.png](img/imap_overview_remote_html_7.png)
 
-### Datenpunkte `imap.0.benutzername.remote.move`
+### Data point `imap.0.username.remote.move`
 
-[Zusammenfassung](#zusammenfassung)
+[Summary](#summary)
 
-| Objekt                            | Beschreibung                                                                                                                 |
-| --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| imap.0.xxx.remote.move.apply_move | Änderung von folder und uid anwenden.                                                                                        |
-| imap.0.xxx.remote.move.folder     | Ordner auswählen in dem die ausgewählt Mail verschoben werden soll.                                                          |
-| imap.0.xxx.remote.move.uid        | Hier die UID der eMail eintragen die verschoben werden soll. Die UID findet ihr im imap.0.xxx.json oder in den email Ordnern |
+| Objekt                            | Description                                                                                                   |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| imap.0.xxx.remote.move.apply_move | Apply change of folder and uid.                                                                               |
+| imap.0.xxx.remote.move.folder     | Select folder in which the selected mail should be moved.                                                     |
+| imap.0.xxx.remote.move.uid        | Enter the UID of the email to be moved here. You can find the UID in imap.0.xxx.json or in the email folders. |
 
 ![imap_overview_remote_move.png](img/imap_overview_remote_move.png)
 
 # Blocklys
 
-### Blockly IMAP Abfrage ändern
+### Blockly - Change IMAP query
 
--   Hiermit könnt ihr diese [Datenpunkte](#datenpunkte-imap0benutzernameremote) setzen.
--   Mögliche Flags findet man [in der Instanz Konfig](#instanz-konfiguration-tab-imap-erstellen).
--   Auswahl der IMAP Verbindung möglich oder für alle anwenden.
+[Summary](#summary)
+
+-   With this you can set these [data points](#data-point-imap0usernameremote).
+-   See the [instance setting](#instance-settings-tab---create-imaps) for possible flags.
+-   Select IMAP connection or apply to all.
 
 ![blockly_imap_1.png](img/blockly_imap_1.png)
 ![blockly_imap_2.png](img/blockly_imap_2.png)
 
-### Blockly IMAP eigene Abfrage
+### Blockly - IMAP own query
 
--   ACHTUNG! Hier kommen alle Daten wie z. Bsp. Anhänge. Diese Abfrage kann den RAM oder CPU ans Limit bringen. Wird ein fehlerhaftes Kriterium erstellt, kann dieses zum iobroker Absturtz führen!!!
--   Die Daten werden dann als JSON geliefert.
--   Bei Logausgaben wird das Logfile sehr groß. Daher später die Logausgaben wieder löschen.
--   Es muss eine Variable mit dem Namen `result` erstellt werden.
--   [Beispiele](/docs/de/EXAMPLE.md)
+[Summary](#summary)
+
+-   DANGER! Here comes all the data such. E.g. attachments. This query can push the RAM or CPU to the limit. If an incorrect criterion is created, this can lead to an iobroker crash!!!
+-   The data is then delivered as JSON.
+-   With log outputs, the log file becomes very large. Therefore delete the log outputs again later.
+-   A variable called `result` must be created.
+-   [Beispiele](/docs/en/EXAMPLE.md)
 
 ![blockly_imap_request.png](img/blockly_imap_request.png)
 
-### Blockly IMAP Abfrage mit Instanz Einstellungen
+### Blockly - IMAP query with instance settings
 
--   Alle Daten von der IMAP Verbindung laden und selber verarbeiten. Als Suchkriterium wird die Instanz Einstellung verwendet.
--   ACHTUNG! Hoher RAM Verbrauch
--   Die Daten werden dann als JSON geliefert.
--   Bei Logausgaben wird das Logfile sehr groß. Daher später die Logausgaben wieder löschen.
--   Es muss eine Variable mit dem Namen `result` erstellt werden.
--   [Beispiele](/docs/de/EXAMPLE.md)
+[Summary](#summary)
+
+-   Load all data from the IMAP connection and process it yourself. The instance setting is used as the search criterion.
+-   DANGER! Higher RAM consumption
+-   The data is then delivered as JSON.
+-   With log outputs, the log file becomes very large. Therefore delete the log outputs again later.
+-   A variable called `result` must be created.
+-   [Example](/docs/en/EXAMPLE.md)
 
 ![blockly_imap_current.png](img/blockly_imap_current.png)
 
-### Blockly IMAP Flags setzen
+### Blockly - Set IMAP flags
 
--   Bei einer eMail ein Flag setFlag=setzen, addFlag=hinzufügen oder delFlag=löschen.
--   Postfach auswählen.
--   Auswählen setFlag=setzen, addFlag=hinzufügen oder delFlag=löschen.
--   Flag auswählen.
--   [Mögliche Flags siehe imap.0.xxx.status](#json-imap0xxxstatus)
+[Summary](#summary)
+
+-   Set a flag setFlag=set, addFlag=add or delFlag=delete for an email.
+-   Select mailbox.
+-   Select setFlag=set, addFlag=add or delFlag=delete.
+-   select flag.
+-   [Possible flags in imap.0.xxx.status](#json-imap0xxxstatus)
 
 ![blockly_imap_flag.png](img/blockly_imap_flag.png)
 
@@ -427,7 +436,7 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 
 ### Array JSON imap.0.xxx.email.email_xx.attach_json
 
-[Zusammenfassung](#zusammenfassung)
+[Summary](#summary)
 
 ```json
 [
@@ -454,7 +463,7 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 
 ### Array JSON imap.0.xxx.json
 
-[Zusammenfassung](#zusammenfassung)
+[Summary](#summary)
 
 ```json
 [
@@ -481,7 +490,7 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 
 ### JSON imap.0.xxx.last_activity_json
 
-[Zusammenfassung](#zusammenfassung)
+[Summary](#summary)
 
 ```json
 {
@@ -492,7 +501,7 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 
 ### JSON imap.0.xxx.quality
 
-[Zusammenfassung](#zusammenfassung)
+[Summary](#summary)
 
 ```json
 {
@@ -500,9 +509,29 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 }
 ```
 
+### Possibilities
+
+```
+0: "0x00 - good",
+1: "0x01 - general problem",
+2: "0x02 - no connection problem",
+16: "0x10 - substitute value from controller",
+17: "0x11 - general problem by instance",
+18: "0x12 - instance not connected",
+32: "0x20 - substitute initial value",
+64: "0x40 - substitute value from device or instance",
+65: "0x41 - general problem by device",
+66: "0x42 - device not connected",
+68: "0x44 - device reports error",
+128: "0x80 - substitute value from sensor",
+129: "0x81 - general problem by sensor",
+130: "0x82 - sensor not connected",
+132: "0x84 - sensor reports error",
+```
+
 ### JSON imap.0.xxx.status
 
-[Zusammenfassung](#zusammenfassung)
+[Summary](#summary)
 
 ```json
 {
@@ -530,7 +559,7 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 
 ### Array JSON imap.0.online_history
 
-[Zusammenfassung](#zusammenfassung)
+[Summary](#summary)
 
 ```json
 [

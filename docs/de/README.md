@@ -35,7 +35,7 @@
     -   [imap.0.xxx.quality](#json-imap0xxxquality)
     -   [imap.0.xxx.status](#json-imap0xxxstatus)
     -   [imap.0.online_history](#array-json-imap0online_history)
--   [Beispiel Javascripte und Blockly](/docs/de/EXAMPLE.md)
+-   [Beispiel Javascripte und Blocklys](/docs/de/EXAMPLE.md)
 
 # Instanz Einstellungen
 
@@ -53,9 +53,9 @@
 ![imap_create_1.png](img/imap_create_1.png)
 
 -   `max.`: Maximale Anlage als Datenpunkte email_01...email_02... (1-99)
--   `max. HTML`: Maximale Anzahl von eMails als HTML. Spööte größer sein als max. Datenpunkte (1-99)
+-   `max. HTML`: Maximale Anzahl von eMails als HTML. Muss größer sein als max. Datenpunkte (1-99)
 -   `TLS`: TLS-Verbindung verwenden - Standard ist true
--   `Flaggen`: Mögliche Flags im Code
+-   `Flaggen`: Flag für die IMAP Abfrage. Mögliche Flags:
 
 ```
 ALL - alle – Alle Nachrichten.
@@ -152,7 +152,7 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 | imap.0.xxx.html                    | HTML Code für VIS                                                                                   |
 | imap.0.xxx.json                    | JSON Table für VIS - [Beispiel](#array-json)                                                        |
 | imap.0.xxx.last_activity           | Letzte Aktivität                                                                                    |
-| imap.0.xxx.last_activity_json      | Welche Aktivität als Attay JSON - [Beispiel](#json-imap0xxxlast_activity_json)                      |
+| imap.0.xxx.last_activity_json      | Welche Aktivität als Array JSON - [Beispiel](#json-imap0xxxlast_activity_json)                      |
 | imap.0.xxx.last_activity_timestamp | Zeitstempel der letzten Aktivität                                                                   |
 | imap.0.xxx.online                  | Status der IMAP Verbindung                                                                          |
 | imap.0.xxx.quality                 | Qualität aller Datenpunkte als JSON. Wird alle 24h aktualisiert - [Beispiel](#json-imap0xxxquality) |
@@ -198,7 +198,7 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 | imap.0.xxx.infos.esearch               | Mit einem Befehl mehrere Postfächer durchsuchen                                                                                                                       |
 | imap.0.xxx.infos.id                    | [Siehe](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                                   |
 | imap.0.xxx.infos.idle                  | [Siehe](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                                   |
-| imap.0.xxx.infos.literal\*             |                                                                                                                                                                       |
+| imap.0.xxx.infos.literal\*             | [Siehe](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                                   |
 | imap.0.xxx.infos.logindisabled         | [Siehe](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                                   |
 | imap.0.xxx.infos.move                  | eMails können verschoben werden. [Siehe](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                  |
 | imap.0.xxx.infos.namespace             | [Siehe](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                                   |
@@ -213,6 +213,7 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 | imap.0.xxx.infos.x-gm-ext-1            | [Siehe](https://www.iana.org/assignments/imap-capabilities/imap-capabilities.xhtml)                                                                                   |
 
 ![imap_overview_capability.png](img/imap_overview_capability.png)
+![imap_overview_capability_1.png](img/imap_overview_capability_1.png)
 
 ### Datenpunkte `imap.0.benutzername.remote`
 
@@ -250,7 +251,7 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
 | imap.0.xxx.remote.flag.apply_flag | Änderung von set, type und uid anwenden.                                                                                  |
 | imap.0.xxx.remote.flag.set        | Auswahl setFlag für Flag setzen, addFlag für ein Flag hinzuzufügen und delFlag für ein Flag zu löschen                    |
-| imap.0.xxx.remote.flag.type       | Flag auswählen der hinzu, gesetzt oder gelöscht werden soll                                                               |
+| imap.0.xxx.remote.flag.type       | Flag auswählen der hinzugefügt, gesetzt oder gelöscht werden soll                                                         |
 | imap.0.xxx.remote.flag.uid        | Die UID an der die Flag Änderung vorgenommen werden soll. Die UID findet ihr im imap.0.xxx.json oder in den email Ordnern |
 
 ![imap_overview_remote_flag.png](img/imap_overview_remote_flag.png)
@@ -271,21 +272,21 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 | imap.0.xxx.remote.html.header_tag_border_color | Randfarbe Header - Standard #424242 - Alles möglich                                             |
 | imap.0.xxx.remote.html.header_text_color       | Header Textfarbe - Standard #BDBDBD                                                             |
 | imap.0.xxx.remote.html.header_width            | Header Breite - Standard auto - Möglich px oder %                                               |
-| imap.0.xxx.remote.html.headline_align_column_1 | Textausrichtung Header Spalte 1 - Standard center </br> Möglich center, left, right unf auto    |
+| imap.0.xxx.remote.html.headline_align_column_1 | Textausrichtung Header Spalte 1 - Standard center </br> Möglich center, left, right und auto    |
 
 ![imap_overview_remote_html_1.png](img/imap_overview_remote_html_1.png)
 
 | Objekt                                          | Beschreibung                                                                                  |
 | ----------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| imap.0.xxx.remote.html.headline_align_column_2  | Textausrichtung Header Spalte 2 - Standard center </br> Möglich center, left, right unf auto  |
-| imap.0.xxx.remote.html.headline_align_column_3  | Textausrichtung Header Spalte 3 - Standard center </br> Möglich center, left, right unf auto  |
-| imap.0.xxx.remote.html.headline_align_column_4  | Textausrichtung Header Spalte 4 - Standard center </br> Möglich center, left, right unf auto  |
-| imap.0.xxx.remote.html.headline_align_column_5  | Textausrichtung Header Spalte 5 - Standard center </br> Möglich center, left, right unf auto  |
-| imap.0.xxx.remote.html.headline_align_column_6  | Textausrichtung Header Spalte 6 - Standard center </br> Möglich center, left, right unf auto  |
-| imap.0.xxx.remote.html.headline_align_column_7  | Textausrichtung Header Spalte 7 - Standard center </br> Möglich center, left, right unf auto  |
-| imap.0.xxx.remote.html.headline_align_column_8  | Textausrichtung Header Spalte 8 - Standard center </br> Möglich center, left, right unf auto  |
-| imap.0.xxx.remote.html.headline_align_column_9  | Textausrichtung Header Spalte 9 - Standard center </br> Möglich center, left, right unf auto  |
-| imap.0.xxx.remote.html.headline_align_column_10 | Textausrichtung Header Spalte 10 - Standard center </br> Möglich center, left, right unf auto |
+| imap.0.xxx.remote.html.headline_align_column_2  | Textausrichtung Header Spalte 2 - Standard center </br> Möglich center, left, right und auto  |
+| imap.0.xxx.remote.html.headline_align_column_3  | Textausrichtung Header Spalte 3 - Standard center </br> Möglich center, left, right und auto  |
+| imap.0.xxx.remote.html.headline_align_column_4  | Textausrichtung Header Spalte 4 - Standard center </br> Möglich center, left, right und auto  |
+| imap.0.xxx.remote.html.headline_align_column_5  | Textausrichtung Header Spalte 5 - Standard center </br> Möglich center, left, right und auto  |
+| imap.0.xxx.remote.html.headline_align_column_6  | Textausrichtung Header Spalte 6 - Standard center </br> Möglich center, left, right und auto  |
+| imap.0.xxx.remote.html.headline_align_column_7  | Textausrichtung Header Spalte 7 - Standard center </br> Möglich center, left, right und auto  |
+| imap.0.xxx.remote.html.headline_align_column_8  | Textausrichtung Header Spalte 8 - Standard center </br> Möglich center, left, right und auto  |
+| imap.0.xxx.remote.html.headline_align_column_9  | Textausrichtung Header Spalte 9 - Standard center </br> Möglich center, left, right und auto  |
+| imap.0.xxx.remote.html.headline_align_column_10 | Textausrichtung Header Spalte 10 - Standard center </br> Möglich center, left, right und auto |
 | imap.0.xxx.remote.html.headline_color           | Randfarbe Body - Standard #BD5A3C                                                             |
 | imap.0.xxx.remote.html.headline_column_width_1  | Spaltenbreite Spalte 1 - Standard auto - Möglich px oder %                                    |
 | imap.0.xxx.remote.html.headline_column_width_10 | Spaltenbreite Spalte 10 - Standard auto - Möglich px oder %                                   |
@@ -319,7 +320,7 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 | imap.0.xxx.remote.html.mails_odd_color           | Zeilen Hintergrundfarbe bei ungraden ID`s - Standard #FFE32E                                   |
 | imap.0.xxx.remote.html.mails_today_color         | Zeilen Hintergrundfarbe bei graden ID`s aktueller Tag - Standard #ffffff                       |
 | imap.0.xxx.remote.html.mails_today_color_odd     | Zeilen Hintergrundfarbe bei ungraden ID`s aktueller Tag - Standard #ffffff                     |
-| imap.0.xxx.remote.html.p_tag_text_align          | Textausrichtung Header und Footer - Standard center </br> Möglich center, left, right unf auto |
+| imap.0.xxx.remote.html.p_tag_text_align          | Textausrichtung Header und Footer - Standard center </br> Möglich center, left, right und auto |
 | imap.0.xxx.remote.html.short_content             | Buchstabenbegrenzung in Inhalt - Standard 35                                                   |
 | imap.0.xxx.remote.html.short_subject             | Buchstabenbegrenzung in Betreff - Standard 35                                                  |
 | imap.0.xxx.remote.html.table_tag_border_color    | Tabelle Randfarbe - Standard #424242                                                           |
@@ -385,7 +386,9 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 
 ### Blockly IMAP Abfrage ändern
 
--   Hiermit könnt ihr diese [Datenpunkte](#datenpunkte-imap0benutzernameremote) setzen.
+[Zusammenfassung](#zusammenfassung)
+
+-   Hiermit kann man diese [Datenpunkte](#datenpunkte-imap0benutzernameremote) setzen.
 -   Mögliche Flags findet man [in der Instanz Konfig](#instanz-konfiguration-tab-imap-erstellen).
 -   Auswahl der IMAP Verbindung möglich oder für alle anwenden.
 
@@ -393,6 +396,8 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 ![blockly_imap_2.png](img/blockly_imap_2.png)
 
 ### Blockly IMAP eigene Abfrage
+
+[Zusammenfassung](#zusammenfassung)
 
 -   ACHTUNG! Hier kommen alle Daten wie z. Bsp. Anhänge. Diese Abfrage kann den RAM oder CPU ans Limit bringen. Wird ein fehlerhaftes Kriterium erstellt, kann dieses zum iobroker Absturtz führen!!!
 -   Die Daten werden dann als JSON geliefert.
@@ -404,6 +409,8 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 
 ### Blockly IMAP Abfrage mit Instanz Einstellungen
 
+[Zusammenfassung](#zusammenfassung)
+
 -   Alle Daten von der IMAP Verbindung laden und selber verarbeiten. Als Suchkriterium wird die Instanz Einstellung verwendet.
 -   ACHTUNG! Hoher RAM Verbrauch
 -   Die Daten werden dann als JSON geliefert.
@@ -414,6 +421,8 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 ![blockly_imap_current.png](img/blockly_imap_current.png)
 
 ### Blockly IMAP Flags setzen
+
+[Zusammenfassung](#zusammenfassung)
 
 -   Bei einer eMail ein Flag setFlag=setzen, addFlag=hinzufügen oder delFlag=löschen.
 -   Postfach auswählen.
@@ -498,6 +507,26 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 {
     "message": "No Message"
 }
+```
+
+### Möglichkeiten
+
+```
+0: "0x00 - good",
+1: "0x01 - general problem",
+2: "0x02 - no connection problem",
+16: "0x10 - substitute value from controller",
+17: "0x11 - general problem by instance",
+18: "0x12 - instance not connected",
+32: "0x20 - substitute initial value",
+64: "0x40 - substitute value from device or instance",
+65: "0x41 - general problem by device",
+66: "0x42 - device not connected",
+68: "0x44 - device reports error",
+128: "0x80 - substitute value from sensor",
+129: "0x81 - general problem by sensor",
+130: "0x82 - sensor not connected",
+132: "0x84 - sensor reports error",
 ```
 
 ### JSON imap.0.xxx.status
