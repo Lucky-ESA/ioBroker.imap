@@ -3,9 +3,11 @@
 # ioBroker.imap
 
 ```:warning:
- ⚠ This adapter can crash the system very quickly.
+ ⚠ This adapter can crash the system very quickly with the Blockly (own query).
  ⚠ So please read this description carefully.
 ```
+
+[Back to the README](/README.md)
 
 # Summary
 
@@ -49,6 +51,8 @@
 -   `Port`: Port - Default 993
 -   `Username`: Username - Instance must be activated!!!
 -   `Password`: Password - Instance must be activated!!!
+    -   [gmail login](https://support.google.com/mail/answer/185833?hl=de)
+    -   [outlook 2Factor authentication](https://mcuiobroker.gitbook.io/jarvis-infos/tipps/allgemein/microsoft-windows/2-fach-authentifizierung)
 
 ![imap_create_1.png](img/imap_create_1.png)
 
@@ -132,12 +136,12 @@ UNSEEN - Messages that do not have the Seen flag set.
 
 [Summary](#summary)
 
-| Object                | Description                                                                      |
-| --------------------- | -------------------------------------------------------------------------------- |
-| imap.0.json_imap      | Name of the IMAP connection of the last activity                                 |
-| imap.0.json_table     | Last update of an IMAP connection as a JSON table for VIS                        |
-| imap.0.online_counter | Number of active IMAP connections                                                |
-| imap.0.online_history | Connection activity history as JSON - [Example](#array-json-imap0online_history) |
+| Object                | Description                                                                               |
+| --------------------- | ----------------------------------------------------------------------------------------- |
+| imap.0.json_imap      | Name of the IMAP connection of the last activity. Trigger for incoming emails or updates. |
+| imap.0.json_table     | Last update of an IMAP connection as a JSON table for VIS.                                |
+| imap.0.online_counter | Number of active IMAP connections.                                                        |
+| imap.0.online_history | Connection activity history as JSON - [Example](#array-json-imap0online_history).         |
 
 ![imap_total_overview.png](img/imap_total_overview.png)
 

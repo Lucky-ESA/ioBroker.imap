@@ -3,9 +3,11 @@
 # ioBroker.imap
 
 ```:warning:
- ⚠ Dieser Adapter kann das System sehr schnell zum Absturz bringen.
+ ⚠ Dieser Adapter kann mit dem Blockly (Eigene Abfrage) das System sehr schnell zum Absturz bringen.
  ⚠ Daher bitte diese Beschreibung aufmerksam durchlesen.
 ```
+
+[Zurück zur README](/README.md)
 
 # Zusammenfassung
 
@@ -48,9 +50,8 @@
 -   `Posteingang`: Standard INBOX - Box die Überwacht werden soll - Mögliche Auswahl siehe imap.0.xxx.remote.change_folder
 -   `Port`: Standard 993
 -   `Nutzername`: Benutzername - Instanz muss aktiviert sein!!!
--   `Passwort`: Passwort - Instanz muss aktiviert sein!!!
-
-![imap_create_1.png](img/imap_create_1.png)
+-   `Passwort`: Passwort - Instanz muss aktiviert sein!!! - [gmail login](https://support.google.com/mail/answer/185833?hl=de) - [outlook 2-Fach-Authentifizierung](https://mcuiobroker.gitbook.io/jarvis-infos/tipps/allgemein/microsoft-windows/2-fach-authentifizierung)
+    ![imap_create_1.png](img/imap_create_1.png)
 
 -   `max.`: Maximale Anlage als Datenpunkte email_01...email_02... (1-99)
 -   `max. HTML`: Maximale Anzahl von eMails als HTML. Muss größer sein als max. Datenpunkte (1-99)
@@ -132,12 +133,12 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 
 [Zusammenfassung](#zusammenfassung)
 
-| Objekt                | Beschreibung                                                                              |
-| --------------------- | ----------------------------------------------------------------------------------------- |
-| imap.0.json_imap      | Name der IMAP Verbindung mit der letzten Aktivität                                        |
-| imap.0.json_table     | Letzte Aktualisierung einer IMAP Verbindung als JSON Table für VIS                        |
-| imap.0.online_counter | Anzahl der aktiven IMAP Verbindungen                                                      |
-| imap.0.online_history | History der Verbindungsaktivitäten als JSON - [Beispiel](#array-json-imap0online_history) |
+| Objekt                | Beschreibung                                                                                    |
+| --------------------- | ----------------------------------------------------------------------------------------------- |
+| imap.0.json_imap      | Name der IMAP Verbindung mit der letzten Aktivität. Trigger für eingehende Emails oder Updates. |
+| imap.0.json_table     | Letzte Aktualisierung einer IMAP Verbindung als JSON Table für VIS.                             |
+| imap.0.online_counter | Anzahl der aktiven IMAP Verbindungen.                                                           |
+| imap.0.online_history | History der Verbindungsaktivitäten als JSON - [Beispiel](#array-json-imap0online_history).      |
 
 ![imap_total_overview.png](img/imap_total_overview.png)
 
@@ -239,7 +240,7 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
 | imap.0.xxx.remote.copy.apply_copy | Änderung von folder und uid anwenden.                                                                                     |
 | imap.0.xxx.remote.copy.folder     | Ordner auswählen in dem die ausgewählt Mail kopiert werden soll.                                                          |
-| imap.0.xxx.remote.copy.uid        | Hier die UID der eMail eintragen die kopiert werden soll. Die UID findet ihr im imap.0.xxx.json oder in den email Ordnern |
+| imap.0.xxx.remote.copy.uid        | Hier die UID der eMail eintragen die kopiert werden soll. Die UID findet man im imap.0.xxx.json oder in den email Ordnern |
 
 ![imap_overview_remote_copy.png](img/imap_overview_remote_copy.png)
 
@@ -252,7 +253,7 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 | imap.0.xxx.remote.flag.apply_flag | Änderung von set, type und uid anwenden.                                                                                  |
 | imap.0.xxx.remote.flag.set        | Auswahl setFlag für Flag setzen, addFlag für ein Flag hinzuzufügen und delFlag für ein Flag zu löschen                    |
 | imap.0.xxx.remote.flag.type       | Flag auswählen der hinzugefügt, gesetzt oder gelöscht werden soll                                                         |
-| imap.0.xxx.remote.flag.uid        | Die UID an der die Flag Änderung vorgenommen werden soll. Die UID findet ihr im imap.0.xxx.json oder in den email Ordnern |
+| imap.0.xxx.remote.flag.uid        | Die UID an der die Flag Änderung vorgenommen werden soll. Die UID findet man im imap.0.xxx.json oder in den email Ordnern |
 
 ![imap_overview_remote_flag.png](img/imap_overview_remote_flag.png)
 

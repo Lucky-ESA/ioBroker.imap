@@ -24,6 +24,8 @@
 ## imap adapter for ioBroker
 
 -   Monitor your email accounts via IMAP (Internet Message Access Protocol)
+-   Receive notification of new emails or updates (e. g. marked unseen)
+-   Simple login with password and username (without xoauth2 or xoauth).
 
 ## Requirements
 
@@ -36,6 +38,7 @@
 -   gmail [app-password](https://support.google.com/mail/answer/185833?hl=de)
 -   vodafone
 -   strato
+-   outlook (e. g. [outlook 2Factor authentication](https://mcuiobroker.gitbook.io/jarvis-infos/tipps/allgemein/microsoft-windows/2-fach-authentifizierung))
 
 ## Description
 
@@ -55,10 +58,11 @@
 
 ### **WORK IN PROGRESS**
 
--   (Lucky-ESA) Added RAM consumption - Instance Config
+-   (Lucky-ESA) Added RAM consumption - Instance Settings
 -   (Lucky-ESA) Added german documention
 -   (Lucky-ESA) Added Mailparser options
 -   (Lucky-ESA) Added counter history
+-   (Lucky-ESA) Bug fixes
 
 ### 0.0.9 (2023-07-26)
 
