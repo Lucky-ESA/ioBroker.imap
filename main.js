@@ -32,6 +32,7 @@ const empty = {
     uid: 0,
     size: 0,
     attachments: 0,
+    attachments_info: [],
 };
 const limited_history = 50;
 
