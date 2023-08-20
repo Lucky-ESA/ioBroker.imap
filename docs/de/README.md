@@ -45,6 +45,10 @@
 
 [Zusammenfassung](#zusammenfassung)
 
+```:warning:
+ ⚠ Die Instanz muss aktiviert sein!!!!
+```
+
 -   `Aktiv`: IMAP Verbindung aktivieren
 -   `Host`: z. Bsp. imap.gmail.com
 -   `Posteingang`: Standard INBOX - Box die Überwacht werden soll - Mögliche Auswahl siehe imap.0.xxx.remote.change_folder

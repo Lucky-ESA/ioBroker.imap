@@ -45,6 +45,10 @@
 
 [Summary](#summary)
 
+```:warning:
+ ⚠ The instance must be activated!!!!
+```
+
 -   `Activ`: Enable IMAP connection
 -   `Host`: Host - e.g. imap.gmail.com
 -   `Inbox`: Default INBOX - Box to be monitored - Possible selection see imap.0.xxx.remote.change_folder
