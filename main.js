@@ -815,7 +815,6 @@ class Imap extends utils.Adapter {
             val: activity,
             ack: true,
         });
-        this.log.info("TEXT: " + info);
         await this.setStateAsync(`${clientID}.last_activity_json`, {
             val: typeof info === "object" ? JSON.stringify(info) : JSON.stringify({ seqno: "0" }),
             ack: true,
@@ -1052,6 +1051,10 @@ class Imap extends utils.Adapter {
                             this.log_translator("info", "not found imap", `${user} - ${obj.message["device"]}`);
                         }
                     }
+                } else if (obj.message && obj.message["max"] < 1 && obj.message["max"] > 100) {
+                    this.log_translator("info", "max_mail");
+                } else {
+                    this.sendTo(obj.from, obj.command, [], obj.callback);
                 }
                 break;
             case "getIMAPRequest":
@@ -1061,7 +1064,9 @@ class Imap extends utils.Adapter {
                         obj.message["search"] != "" &&
                         obj.message["name"] != "" &&
                         obj.message["bodie"] != "" &&
-                        obj.message["parse"] != ""
+                        obj.message["parse"] != "" &&
+                        obj.message["max"] > 0 &&
+                        obj.message["max"] < 100
                     ) {
                         if (obj.message["name"] !== "all") {
                             const user = obj.message["name"].replace(FORBIDDEN_CHARS, "_");
@@ -1071,6 +1076,10 @@ class Imap extends utils.Adapter {
                             this.sendTo(obj.from, obj.command, [], obj.callback);
                         }
                     }
+                } else if (obj.message && obj.message["max"] < 1 && obj.message["max"] > 100) {
+                    this.log_translator("info", "max_mail");
+                } else {
+                    this.sendTo(obj.from, obj.command, [], obj.callback);
                 }
                 break;
             case "getIMAPData":
