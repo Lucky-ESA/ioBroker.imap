@@ -1,221 +1,238 @@
 {
-    "common": {
-        "name": "imap",
-        "version": "0.0.9",
-        "news": {
-            "0.0.9": {
-                "en": "Fixed RAM consumption of new emails\nAdded counter attachments in JSON",
-                "de": "Fester RAM-Verbrauch neuer E-Mails\nHinzufügen von Zähleraufsätzen in JSON",
-                "ru": "Фиксированное потребление RAM новых писем\nДобавлены вложения счетчиков в JSON",
-                "pt": "Consumo de RAM fixo de novos e-mails\nAdicionado contra anexos em JSON",
-                "nl": "Vertaling:\nVertaling:",
-                "fr": "Consommation de RAM fixe de nouveaux emails\nAjout de pièces jointes dans JSON",
-                "it": "Risolto consumo di RAM di nuove email\nAggiunto accessori contatore in JSON",
-                "es": "Consumo de RAM fijo de nuevos correos electrónicos\nAgregados contadores en JSON",
-                "pl": "Zużycie pamięci RAM nowej e-maili\nAdded counter przywiązania w JSON",
-                "uk": "Виправлено споживання оперативної пам'яті нових електронних листів\nДодано лічильник вкладення в JSON",
-                "zh-cn": "新电子邮件的分期消费\n增加联索行动内的反附属"
-            },
-            "0.0.8": {
-                "en": "Fix refresh crash\nAdded MB threshold",
-                "de": "Erfrischungsabsturz beheben\nMB Schwelle",
-                "ru": "Исправить освежающие аварии\nДобавлен MB порог",
-                "pt": "Corrigir acidente de atualização\nLimite de MB adicionado",
-                "nl": "Verfrissende crash\nVertaling:",
-                "fr": "Réparer un crash\nAjout du seuil de MB",
-                "it": "Fissare l'incidente di aggiornamento\nSoglia MB aggiuntiva",
-                "es": "Cierre de refresco\nUmbral de MB",
-                "pl": "Fixel crash\nAdded MB progym",
-                "uk": "Виправлення аварійних змін\nДодано поріг MB",
-                "zh-cn": "Fixtifresh c\nA. 增加MB门槛"
-            },
-            "0.0.7": {
-                "en": "Fix correct counter for seen and unseen\nAdded capabilities\nCriteria change without restart\nAdded outlook.office365.com oauth2 login\nAdded Connection.js from Module to Adapter\nBug fixes",
-                "de": "Fix korrekter Zähler für gesehen und unsichtbar\nZusätzliche Fähigkeiten\nÄnderung der Kriterien ohne Neustart\nAusblick.office365.com oauth2 login\nHinzugefügt Connection.js von Modul zu Adapter\nFehlerbehebungen",
-                "ru": "Исправьте правильный счетчик для видимых и невидимых\nДобавленные возможности\nКритерии меняются без перезапуска\nДобавлен Outlook.office365.com oauth2 логин\nДобавлено Connection.js из модуля к адаптеру\nИсправления ошибок",
-                "pt": "Corrigir o contador correto para visto e invisível\nRecursos adicionados\nAlteração de critérios sem reinício\nAdicionado outlook.office365.com oauth2 login\nAdicionado Connection.js do módulo ao adaptador\nCorreções de bugs",
-                "nl": "Vertaling:\nVermogens\nCriteria verandert zonder rust\nVertaling:\nToegevoegd Connection\nBug repareert",
-                "fr": "Fixer le compteur correct pour vu et invisible\nCapacités ajoutées\nChangement de critères sans redémarrage\nAjout du login Outlook.office365.com oauth2\nAjout de Connection.js de Module à Adaptateur\nCorrections",
-                "it": "Fissare corretto contatore per visto e invisibile\nCapacità aggiuntive\nCambiamento dei criteri senza riavvio\nAggiunto Outlook.office365.com oauth2 login\nAggiunto Connection.js dal modulo all'adattatore\nCorrezioni di bug",
-                "es": "Fijar el contador correcto para visto y no visto\nCapacidades adicionales\nLos criterios cambian sin reiniciar\nAñadido Outlook.office365.com oauth2 login\nAñadido Connection.js del módulo al adaptador\nCorrección de errores",
-                "pl": "Fix koryguje pole widzenia i niespodzianek\nZadaniowe możliwości\nPrzemiana kryzysowa bez restartu\nAdded outlook.office365.com oauth2 login\nAdded Connection.js from Module to Adapter\nBug",
-                "uk": "Фіксувати правильну лічильник для видимих і невидимих\nДодаткові можливості\nЗміни критерії без перезапуску\nEnglish, Українська, Français..\nДодано Connection.js від Module до адаптера\nВиправлення помилок",
-                "zh-cn": "Fix 纠正被发现和无见的反击\n增加能力\n2. 标准改变,而不恢复原状\n增加前景\nA. 添加了Anection.js from Module to Adapter\nBug fix"
-            },
-            "0.0.6": {
-                "en": "Added trigger move or copy emails\nAdded JSON for multiple IMAP accounts\nBug fixes",
-                "de": "Trigger-Bewegung oder Kopie-E-Mails hinzugefügt\nJSON für mehrere IMAP-Konten hinzugefügt\nFehlerbehebungen",
-                "ru": "Добавлены триггеры или копировать электронные письма\nДобавлен JSON для нескольких учетных записей IMAP\nИсправления ошибок",
-                "pt": "Adicionado movimento do gatilho ou copiar e-mails\nAdicionado JSON para múltiplas contas IMAP\nCorreções de bugs",
-                "nl": "Verplaatsing of mails\n_\nBug repareert",
-                "fr": "Ajout d'un déménagement ou d'une copie des courriels\nJSON ajouté pour plusieurs comptes IMAP\nCorrections",
-                "it": "Aggiunta di attivazione spostare o copiare e-mail\nAggiunto JSON per più account IMAP\nCorrezioni di bug",
-                "es": "Añadido movimiento de gatillo o copiar correos electrónicos\nAñadido JSON para múltiples cuentas de IMAP\nCorrección de errores",
-                "pl": "Added trigger move lub copy mail\nAdded JSON dla wielu kont IMAP\nBug",
-                "uk": "Доданий тригер переміщення або копіювання електронних листів\nДодано JSON для декількох облікових записів IMAP\nВиправлення помилок",
-                "zh-cn": "增购机或邮票\n增聘联合办多管方案账户\nBug fix"
-            },
-            "0.0.5": {
-                "en": "(Lucky-ESA) Added: Added move or copy\n(Lucky-ESA) Added: Set flag with datapoints",
-                "de": "(Lucky-ESA) Hinzugefügt: hinzugefügt verschieben oder kopieren\n(Lucky-ESA) Hinzugefügt: Flagge mit Datenpunkten festlegen",
-                "ru": "(Lucky-ESA) Добавлена: Добавлен ход или копия\n(Lucky-ESA) Добавлена: Установите флаг с точками данных",
-                "pt": "(Lucky-ESA) Adicionado: Adicionado movimento ou cópia\n(Lucky-ESA) Adicionado: Definir bandeira com datapoints",
-                "nl": "(Lucky-ESA) Toegevoegd\n(Lucky-ESA) Toegevoegd: Zet vlag met datapoints",
-                "fr": "(Lucky-ESA) Ajouté : Ajout d'un mouvement ou d'une copie\n(Lucky-ESA) Ajouté : Définir le drapeau avec des points de données",
-                "it": "(Lucky-ESA) Aggiunto: Aggiunto movimento o copia\n(Lucky-ESA) Aggiunto: Impostare la bandiera con i datapoint",
-                "es": "(Lucky-ESA) Añadido: Añadido movimiento o copia\n(Lucky-ESA) Añadido: Establecer bandera con puntos de datos",
-                "pl": "(Lucky-ESA) (ang.). Addition: Added movement or copy copy copy copy copy\n(Lucky-ESA) (ang.). Added: Ustanowić flagę z punktami danych",
-                "uk": "(Lucky-ESA) Доданий: Додано переміщення або копіювання\n(Lucky-ESA) Доданий: Настроювання прапора з точками даних",
-                "zh-cn": "(Lucky-ESA) 增 编:\n(Lucky-ESA) 增加: 数据点的旗帜"
-            },
-            "0.0.4": {
-                "en": "Fix json_table",
-                "de": "Json_table",
-                "ru": "Исправление json_table",
-                "pt": "Fix json_table",
-                "nl": "_",
-                "fr": "Fix json_table",
-                "it": "Fissare json_table",
-                "es": "Corrección json_table",
-                "pl": "Fixus json_table",
-                "uk": "Виправлення json_table",
-                "zh-cn": "Fix json_table"
-            },
-            "0.0.3": {
-                "en": "Beta release",
-                "de": "Beta Release",
-                "ru": "Beta релиз",
-                "pt": "Liberação Beta",
-                "nl": "Beta vrij",
-                "fr": "Sortie de Beta",
-                "it": "Comunicato Beta",
-                "es": "Beta release",
-                "pl": "Beta",
-                "uk": "Бета реліз",
-                "zh-cn": "B. 释放"
-            }
-        },
-        "titleLang": {
-            "en": "imap",
-            "de": "imap",
-            "ru": "имап",
-            "pt": "imap",
-            "nl": "imap",
-            "fr": "imap",
-            "it": "imap",
-            "es": "imágen",
-            "pl": "mapa",
-            "zh-cn": "地图",
-            "uk": "imap"
-        },
-        "desc": {
-            "en": "imap to receive your emails",
-            "de": "IMAP, um Ihre E-Mails zu empfangen",
-            "ru": "imap для получения ваших писем",
-            "pt": "imap para receber seus e-mails",
-            "nl": "imap om je e-mails te ontvangen",
-            "fr": "imap pour recevoir vos emails",
-            "it": "imap per ricevere le tue email",
-            "es": "imap para recibir tus correos",
-            "pl": "imap, aby otrzymywać e-maile",
-            "zh-cn": "imap 接收您的电子邮件",
-            "uk": "imap для отримання ваших електронних листів"
-        },
-        "authors": ["Lucky-ESA <github@luckyskills.de>"],
-        "keywords": ["imap", "mail", "email", "receive"],
-        "license": "MIT",
-        "platform": "Javascript/Node.js",
-        "main": "main.js",
-        "icon": "imap.png",
-        "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/Lucky-ESA/ioBroker.imap/master/admin/imap.png",
-        "readme": "https://github.com/Lucky-ESA/ioBroker.imap/blob/master/README.md",
-        "loglevel": "info",
-        "mode": "daemon",
-        "type": "messaging",
-        "messagebox": true,
-        "blockly": true,
-        "compact": true,
-        "connectionType": "cloud",
-        "dataSource": "push",
-        "adminUI": {
-            "config": "json"
-        },
-        "docs": {
-            "en": ["docs/en/README.md"],
-            "de": ["docs/de/README.md"]
-        },
-        "dependencies": [
-            {
-                "js-controller": ">=3.3.22"
-            }
-        ],
-        "globalDependencies": [
-            {
-                "admin": ">=5.1.13"
-            }
-        ]
+  "common": {
+    "name": "imap",
+    "version": "0.1.0",
+    "news": {
+      "0.1.0": {
+        "en": "Added RAM consumption - Instance Settings\nAdded german documention\nAdded Mailparser options\nAdded counter history\nBug fixes",
+        "de": "RAM-Verbrauch hinzugefügt - Instanzeinstellungen\nDeutsche Dokumentation hinzugefügt\nMailparser Optionen hinzugefügt\nHinzufügen der Zählerhistorie\nFehlerbehebungen",
+        "ru": "Добавлено RAM потребление - Instance Settings\nДобавлен немецкий документ\nДобавлены опции Mailparser\nДобавлена история счетчиков\nИсправления ошибок",
+        "pt": "Consumo de RAM adicionado - Configurações de instância\nAdicionado documento alemão\nOpções de Mailparser adicionadas\nAdicionado história do contador\nCorreções de bugs",
+        "nl": "Vertaling:\nVermeldde Duitse documenten\nVermeldde Mailparser opties\nVertaling:\nBug repareert",
+        "fr": "Ajout de la consommation de RAM - Instance Settings\nAjouté German documention\nAjout des options Mailparser\nAjout de l ' historique\nCorrections",
+        "it": "Consumi RAM aggiunti - Impostazioni di ubicazione\nAggiunto tedesco documention\nOpzioni Mailparser\nAggiunto contatore storia\nCorrezioni di bug",
+        "es": "Consumo de RAM añadido - Ajustes de Instance\nSeñalación alemana\nOpciones adicionales de Mailparser\nHistoria del contador\nCorrección de errores",
+        "pl": "Zużycie pamięci RAM - Instance Settings (ang.)\nDokumentacja germanna\nAdded Mailparser option\nAdded counter history\nBug",
+        "uk": "Додано споживання оперативної пам'яті - Налаштування\nДодана німецька документація\nДодано параметри парсера електронної пошти\nІсторія лічильника\nВиправлення помилок",
+        "zh-cn": "增加分期消费-包装\n增 录\n增加无期选择\n增加反历史\nBug fix"
+      },
+      "0.0.9": {
+        "en": "Fixed RAM consumption of new emails\nAdded counter attachments in JSON",
+        "de": "Fester RAM-Verbrauch neuer E-Mails\nHinzufügen von Zähleraufsätzen in JSON",
+        "ru": "Фиксированное потребление RAM новых писем\nДобавлены вложения счетчиков в JSON",
+        "pt": "Consumo de RAM fixo de novos e-mails\nAdicionado contra anexos em JSON",
+        "nl": "Vertaling:\nVertaling:",
+        "fr": "Consommation de RAM fixe de nouveaux emails\nAjout de pièces jointes dans JSON",
+        "it": "Risolto consumo di RAM di nuove email\nAggiunto accessori contatore in JSON",
+        "es": "Consumo de RAM fijo de nuevos correos electrónicos\nAgregados contadores en JSON",
+        "pl": "Zużycie pamięci RAM nowej e-maili\nAdded counter przywiązania w JSON",
+        "uk": "Виправлено споживання оперативної пам'яті нових електронних листів\nДодано лічильник вкладення в JSON",
+        "zh-cn": "新电子邮件的分期消费\n增加联索行动内的反附属"
+      },
+      "0.0.8": {
+        "en": "Fix refresh crash\nAdded MB threshold",
+        "de": "Erfrischungsabsturz beheben\nMB Schwelle",
+        "ru": "Исправить освежающие аварии\nДобавлен MB порог",
+        "pt": "Corrigir acidente de atualização\nLimite de MB adicionado",
+        "nl": "Verfrissende crash\nVertaling:",
+        "fr": "Réparer un crash\nAjout du seuil de MB",
+        "it": "Fissare l'incidente di aggiornamento\nSoglia MB aggiuntiva",
+        "es": "Cierre de refresco\nUmbral de MB",
+        "pl": "Fixel crash\nAdded MB progym",
+        "uk": "Виправлення аварійних змін\nДодано поріг MB",
+        "zh-cn": "Fixtifresh c\nA. 增加MB门槛"
+      },
+      "0.0.7": {
+        "en": "Fix correct counter for seen and unseen\nAdded capabilities\nCriteria change without restart\nAdded outlook.office365.com oauth2 login\nAdded Connection.js from Module to Adapter\nBug fixes",
+        "de": "Fix korrekter Zähler für gesehen und unsichtbar\nZusätzliche Fähigkeiten\nÄnderung der Kriterien ohne Neustart\nAusblick.office365.com oauth2 login\nHinzugefügt Connection.js von Modul zu Adapter\nFehlerbehebungen",
+        "ru": "Исправьте правильный счетчик для видимых и невидимых\nДобавленные возможности\nКритерии меняются без перезапуска\nДобавлен Outlook.office365.com oauth2 логин\nДобавлено Connection.js из модуля к адаптеру\nИсправления ошибок",
+        "pt": "Corrigir o contador correto para visto e invisível\nRecursos adicionados\nAlteração de critérios sem reinício\nAdicionado outlook.office365.com oauth2 login\nAdicionado Connection.js do módulo ao adaptador\nCorreções de bugs",
+        "nl": "Vertaling:\nVermogens\nCriteria verandert zonder rust\nVertaling:\nToegevoegd Connection\nBug repareert",
+        "fr": "Fixer le compteur correct pour vu et invisible\nCapacités ajoutées\nChangement de critères sans redémarrage\nAjout du login Outlook.office365.com oauth2\nAjout de Connection.js de Module à Adaptateur\nCorrections",
+        "it": "Fissare corretto contatore per visto e invisibile\nCapacità aggiuntive\nCambiamento dei criteri senza riavvio\nAggiunto Outlook.office365.com oauth2 login\nAggiunto Connection.js dal modulo all'adattatore\nCorrezioni di bug",
+        "es": "Fijar el contador correcto para visto y no visto\nCapacidades adicionales\nLos criterios cambian sin reiniciar\nAñadido Outlook.office365.com oauth2 login\nAñadido Connection.js del módulo al adaptador\nCorrección de errores",
+        "pl": "Fix koryguje pole widzenia i niespodzianek\nZadaniowe możliwości\nPrzemiana kryzysowa bez restartu\nAdded outlook.office365.com oauth2 login\nAdded Connection.js from Module to Adapter\nBug",
+        "uk": "Фіксувати правильну лічильник для видимих і невидимих\nДодаткові можливості\nЗміни критерії без перезапуску\nEnglish, Українська, Français..\nДодано Connection.js від Module до адаптера\nВиправлення помилок",
+        "zh-cn": "Fix 纠正被发现和无见的反击\n增加能力\n2. 标准改变,而不恢复原状\n增加前景\nA. 添加了Anection.js from Module to Adapter\nBug fix"
+      },
+      "0.0.6": {
+        "en": "Added trigger move or copy emails\nAdded JSON for multiple IMAP accounts\nBug fixes",
+        "de": "Trigger-Bewegung oder Kopie-E-Mails hinzugefügt\nJSON für mehrere IMAP-Konten hinzugefügt\nFehlerbehebungen",
+        "ru": "Добавлены триггеры или копировать электронные письма\nДобавлен JSON для нескольких учетных записей IMAP\nИсправления ошибок",
+        "pt": "Adicionado movimento do gatilho ou copiar e-mails\nAdicionado JSON para múltiplas contas IMAP\nCorreções de bugs",
+        "nl": "Verplaatsing of mails\n_\nBug repareert",
+        "fr": "Ajout d'un déménagement ou d'une copie des courriels\nJSON ajouté pour plusieurs comptes IMAP\nCorrections",
+        "it": "Aggiunta di attivazione spostare o copiare e-mail\nAggiunto JSON per più account IMAP\nCorrezioni di bug",
+        "es": "Añadido movimiento de gatillo o copiar correos electrónicos\nAñadido JSON para múltiples cuentas de IMAP\nCorrección de errores",
+        "pl": "Added trigger move lub copy mail\nAdded JSON dla wielu kont IMAP\nBug",
+        "uk": "Доданий тригер переміщення або копіювання електронних листів\nДодано JSON для декількох облікових записів IMAP\nВиправлення помилок",
+        "zh-cn": "增购机或邮票\n增聘联合办多管方案账户\nBug fix"
+      },
+      "0.0.5": {
+        "en": "(Lucky-ESA) Added: Added move or copy\n(Lucky-ESA) Added: Set flag with datapoints",
+        "de": "(Lucky-ESA) Hinzugefügt: hinzugefügt verschieben oder kopieren\n(Lucky-ESA) Hinzugefügt: Flagge mit Datenpunkten festlegen",
+        "ru": "(Lucky-ESA) Добавлена: Добавлен ход или копия\n(Lucky-ESA) Добавлена: Установите флаг с точками данных",
+        "pt": "(Lucky-ESA) Adicionado: Adicionado movimento ou cópia\n(Lucky-ESA) Adicionado: Definir bandeira com datapoints",
+        "nl": "(Lucky-ESA) Toegevoegd\n(Lucky-ESA) Toegevoegd: Zet vlag met datapoints",
+        "fr": "(Lucky-ESA) Ajouté : Ajout d'un mouvement ou d'une copie\n(Lucky-ESA) Ajouté : Définir le drapeau avec des points de données",
+        "it": "(Lucky-ESA) Aggiunto: Aggiunto movimento o copia\n(Lucky-ESA) Aggiunto: Impostare la bandiera con i datapoint",
+        "es": "(Lucky-ESA) Añadido: Añadido movimiento o copia\n(Lucky-ESA) Añadido: Establecer bandera con puntos de datos",
+        "pl": "(Lucky-ESA) (ang.). Addition: Added movement or copy copy copy copy copy\n(Lucky-ESA) (ang.). Added: Ustanowić flagę z punktami danych",
+        "uk": "(Lucky-ESA) Доданий: Додано переміщення або копіювання\n(Lucky-ESA) Доданий: Настроювання прапора з точками даних",
+        "zh-cn": "(Lucky-ESA) 增 编:\n(Lucky-ESA) 增加: 数据点的旗帜"
+      },
+      "0.0.4": {
+        "en": "Fix json_table",
+        "de": "Json_table",
+        "ru": "Исправление json_table",
+        "pt": "Fix json_table",
+        "nl": "_",
+        "fr": "Fix json_table",
+        "it": "Fissare json_table",
+        "es": "Corrección json_table",
+        "pl": "Fixus json_table",
+        "uk": "Виправлення json_table",
+        "zh-cn": "Fix json_table"
+      }
     },
-    "native": {
-        "hosts": [],
-        "icons": [],
-        "oauth_token": [],
-        "nodemailer_options": [],
-        "max_mb": 400,
-        "max_mb_selection": 2,
-        "max_mb_telegram": "",
-        "max_mb_telegram_user": "",
-        "max_mb_object": "",
-        "max_mb_last_restart": 0
+    "titleLang": {
+      "en": "imap",
+      "de": "imap",
+      "ru": "имап",
+      "pt": "imap",
+      "nl": "imap",
+      "fr": "imap",
+      "it": "imap",
+      "es": "imágen",
+      "pl": "mapa",
+      "zh-cn": "地图",
+      "uk": "imap"
     },
-    "encryptedNative": ["password", "secureid"],
-    "protectedNative": ["password", "secureid"],
-    "objects": [],
-    "instanceObjects": [
-        {
-            "_id": "info",
-            "type": "channel",
-            "common": {
-                "name": {
-                    "en": "Information",
-                    "de": "Informationen",
-                    "ru": "Информация",
-                    "pt": "Informação",
-                    "nl": "Informatie",
-                    "fr": "Information",
-                    "it": "Informazioni",
-                    "es": "Información",
-                    "pl": "Informacja",
-                    "uk": "Інформація",
-                    "zh-cn": "信息"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.connection",
-            "type": "state",
-            "common": {
-                "role": "indicator.connected",
-                "name": {
-                    "en": "Device or service connected",
-                    "de": "Geräte- oder Serviceanschluss",
-                    "ru": "Устройство или сервис подключены",
-                    "pt": "Dispositivo ou serviço conectado",
-                    "nl": "Device of dienst verbonden",
-                    "fr": "Appareil ou service connecté",
-                    "it": "Dispositivo o servizio collegato",
-                    "es": "Dispositivo o servicio conectado",
-                    "pl": "Urządzenie lub usługa połączona",
-                    "uk": "Пристрої або послуги підключені",
-                    "zh-cn": "证人或有关服务"
-                },
-                "type": "boolean",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
-        }
+    "desc": {
+      "en": "imap to receive your emails",
+      "de": "IMAP, um Ihre E-Mails zu empfangen",
+      "ru": "imap для получения ваших писем",
+      "pt": "imap para receber seus e-mails",
+      "nl": "imap om je e-mails te ontvangen",
+      "fr": "imap pour recevoir vos emails",
+      "it": "imap per ricevere le tue email",
+      "es": "imap para recibir tus correos",
+      "pl": "imap, aby otrzymywać e-maile",
+      "zh-cn": "imap 接收您的电子邮件",
+      "uk": "imap для отримання ваших електронних листів"
+    },
+    "authors": [
+      "Lucky-ESA <github@luckyskills.de>"
+    ],
+    "keywords": [
+      "imap",
+      "mail",
+      "email",
+      "receive"
+    ],
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "main": "main.js",
+    "icon": "imap.png",
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/Lucky-ESA/ioBroker.imap/master/admin/imap.png",
+    "readme": "https://github.com/Lucky-ESA/ioBroker.imap/blob/master/README.md",
+    "loglevel": "info",
+    "mode": "daemon",
+    "type": "messaging",
+    "messagebox": true,
+    "blockly": true,
+    "compact": true,
+    "connectionType": "cloud",
+    "dataSource": "push",
+    "adminUI": {
+      "config": "json"
+    },
+    "docs": {
+      "en": [
+        "docs/en/README.md"
+      ],
+      "de": [
+        "docs/de/README.md"
+      ]
+    },
+    "dependencies": [
+      {
+        "js-controller": ">=3.3.22"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=5.1.13"
+      }
     ]
+  },
+  "native": {
+    "hosts": [],
+    "icons": [],
+    "oauth_token": [],
+    "nodemailer_options": [],
+    "max_mb": 400,
+    "max_mb_selection": 2,
+    "max_mb_telegram": "",
+    "max_mb_telegram_user": "",
+    "max_mb_object": "",
+    "max_mb_last_restart": 0
+  },
+  "encryptedNative": [
+    "password",
+    "secureid"
+  ],
+  "protectedNative": [
+    "password",
+    "secureid"
+  ],
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "Information",
+          "de": "Informationen",
+          "ru": "Информация",
+          "pt": "Informação",
+          "nl": "Informatie",
+          "fr": "Information",
+          "it": "Informazioni",
+          "es": "Información",
+          "pl": "Informacja",
+          "uk": "Інформація",
+          "zh-cn": "信息"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "role": "indicator.connected",
+        "name": {
+          "en": "Device or service connected",
+          "de": "Geräte- oder Serviceanschluss",
+          "ru": "Устройство или сервис подключены",
+          "pt": "Dispositivo ou serviço conectado",
+          "nl": "Device of dienst verbonden",
+          "fr": "Appareil ou service connecté",
+          "it": "Dispositivo o servizio collegato",
+          "es": "Dispositivo o servicio conectado",
+          "pl": "Urządzenie lub usługa połączona",
+          "uk": "Пристрої або послуги підключені",
+          "zh-cn": "证人或有关服务"
+        },
+        "type": "boolean",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    }
+  ]
 }
