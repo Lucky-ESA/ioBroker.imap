@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "imap",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "news": {
+      "0.1.1": {
+        "en": "Delete wrong error parse message",
+        "de": "Falsche Fehlermeldung löschen",
+        "ru": "Удалить неправильная ошибка parse сообщение",
+        "pt": "Excluir mensagem de análise de erro errada",
+        "nl": "Verwijder de verkeerde foute boodschap",
+        "fr": "Supprimer le message erroné",
+        "it": "Cancella messaggio di parse errore sbagliato",
+        "es": "Eliminar el mensaje de error incorrecto",
+        "pl": "Delete error pars",
+        "uk": "Видалити неправильне повідомлення про помилку",
+        "zh-cn": "删除错误的信息稀少"
+      },
       "0.1.0": {
         "en": "Added RAM consumption - Instance Settings\nAdded german documention\nAdded Mailparser options\nAdded counter history\nBug fixes",
         "de": "RAM-Verbrauch hinzugefügt - Instanzeinstellungen\nDeutsche Dokumentation hinzugefügt\nMailparser Optionen hinzugefügt\nHinzufügen der Zählerhistorie\nFehlerbehebungen",
@@ -80,19 +93,6 @@
         "pl": "(Lucky-ESA) (ang.). Addition: Added movement or copy copy copy copy copy\n(Lucky-ESA) (ang.). Added: Ustanowić flagę z punktami danych",
         "uk": "(Lucky-ESA) Доданий: Додано переміщення або копіювання\n(Lucky-ESA) Доданий: Настроювання прапора з точками даних",
         "zh-cn": "(Lucky-ESA) 增 编:\n(Lucky-ESA) 增加: 数据点的旗帜"
-      },
-      "0.0.4": {
-        "en": "Fix json_table",
-        "de": "Json_table",
-        "ru": "Исправление json_table",
-        "pt": "Fix json_table",
-        "nl": "_",
-        "fr": "Fix json_table",
-        "it": "Fissare json_table",
-        "es": "Corrección json_table",
-        "pl": "Fixus json_table",
-        "uk": "Виправлення json_table",
-        "zh-cn": "Fix json_table"
       }
     },
     "titleLang": {
