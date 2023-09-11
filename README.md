@@ -58,7 +58,7 @@
 
 ### **WORK IN PROGRESS**
 
--   (Lucky-ESA) Delete wrong loglevel
+-   (Lucky-ESA) Delete wrong error parse message
 
 ### 0.1.0 (2023-09-06)
 
