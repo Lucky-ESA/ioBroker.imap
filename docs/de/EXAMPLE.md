@@ -386,11 +386,11 @@ sendTo(
             var j_list = getAttr(i, "body.attachments");
             for (var j_index in j_list) {
                 j = j_list[j_index];
-                json = JSON.stringify(getAttr(j, "content"));
+                json = Buffer.from(getAttr(j, 'content'));
                 // Dein Anhang als Buffer
                 // console.log(getAttr(json, 'data'));
                 console.log(getAttr(j, "filename"));
-                writeFile("vis.0", getAttr(j, "filename"), getAttr(json, "data"), function (error) {
+                writeFile("vis.0", getAttr(j, "filename"), json, function (error) {
                     if (error) {
                         console.log(
                             "Fehler beim Speichern von Datei " + getAttr(json, "filename") + "   Fehler:" + error,
