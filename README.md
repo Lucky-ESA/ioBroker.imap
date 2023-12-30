@@ -58,7 +58,8 @@
 
 ### **WORK IN PROGRESS**
 
--   (Lucky-ESA) Missing translate
+-   (Lucky-ESA) Added missing translate
+-   (Lucky-ESA) Updated package
 
 ### 0.1.1 (2023-09-11)
 
