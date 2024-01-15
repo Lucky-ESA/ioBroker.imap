@@ -252,13 +252,19 @@ class Imap extends utils.Adapter {
         await this.createSelect(selectbox);
         this.log_translator("info", "IMAP check start");
         await this.checkDeviceFolder();
-        this.qualityInterval = this.setInterval(() => {
-            this.cleanupQuality();
-            this.memrsscheck();
-        }, 60 * 60 * 24 * 1000);
-        this.statusInterval = this.setInterval(() => {
-            this.connectionCheck();
-        }, 60 * 60 * 1000);
+        this.qualityInterval = this.setInterval(
+            () => {
+                this.cleanupQuality();
+                this.memrsscheck();
+            },
+            60 * 60 * 24 * 1000,
+        );
+        this.statusInterval = this.setInterval(
+            () => {
+                this.connectionCheck();
+            },
+            60 * 60 * 1000,
+        );
         this.cleanupQuality();
         this.checksupport();
         this.subscribeStates(`json_imap`);
@@ -1064,13 +1070,17 @@ class Imap extends utils.Adapter {
                         obj.message["search"] != "" &&
                         obj.message["name"] != "" &&
                         obj.message["bodie"] != "" &&
-                        obj.message["parse"] != "" &&
+                        obj.message["parse"] != null &&
                         obj.message["max"] > 0 &&
                         obj.message["max"] < 100
                     ) {
                         if (obj.message["name"] !== "all") {
                             const user = obj.message["name"].replace(FORBIDDEN_CHARS, "_");
-                            this.custom_search(user, _obj);
+                            try {
+                                this.custom_search(user, _obj);
+                            } catch (e) {
+                                this.sendTo(obj.from, obj.command, [], obj.callback);
+                            }
                         } else {
                             this.log_translator("info", "No IMAP selected");
                             this.sendTo(obj.from, obj.command, [], obj.callback);

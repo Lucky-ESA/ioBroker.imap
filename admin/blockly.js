@@ -598,7 +598,11 @@ Blockly.JavaScript["imap_request"] = function (block) {
     var value_bodie = Blockly.JavaScript.valueToCode(block, "BODIES", Blockly.JavaScript.ORDER_ATOMIC);
     var value_max = Blockly.JavaScript.valueToCode(block, "MAX", Blockly.JavaScript.ORDER_ATOMIC);
     var value_parse = block.getFieldValue("MAILPARSER");
-    value_parse = value_parse === "TRUE" || value_parse === "true" || value_parse === true;
+    if (value_parse === "TRUE" || value_parse === "true" || value_parse === true) {
+        value_parse = true;
+    } else {
+        value_parse = false;
+    }
 
     var para_fetch = "";
     if (value_fetch !== null && value_fetch !== "") {
