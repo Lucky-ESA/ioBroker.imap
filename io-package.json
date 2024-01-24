@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "imap",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "news": {
+      "0.1.2": {
+        "en": "Added missing translate\nUpdated package\nBug fixes",
+        "de": "Hinzugefügt fehlende Übersetzung\nAktualisiertes Paket\nFehlerbehebungen",
+        "ru": "Добавить недостающий перевод\nОбновленный пакет\nЗапястья",
+        "pt": "Adicionado em falta traduzir\nPacote atualizado\nCorreções de bugs",
+        "nl": "Toegevoegde ontbrekende vertaling\nBijgewerkt pakket\nBugfixes",
+        "fr": "Ajoutée manquante traduire\nPaquet mis à jour\nCorrections des bogues",
+        "it": "Aggiunto traduttore mancante\nPacchetto aggiornato\nCorrezioni di bug",
+        "es": "Traducir desaparecido\nPaquete actualizado\nCorrección de errores",
+        "pl": "Dodano brak tłumaczenia\nAktualizacja pakietu\nPoprawki błędów",
+        "uk": "Додати відсутній переклад\nОновлений пакет\nВиправлення помилок",
+        "zh-cn": "缺少翻译\n更新软件包\n错误修正"
+      },
       "0.1.1": {
         "en": "Delete wrong error parse message",
         "de": "Falsche Fehlermeldung löschen",
@@ -80,19 +93,6 @@
         "pl": "Added trigger move lub copy mail\nAdded JSON dla wielu kont IMAP\nBug",
         "uk": "Доданий тригер переміщення або копіювання електронних листів\nДодано JSON для декількох облікових записів IMAP\nВиправлення помилок",
         "zh-cn": "增购机或邮票\n增聘联合办多管方案账户\nBug fix"
-      },
-      "0.0.5": {
-        "en": "(Lucky-ESA) Added: Added move or copy\n(Lucky-ESA) Added: Set flag with datapoints",
-        "de": "(Lucky-ESA) Hinzugefügt: hinzugefügt verschieben oder kopieren\n(Lucky-ESA) Hinzugefügt: Flagge mit Datenpunkten festlegen",
-        "ru": "(Lucky-ESA) Добавлена: Добавлен ход или копия\n(Lucky-ESA) Добавлена: Установите флаг с точками данных",
-        "pt": "(Lucky-ESA) Adicionado: Adicionado movimento ou cópia\n(Lucky-ESA) Adicionado: Definir bandeira com datapoints",
-        "nl": "(Lucky-ESA) Toegevoegd\n(Lucky-ESA) Toegevoegd: Zet vlag met datapoints",
-        "fr": "(Lucky-ESA) Ajouté : Ajout d'un mouvement ou d'une copie\n(Lucky-ESA) Ajouté : Définir le drapeau avec des points de données",
-        "it": "(Lucky-ESA) Aggiunto: Aggiunto movimento o copia\n(Lucky-ESA) Aggiunto: Impostare la bandiera con i datapoint",
-        "es": "(Lucky-ESA) Añadido: Añadido movimiento o copia\n(Lucky-ESA) Añadido: Establecer bandera con puntos de datos",
-        "pl": "(Lucky-ESA) (ang.). Addition: Added movement or copy copy copy copy copy\n(Lucky-ESA) (ang.). Added: Ustanowić flagę z punktami danych",
-        "uk": "(Lucky-ESA) Доданий: Додано переміщення або копіювання\n(Lucky-ESA) Доданий: Настроювання прапора з точками даних",
-        "zh-cn": "(Lucky-ESA) 增 编:\n(Lucky-ESA) 增加: 数据点的旗帜"
       }
     },
     "titleLang": {
