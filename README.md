@@ -60,6 +60,7 @@
 
 -   (Lucky-ESA) Added missing translate
 -   (Lucky-ESA) Updated package
+-   (Lucky-ESA) Bug fixes
 
 ### 0.1.1 (2023-09-11)
 
@@ -129,7 +130,7 @@
 
 MIT License
 
-Copyright (c) 2023 Lucky-ESA <github@luckyskills.de>
+Copyright (c) 2023-2024 Lucky-ESA <github@luckyskills.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
