@@ -1278,6 +1278,14 @@ class Imap extends utils.Adapter {
                 this.setAckFlag(id);
                 return;
             }
+            if (command === "set") {
+                this.setAckFlag(id);
+                return;
+            }
+            if (command === "type") {
+                this.setAckFlag(id);
+                return;
+            }
             if (command === "folder") {
                 this.setAckFlag(id);
                 return;
@@ -1401,15 +1409,15 @@ class Imap extends utils.Adapter {
      */
     async applyFlag(clientID, set, uid, type) {
         if (this.clients[clientID]) {
-            if (set == "") {
+            if (set == "" || set == null) {
                 const sets = await this.getStateAsync(`${clientID}.remote.flag.set`);
                 set = sets && sets.val ? sets.val.toString() : "";
             }
-            if (uid === 0) {
+            if (uid === 0 || uid == null) {
                 const uids = await this.getStateAsync(`${clientID}.remote.flag.uid`);
                 uid = uids && uids.val != null ? Number(uids.val) : 0;
             }
-            if (type == "") {
+            if (type == "" || type == null) {
                 const types = await this.getStateAsync(`${clientID}.remote.flag.type`);
                 type = types && types.val ? types.val.toString() : "";
             }
