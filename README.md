@@ -59,6 +59,7 @@
 ### **WORK IN PROGRESS**
 
 -   (Lucky-ESA) Fixed setFlag
+-   (Lucky-ESA) Fixed sendTo error during instance deletion (#57)
 
 ### 0.1.2 (2024-01-24)
 

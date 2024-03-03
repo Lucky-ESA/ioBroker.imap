@@ -20,6 +20,19 @@ Blockly.Translate =
     };
 
 /// --- SendTo imap --------------------------------------------------
+Blockly.Words["no_instance_found"] = {
+    en: "No instance found",
+    de: "Keine Instanz gefunden",
+    ru: "Не найден",
+    pt: "Nenhuma instância encontrada",
+    nl: "Geen instantie gevonden",
+    fr: "Aucune instance trouvée",
+    it: "Nessun caso trovato",
+    es: "No hay caso encontrado",
+    pl: "Brak",
+    uk: "Не знайдено",
+    "zh-cn": "未找到实例",
+};
 Blockly.Words["imap"] = {
     en: "IMAP",
     de: "IMAP",
@@ -425,6 +438,7 @@ Blockly.Blocks["imap"] = {
                 }
             }
         }
+        if (Object.keys(options_instance).length == 0) options_instance.push([Blockly.Translate("no_instance_found"), ""]);
 
         this.appendDummyInput("INSTANCE")
             .appendField(Blockly.Translate("imap"))
@@ -544,6 +558,7 @@ Blockly.Blocks["imap_request"] = {
                 }
             }
         }
+        if (Object.keys(options_instance).length == 0) options_instance.push([Blockly.Translate("no_instance_found"), ""]);
 
         this.appendDummyInput("INSTANCE")
             .appendField(Blockly.Translate("imap"))
@@ -687,6 +702,7 @@ Blockly.Blocks["imap_data"] = {
                 }
             }
         }
+        if (Object.keys(options_instance).length == 0) options_instance.push([Blockly.Translate("no_instance_found"), ""]);
 
         this.appendDummyInput("INSTANCE")
             .appendField(Blockly.Translate("imap"))
@@ -812,6 +828,7 @@ Blockly.Blocks["imap_flag"] = {
                 }
             }
         }
+        if (Object.keys(options_instance).length == 0) options_instance.push([Blockly.Translate("no_instance_found"), ""]);
 
         this.appendDummyInput("INSTANCE")
             .appendField(Blockly.Translate("imap"))
