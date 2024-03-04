@@ -13,13 +13,14 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/Lucky-ESA/ioBroker.imap)
 ![GitHub issues](https://img.shields.io/github/issues/Lucky-ESA/ioBroker.imap)</br>
 **Version:** </br>
-![Beta](https://img.shields.io/npm/v/iobroker.imap.svg?color=red&label=beta)
+![Current version in stable repository](https://iobroker.live/badges/imap-stable.svg)
 
 [![NPM](https://nodei.co/npm/iobroker.imap.png?downloads=true)](https://nodei.co/npm/iobroker.imap/)
 
 **Tests:** </br>
-![Test and Release](https://github.com/Lucky-ESA/ioBroker.imap/workflows/Test%20and%20Release/badge.svg)
+[![Test and Release](https://github.com/Lucky-ESA/ioBroker.imap/actions/workflows/test-and-release.yml/badge.svg)](https://github.com/Lucky-ESA/ioBroker.imap/actions/workflows/test-and-release.yml)
 [![CodeQL](https://github.com/Lucky-ESA/ioBroker.imap/actions/workflows/codeql.yml/badge.svg)](https://github.com/Lucky-ESA/ioBroker.imap/actions/workflows/codeql.yml)
+[![Known Vulnerabilities](https://snyk.io/test/github/Lucky-ESA/ioBroker.imap/badge.svg)](https://snyk.io/test/github/Lucky-ESA/ioBroker.imap)
 
 ## imap adapter for ioBroker
 
