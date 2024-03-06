@@ -48,7 +48,7 @@
 
 ## Questions
 
-🇩🇪 [Fragen](https://forum.iobroker.net/topic/63400/test-adapter-iobroker-imap-v0-0-1-github)
+🇩🇪 [Fragen](https://forum.iobroker.net/topic/63400/test-adapter-iobroker-imap-latest-stable)
 
 ## Changelog
 
