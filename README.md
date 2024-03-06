@@ -61,6 +61,7 @@
 
 -   (Lucky-ESA) Fixed setFlag
 -   (Lucky-ESA) Fixed sendTo error during instance deletion ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))
+-   (Lucky-ESA) Mass email shift intercepted
 
 ### 0.1.2 (2024-01-24)
 

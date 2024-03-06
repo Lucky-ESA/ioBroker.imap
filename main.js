@@ -223,6 +223,10 @@ class Imap extends utils.Adapter {
                 await this.cleanupDatapoints(dev);
                 continue;
             }
+            dev.onExpunge = 0;
+            dev.seqonExpunge = [];
+            dev.isonExpunge = false;
+            dev.onExpungeTimer = null;
             this.clientsHTML[dev.user] = {};
             this.boxfolder[dev.user] = {};
             this.restartIMAPConnection[dev.user] = null;
@@ -1185,12 +1189,14 @@ class Imap extends utils.Adapter {
     onUnload(callback) {
         try {
             for (const dev of this.clientsID) {
+                this.clientsRaw[dev].onExpungeTimer && this.clearTimeout(this.clientsRaw[dev].onExpungeTimer);
                 this.clients[dev] = null;
                 this.restartIMAPConnection[dev] && this.clearTimeout(this.restartIMAPConnection[dev]);
                 this.setState(`${dev}.online`, {
                     val: false,
                     ack: true,
                 });
+                this.clientsRaw[dev] = null;
             }
             this.qualityInterval && this.clearInterval(this.qualityInterval);
             this.statusInterval && this.clearInterval(this.statusInterval);
