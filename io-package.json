@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "imap",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "news": {
+      "0.1.3": {
+        "en": "Fixed setFlag\nFixed sendTo error during instance deletion ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nMass email shift intercepted",
+        "de": "Fixed set Flagge\nFester Versand Fehler bei der Löschung von Instanzen ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nMassen-E-Mail-Schicht abgefangen",
+        "ru": "Фиксированный набор Флаг\nFixed send Ошибка во время удаления ([#57] (https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nМассовый смещение электронной почты перехвачено",
+        "pt": "Conjunto fixo Bandeira\nEnviar fixo Para erro durante a exclusão de instância ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nMudança de e-mail em massa interceptada",
+        "nl": "Vaste set Vlag\nVaste verzending Fout tijdens het verwijderen van instantie ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nOnderschepte massa-e-mailverschuiving",
+        "fr": "Set fixe Drapeau\nEnvoi fixe Erreur lors de la suppression de l'instance ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57)\nChangement d'email de masse intercepté",
+        "it": "Set fisso Bandiera\nInviato fisso Per errore durante la cancellazione delle istanze ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nSpostamento email di massa intercettato",
+        "es": "Juego fijo Bandera\nEnvío fijo To error during instance deletion ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nCambio de correo electrónico interceptado",
+        "pl": "Zestaw stały Flaga\nPoprawiono wysyłanie Do błędu podczas usuwania instancji ([# 57] (https: / / github.com / Lucky- ESA / ioBroker.imap / issues / 57))\nMass email przesunięcie przechwycone",
+        "uk": "Фіксований набір Прапор\nВиправлена відправка Помилки ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nМасова зміна електронної пошти",
+        "zh-cn": "固定设备 旗帜\n固定发送 删除实例时出现错误([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\n已截取大宗电子邮件"
+      },
       "0.1.2": {
         "en": "Added missing translate\nUpdated package\nBug fixes",
         "de": "Hinzugefügt fehlende Übersetzung\nAktualisiertes Paket\nFehlerbehebungen",
@@ -80,19 +93,6 @@
         "pl": "Fix koryguje pole widzenia i niespodzianek\nZadaniowe możliwości\nPrzemiana kryzysowa bez restartu\nAdded outlook.office365.com oauth2 login\nAdded Connection.js from Module to Adapter\nBug",
         "uk": "Фіксувати правильну лічильник для видимих і невидимих\nДодаткові можливості\nЗміни критерії без перезапуску\nEnglish, Українська, Français..\nДодано Connection.js від Module до адаптера\nВиправлення помилок",
         "zh-cn": "Fix 纠正被发现和无见的反击\n增加能力\n2. 标准改变,而不恢复原状\n增加前景\nA. 添加了Anection.js from Module to Adapter\nBug fix"
-      },
-      "0.0.6": {
-        "en": "Added trigger move or copy emails\nAdded JSON for multiple IMAP accounts\nBug fixes",
-        "de": "Trigger-Bewegung oder Kopie-E-Mails hinzugefügt\nJSON für mehrere IMAP-Konten hinzugefügt\nFehlerbehebungen",
-        "ru": "Добавлены триггеры или копировать электронные письма\nДобавлен JSON для нескольких учетных записей IMAP\nИсправления ошибок",
-        "pt": "Adicionado movimento do gatilho ou copiar e-mails\nAdicionado JSON para múltiplas contas IMAP\nCorreções de bugs",
-        "nl": "Verplaatsing of mails\n_\nBug repareert",
-        "fr": "Ajout d'un déménagement ou d'une copie des courriels\nJSON ajouté pour plusieurs comptes IMAP\nCorrections",
-        "it": "Aggiunta di attivazione spostare o copiare e-mail\nAggiunto JSON per più account IMAP\nCorrezioni di bug",
-        "es": "Añadido movimiento de gatillo o copiar correos electrónicos\nAñadido JSON para múltiples cuentas de IMAP\nCorrección de errores",
-        "pl": "Added trigger move lub copy mail\nAdded JSON dla wielu kont IMAP\nBug",
-        "uk": "Доданий тригер переміщення або копіювання електронних листів\nДодано JSON для декількох облікових записів IMAP\nВиправлення помилок",
-        "zh-cn": "增购机或邮票\n增聘联合办多管方案账户\nBug fix"
       }
     },
     "titleLang": {
