@@ -399,10 +399,8 @@ Blockly.Words["imap_data_seqno"] = {
 };
 Blockly.Sendto.blocks["imap"] =
     '<block type="imap">' +
-    '     <value name="INSTANCE">' +
-    "     </value>" +
-    '     <value name="IMAPNAME">' +
-    "     </value>" +
+    '     <field name="INSTANCE"></field>' +
+    '     <field name="IMAPNAME"></field>' +
     '     <value name="SEARCH">' +
     '         <shadow type="text">' +
     '             <field name="TEXT">["UNSEEN"]</field>' +
@@ -413,32 +411,31 @@ Blockly.Sendto.blocks["imap"] =
     '             <field name="NUM">20</field>' +
     "         </shadow>" +
     "     </value>" +
-    '     <value name="LOG">' +
-    "     </value>" +
+    '     <field name="LOG"></field>' +
     "</block>";
 
 Blockly.Blocks["imap"] = {
     init: function () {
-        var options_user = [];
-        var options_instance = [];
+        const options_user = [];
+        const options_instance = [];
         options_user.push([Blockly.Translate("imap_all"), "all"]);
         if (typeof main !== "undefined" && main.instances) {
-            for (var i = 0; i < main.instances.length; i++) {
-                var m = main.instances[i].match(/^system.adapter.imap.(\d+)$/);
+            for (let i = 0; i < main.instances.length; i++) {
+                const m = main.instances[i].match(/^system.adapter.imap.(\d+)$/);
                 if (m) {
-                    var n = parseInt(m[1], 10);
+                    const n = parseInt(m[1], 10);
                     options_instance.push(["imap." + n, "." + n]);
                     if (main.objects[main.instances[i]].native.hosts) {
-                        for (var a = 0; a < main.objects[main.instances[i]].native.hosts.length; a++) {
+                        for (let a = 0; a < main.objects[main.instances[i]].native.hosts.length; a++) {
                             //Checking active in the main.js.
-                            var id = main.objects[main.instances[i]].native.hosts[a].user;
+                            const id = main.objects[main.instances[i]].native.hosts[a].user;
                             options_user.push([n + "." + id, id]);
                         }
                     }
                 }
             }
         }
-        if (Object.keys(options_instance).length == 0) options_instance.push([Blockly.Translate("no_instance_found"), ""]);
+        if (options_instance.length == 0) options_instance.push([Blockly.Translate("no_instance_found"), ""]);
 
         this.appendDummyInput("INSTANCE")
             .appendField(Blockly.Translate("imap"))
@@ -475,13 +472,13 @@ Blockly.Blocks["imap"] = {
 };
 
 Blockly.JavaScript["imap"] = function (block) {
-    var dropdown_instance = block.getFieldValue("INSTANCE");
-    var logLevel = block.getFieldValue("LOG");
-    var value_name = block.getFieldValue("IMAPNAME");
-    var value_search = Blockly.JavaScript.valueToCode(block, "SEARCH", Blockly.JavaScript.ORDER_ATOMIC);
-    var value_max = Blockly.JavaScript.valueToCode(block, "MAX", Blockly.JavaScript.ORDER_ATOMIC);
+    const dropdown_instance = block.getFieldValue("INSTANCE");
+    const logLevel = block.getFieldValue("LOG");
+    const value_name = block.getFieldValue("IMAPNAME");
+    const value_search = Blockly.JavaScript.valueToCode(block, "SEARCH", Blockly.JavaScript.ORDER_ATOMIC);
+    const value_max = Blockly.JavaScript.valueToCode(block, "MAX", Blockly.JavaScript.ORDER_ATOMIC);
 
-    var logText;
+    let logText;
     if (logLevel) {
         logText =
             "console." + logLevel + "(\"imap: " + value_max + " + " + value_name + "\");\n";
@@ -505,10 +502,8 @@ Blockly.JavaScript["imap"] = function (block) {
 
 Blockly.Sendto.blocks["imap_request"] =
     '<block type="imap_request">' +
-    '     <value name="INSTANCE">' +
-    "     </value>" +
-    '     <value name="IMAPNAME">' +
-    "     </value>" +
+    '     <field name="INSTANCE"></field>' +
+    '     <field name="IMAPNAME"></field>' +
     '     <value name="SEARCH">' +
     '         <shadow type="text">' +
     '             <field name="TEXT">["ALL", ["SINCE", "May 20, 2022"]]</field>' +
@@ -529,29 +524,26 @@ Blockly.Sendto.blocks["imap_request"] =
     '             <field name="NUM">20</field>' +
     "         </shadow>" +
     "     </value>" +
-    '     <value name="MAILPARSER">' +
-    "     </value>" +
-    '     <value name="LOG">' +
-    "     </value>" +
-    '     <value name="STATEMENT">' +
-    "     </value>" +
+    '     <field name="MAILPARSER"></field>' +
+    '     <field name="LOG"></field>' +
+    '     <field name="STATEMENT"></field>' +
     "</block>";
 
 Blockly.Blocks["imap_request"] = {
     init: function () {
-        var options_user = [];
-        var options_instance = [];
+        const options_user = [];
+        const options_instance = [];
         options_user.push([Blockly.Translate("imap_choose"), "all"]);
         if (typeof main !== "undefined" && main.instances) {
-            for (var i = 0; i < main.instances.length; i++) {
-                var m = main.instances[i].match(/^system.adapter.imap.(\d+)$/);
+            for (let i = 0; i < main.instances.length; i++) {
+                const m = main.instances[i].match(/^system.adapter.imap.(\d+)$/);
                 if (m) {
-                    var n = parseInt(m[1], 10);
+                    const n = parseInt(m[1], 10);
                     options_instance.push(["imap." + n, "." + n]);
                     if (main.objects[main.instances[i]].native.hosts) {
-                        for (var a = 0; a < main.objects[main.instances[i]].native.hosts.length; a++) {
+                        for (let a = 0; a < main.objects[main.instances[i]].native.hosts.length; a++) {
                             //Checking active in the main.js.
-                            var id = main.objects[main.instances[i]].native.hosts[a].user;
+                            const id = main.objects[main.instances[i]].native.hosts[a].user;
                             options_user.push([n + "." + id, id]);
                         }
                     }
@@ -605,21 +597,21 @@ Blockly.Blocks["imap_request"] = {
 };
 
 Blockly.JavaScript["imap_request"] = function (block) {
-    var dropdown_instance = block.getFieldValue("INSTANCE");
-    var logLevel = block.getFieldValue("LOG");
-    var value_name = block.getFieldValue("IMAPNAME");
-    var value_search = Blockly.JavaScript.valueToCode(block, "SEARCH", Blockly.JavaScript.ORDER_ATOMIC);
-    var value_fetch = Blockly.JavaScript.valueToCode(block, "FETCH", Blockly.JavaScript.ORDER_ATOMIC);
-    var value_bodie = Blockly.JavaScript.valueToCode(block, "BODIES", Blockly.JavaScript.ORDER_ATOMIC);
-    var value_max = Blockly.JavaScript.valueToCode(block, "MAX", Blockly.JavaScript.ORDER_ATOMIC);
-    var value_parse = block.getFieldValue("MAILPARSER");
+    const dropdown_instance = block.getFieldValue("INSTANCE");
+    const logLevel = block.getFieldValue("LOG");
+    const value_name = block.getFieldValue("IMAPNAME");
+    const value_search = Blockly.JavaScript.valueToCode(block, "SEARCH", Blockly.JavaScript.ORDER_ATOMIC);
+    const value_fetch = Blockly.JavaScript.valueToCode(block, "FETCH", Blockly.JavaScript.ORDER_ATOMIC);
+    const value_bodie = Blockly.JavaScript.valueToCode(block, "BODIES", Blockly.JavaScript.ORDER_ATOMIC);
+    const value_max = Blockly.JavaScript.valueToCode(block, "MAX", Blockly.JavaScript.ORDER_ATOMIC);
+    let value_parse = block.getFieldValue("MAILPARSER");
     if (value_parse === "TRUE" || value_parse === "true" || value_parse === true) {
         value_parse = true;
     } else {
         value_parse = false;
     }
 
-    var para_fetch = "";
+    let para_fetch = "";
     if (value_fetch !== null && value_fetch !== "") {
         if (typeof value_fetch === "object") {
             para_fetch = " JSON.parse(" + JSON.stringify(value_fetch) + ")";
@@ -628,7 +620,7 @@ Blockly.JavaScript["imap_request"] = function (block) {
         }
     }
 
-    var text = "{\n";
+    let text = "{\n";
     text += '  name: "' + value_name + '",\n';
     text += "   max: " + value_max + ",\n";
     text += "   search: " + value_search + ",\n";
@@ -637,22 +629,21 @@ Blockly.JavaScript["imap_request"] = function (block) {
     text += "   parse: " + value_parse + ",\n";
     text += "}";
 
-    var args = [];
+    const args = [];
     args.push('\n   "name": "' + value_name + '"');
     args.push('\n   "max": ' + value_max);
     args.push('\n   "search": ' + value_search);
     args.push('\n   "fetch": ' + value_fetch);
     args.push('\n   "bodie": ' + value_bodie);
     args.push('\n   "parse": ' + value_parse);
-    var logText;
+    let logText;
     if (logLevel) {
         logText = "console." + logLevel + "(\"imap_request: " + value_max + " + " + value_name + "\");\n";
     } else {
         logText = "";
     }
-    var statement;
-    statement = Blockly.JavaScript.statementToCode(block, "STATEMENT");
-    var command = "getIMAPRequest";
+    const statement = Blockly.JavaScript.statementToCode(block, "STATEMENT");
+    const command = "getIMAPRequest";
     return (
         'sendTo("imap' +
         dropdown_instance +
@@ -669,33 +660,28 @@ Blockly.JavaScript["imap_request"] = function (block) {
 
 Blockly.Sendto.blocks["imap_data"] =
     '<block type="imap_data">' +
-    '     <value name="INSTANCE">' +
-    "     </value>" +
-    '     <value name="IMAPNAME">' +
-    "     </value>" +
-    '     <value name="IMAPVALUE">' +
-    "     </value>" +
-    '     <value name="LOG">' +
-    "     </value>" +
-    '     <value name="STATEMENT">' +
-    "     </value>" +
+    '     <field name="INSTANCE"></field>' +
+    '     <field name="IMAPNAME"></field>' +
+    '     <field name="IMAPVALUE"></field>' +
+    '     <field name="LOG"></field>' +
+    '     <field name="STATEMENT"></field>' +
     "</block>";
 
 Blockly.Blocks["imap_data"] = {
     init: function () {
-        var options_user = [];
-        var options_instance = [];
+        const options_user = [];
+        const options_instance = [];
         options_user.push([Blockly.Translate("imap_choose"), "all"]);
         if (typeof main !== "undefined" && main.instances) {
-            for (var i = 0; i < main.instances.length; i++) {
-                var m = main.instances[i].match(/^system.adapter.imap.(\d+)$/);
+            for (let i = 0; i < main.instances.length; i++) {
+                const m = main.instances[i].match(/^system.adapter.imap.(\d+)$/);
                 if (m) {
-                    var n = parseInt(m[1], 10);
+                    const n = parseInt(m[1], 10);
                     options_instance.push(["imap." + n, "." + n]);
                     if (main.objects[main.instances[i]].native.hosts) {
-                        for (var a = 0; a < main.objects[main.instances[i]].native.hosts.length; a++) {
+                        for (let a = 0; a < main.objects[main.instances[i]].native.hosts.length; a++) {
                             //Checking active in the main.js.
-                            var id = main.objects[main.instances[i]].native.hosts[a].user;
+                            const id = main.objects[main.instances[i]].native.hosts[a].user;
                             options_user.push([n + "." + id, id]);
                         }
                     }
@@ -747,28 +733,27 @@ Blockly.Blocks["imap_data"] = {
 };
 
 Blockly.JavaScript["imap_data"] = function (block) {
-    var dropdown_instance = block.getFieldValue("INSTANCE");
-    var logLevel = block.getFieldValue("LOG");
-    var value_name = block.getFieldValue("IMAPNAME");
-    var value_value = block.getFieldValue("IMAPVALUE");
+    const dropdown_instance = block.getFieldValue("INSTANCE");
+    const logLevel = block.getFieldValue("LOG");
+    const value_name = block.getFieldValue("IMAPNAME");
+    const value_value = block.getFieldValue("IMAPVALUE");
 
-    var text = "{\n";
+    let text = "{\n";
     text += '  name: "' + value_name + '",\n';
     text += '  value: "' + value_value + '",\n';
     text += "}";
 
-    var args = [];
+    const args = [];
     args.push('\n   "name": "' + value_name + '"');
     args.push('\n   "value": "' + value_value + '"');
-    var logText;
+    let logText;
     if (logLevel) {
         logText = "console." + logLevel + "(\"imap_data: " + value_name + "\");\n";
     } else {
         logText = "";
     }
-    var statement;
-    statement = Blockly.JavaScript.statementToCode(block, "STATEMENT");
-    var command = "getIMAPData";
+    const statement = Blockly.JavaScript.statementToCode(block, "STATEMENT");
+    const command = "getIMAPData";
     return (
         'sendTo("imap' +
         dropdown_instance +
@@ -784,10 +769,8 @@ Blockly.JavaScript["imap_data"] = function (block) {
 };
 Blockly.Sendto.blocks["imap_flag"] =
     '<block type="imap_flag">' +
-    '     <value name="INSTANCE">' +
-    "     </value>" +
-    '     <value name="IMAPNAME">' +
-    "     </value>" +
+    '     <field name="INSTANCE"></field>' +
+    '     <field name="IMAPNAME"></field>' +
     '     <value name="FLAG">' +
     '         <shadow type="text">' +
     '             <field name="TEXT">setFlags</field>' +
@@ -803,25 +786,24 @@ Blockly.Sendto.blocks["imap_flag"] =
     '             <field name="NUM">0</field>' +
     "         </shadow>" +
     "     </value>" +
-    '     <value name="LOG">' +
-    "     </value>" +
+    '     <field name="LOG"></field>' +
     "</block>";
 
 Blockly.Blocks["imap_flag"] = {
     init: function () {
-        var options_user = [];
-        var options_instance = [];
+        const options_user = [];
+        const options_instance = [];
         options_user.push([Blockly.Translate("imap_choose"), "all"]);
         if (typeof main !== "undefined" && main.instances) {
-            for (var i = 0; i < main.instances.length; i++) {
-                var m = main.instances[i].match(/^system.adapter.imap.(\d+)$/);
+            for (let i = 0; i < main.instances.length; i++) {
+                const m = main.instances[i].match(/^system.adapter.imap.(\d+)$/);
                 if (m) {
-                    var n = parseInt(m[1], 10);
+                    const n = parseInt(m[1], 10);
                     options_instance.push(["imap." + n, "." + n]);
                     if (main.objects[main.instances[i]].native.hosts) {
-                        for (var a = 0; a < main.objects[main.instances[i]].native.hosts.length; a++) {
+                        for (let a = 0; a < main.objects[main.instances[i]].native.hosts.length; a++) {
                             //Checking active in the main.js.
-                            var id = main.objects[main.instances[i]].native.hosts[a].user;
+                            const id = main.objects[main.instances[i]].native.hosts[a].user;
                             options_user.push([n + "." + id, id]);
                         }
                     }
@@ -866,14 +848,14 @@ Blockly.Blocks["imap_flag"] = {
 };
 
 Blockly.JavaScript["imap_flag"] = function (block) {
-    var dropdown_instance = block.getFieldValue("INSTANCE");
-    var logLevel = block.getFieldValue("LOG");
-    var value_name = block.getFieldValue("IMAPNAME");
-    var value_flag = Blockly.JavaScript.valueToCode(block, "FLAG", Blockly.JavaScript.ORDER_ATOMIC);
-    var value_flagtype = Blockly.JavaScript.valueToCode(block, "FLAGTYPE", Blockly.JavaScript.ORDER_ATOMIC);
-    var value_uid = Blockly.JavaScript.valueToCode(block, "UIDNO", Blockly.JavaScript.ORDER_ATOMIC);
+    const dropdown_instance = block.getFieldValue("INSTANCE");
+    const logLevel = block.getFieldValue("LOG");
+    const value_name = block.getFieldValue("IMAPNAME");
+    const value_flag = Blockly.JavaScript.valueToCode(block, "FLAG", Blockly.JavaScript.ORDER_ATOMIC);
+    const value_flagtype = Blockly.JavaScript.valueToCode(block, "FLAGTYPE", Blockly.JavaScript.ORDER_ATOMIC);
+    const value_uid = Blockly.JavaScript.valueToCode(block, "UIDNO", Blockly.JavaScript.ORDER_ATOMIC);
 
-    var logText;
+    let logText;
     if (logLevel) {
         logText =
             "console." + logLevel + "(\"imap_flag: " + value_flag + " + " + value_uid + " + " + value_name + "\");\n";

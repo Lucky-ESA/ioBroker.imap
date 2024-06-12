@@ -129,7 +129,6 @@
         },
         "tier": 3,
         "platform": "Javascript/Node.js",
-        "main": "main.js",
         "icon": "imap.png",
         "enabled": true,
         "extIcon": "https://raw.githubusercontent.com/Lucky-ESA/ioBroker.imap/master/admin/imap.png",
@@ -151,12 +150,12 @@
         },
         "dependencies": [
             {
-                "js-controller": ">=3.3.22"
+                "js-controller": ">=5.0.19"
             }
         ],
         "globalDependencies": [
             {
-                "admin": ">=5.1.13"
+                "admin": ">=6.13.16"
             }
         ]
     },

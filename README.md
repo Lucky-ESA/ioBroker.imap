@@ -30,7 +30,9 @@
 
 ## Requirements
 
--   Node >= 16
+-   Node 18 or 20
+-   JS-Controller >= 5.0.19
+-   Admin >= 6.13.16
 -   ~150 MB free ram
 
 ## Tested with
@@ -56,6 +58,13 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+
+-   (Lucky-ESA) Updated Blockly definitions
+-   (Lucky-ESA) JS-Controller >= 5.0.19 required
+-   (Lucky-ESA) Admin >=6.13.16 required
+
 ### 0.1.3 (2024-03-06)
 
 -   (Lucky-ESA) Fixed setFlag
