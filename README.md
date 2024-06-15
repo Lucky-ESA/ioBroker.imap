@@ -58,8 +58,7 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 0.2.0 (2024-06-15)
 
 -   (Lucky-ESA) Updated Blockly definitions
 -   (Lucky-ESA) JS-Controller >= 5.0.19 required

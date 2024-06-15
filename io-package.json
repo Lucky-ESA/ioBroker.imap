@@ -1,224 +1,241 @@
 {
-    "common": {
-        "name": "imap",
-        "version": "0.1.3",
-        "news": {
-            "0.1.3": {
-                "en": "Fixed setFlag\nFixed sendTo error during instance deletion ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nMass email shift intercepted",
-                "de": "Fixed set Flagge\nFester Versand Fehler bei der Löschung von Instanzen ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nMassen-E-Mail-Schicht abgefangen",
-                "ru": "Фиксированный набор Флаг\nFixed send Ошибка во время удаления ([#57] (https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nМассовый смещение электронной почты перехвачено",
-                "pt": "Conjunto fixo Bandeira\nEnviar fixo Para erro durante a exclusão de instância ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nMudança de e-mail em massa interceptada",
-                "nl": "Vaste set Vlag\nVaste verzending Fout tijdens het verwijderen van instantie ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nOnderschepte massa-e-mailverschuiving",
-                "fr": "Set fixe Drapeau\nEnvoi fixe Erreur lors de la suppression de l'instance ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57)\nChangement d'email de masse intercepté",
-                "it": "Set fisso Bandiera\nInviato fisso Per errore durante la cancellazione delle istanze ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nSpostamento email di massa intercettato",
-                "es": "Juego fijo Bandera\nEnvío fijo To error during instance deletion ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nCambio de correo electrónico interceptado",
-                "pl": "Zestaw stały Flaga\nPoprawiono wysyłanie Do błędu podczas usuwania instancji ([# 57] (https: / / github.com / Lucky- ESA / ioBroker.imap / issues / 57))\nMass email przesunięcie przechwycone",
-                "uk": "Фіксований набір Прапор\nВиправлена відправка Помилки ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nМасова зміна електронної пошти",
-                "zh-cn": "固定设备 旗帜\n固定发送 删除实例时出现错误([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\n已截取大宗电子邮件"
-            },
-            "0.1.2": {
-                "en": "Added missing translate\nUpdated package\nBug fixes",
-                "de": "Hinzugefügt fehlende Übersetzung\nAktualisiertes Paket\nFehlerbehebungen",
-                "ru": "Добавить недостающий перевод\nОбновленный пакет\nЗапястья",
-                "pt": "Adicionado em falta traduzir\nPacote atualizado\nCorreções de bugs",
-                "nl": "Toegevoegde ontbrekende vertaling\nBijgewerkt pakket\nBugfixes",
-                "fr": "Ajoutée manquante traduire\nPaquet mis à jour\nCorrections des bogues",
-                "it": "Aggiunto traduttore mancante\nPacchetto aggiornato\nCorrezioni di bug",
-                "es": "Traducir desaparecido\nPaquete actualizado\nCorrección de errores",
-                "pl": "Dodano brak tłumaczenia\nAktualizacja pakietu\nPoprawki błędów",
-                "uk": "Додати відсутній переклад\nОновлений пакет\nВиправлення помилок",
-                "zh-cn": "缺少翻译\n更新软件包\n错误修正"
-            },
-            "0.1.1": {
-                "en": "Delete wrong error parse message",
-                "de": "Falsche Fehlermeldung löschen",
-                "ru": "Удалить неправильная ошибка parse сообщение",
-                "pt": "Excluir mensagem de análise de erro errada",
-                "nl": "Verwijder de verkeerde foute boodschap",
-                "fr": "Supprimer le message erroné",
-                "it": "Cancella messaggio di parse errore sbagliato",
-                "es": "Eliminar el mensaje de error incorrecto",
-                "pl": "Delete error pars",
-                "uk": "Видалити неправильне повідомлення про помилку",
-                "zh-cn": "删除错误的信息稀少"
-            },
-            "0.1.0": {
-                "en": "Added RAM consumption - Instance Settings\nAdded german documention\nAdded Mailparser options\nAdded counter history\nBug fixes",
-                "de": "RAM-Verbrauch hinzugefügt - Instanzeinstellungen\nDeutsche Dokumentation hinzugefügt\nMailparser Optionen hinzugefügt\nHinzufügen der Zählerhistorie\nFehlerbehebungen",
-                "ru": "Добавлено RAM потребление - Instance Settings\nДобавлен немецкий документ\nДобавлены опции Mailparser\nДобавлена история счетчиков\nИсправления ошибок",
-                "pt": "Consumo de RAM adicionado - Configurações de instância\nAdicionado documento alemão\nOpções de Mailparser adicionadas\nAdicionado história do contador\nCorreções de bugs",
-                "nl": "Vertaling:\nVermeldde Duitse documenten\nVermeldde Mailparser opties\nVertaling:\nBug repareert",
-                "fr": "Ajout de la consommation de RAM - Instance Settings\nAjouté German documention\nAjout des options Mailparser\nAjout de l ' historique\nCorrections",
-                "it": "Consumi RAM aggiunti - Impostazioni di ubicazione\nAggiunto tedesco documention\nOpzioni Mailparser\nAggiunto contatore storia\nCorrezioni di bug",
-                "es": "Consumo de RAM añadido - Ajustes de Instance\nSeñalación alemana\nOpciones adicionales de Mailparser\nHistoria del contador\nCorrección de errores",
-                "pl": "Zużycie pamięci RAM - Instance Settings (ang.)\nDokumentacja germanna\nAdded Mailparser option\nAdded counter history\nBug",
-                "uk": "Додано споживання оперативної пам'яті - Налаштування\nДодана німецька документація\nДодано параметри парсера електронної пошти\nІсторія лічильника\nВиправлення помилок",
-                "zh-cn": "增加分期消费-包装\n增 录\n增加无期选择\n增加反历史\nBug fix"
-            },
-            "0.0.9": {
-                "en": "Fixed RAM consumption of new emails\nAdded counter attachments in JSON",
-                "de": "Fester RAM-Verbrauch neuer E-Mails\nHinzufügen von Zähleraufsätzen in JSON",
-                "ru": "Фиксированное потребление RAM новых писем\nДобавлены вложения счетчиков в JSON",
-                "pt": "Consumo de RAM fixo de novos e-mails\nAdicionado contra anexos em JSON",
-                "nl": "Vertaling:\nVertaling:",
-                "fr": "Consommation de RAM fixe de nouveaux emails\nAjout de pièces jointes dans JSON",
-                "it": "Risolto consumo di RAM di nuove email\nAggiunto accessori contatore in JSON",
-                "es": "Consumo de RAM fijo de nuevos correos electrónicos\nAgregados contadores en JSON",
-                "pl": "Zużycie pamięci RAM nowej e-maili\nAdded counter przywiązania w JSON",
-                "uk": "Виправлено споживання оперативної пам'яті нових електронних листів\nДодано лічильник вкладення в JSON",
-                "zh-cn": "新电子邮件的分期消费\n增加联索行动内的反附属"
-            },
-            "0.0.8": {
-                "en": "Fix refresh crash\nAdded MB threshold",
-                "de": "Erfrischungsabsturz beheben\nMB Schwelle",
-                "ru": "Исправить освежающие аварии\nДобавлен MB порог",
-                "pt": "Corrigir acidente de atualização\nLimite de MB adicionado",
-                "nl": "Verfrissende crash\nVertaling:",
-                "fr": "Réparer un crash\nAjout du seuil de MB",
-                "it": "Fissare l'incidente di aggiornamento\nSoglia MB aggiuntiva",
-                "es": "Cierre de refresco\nUmbral de MB",
-                "pl": "Fixel crash\nAdded MB progym",
-                "uk": "Виправлення аварійних змін\nДодано поріг MB",
-                "zh-cn": "Fixtifresh c\nA. 增加MB门槛"
-            },
-            "0.0.7": {
-                "en": "Fix correct counter for seen and unseen\nAdded capabilities\nCriteria change without restart\nAdded outlook.office365.com oauth2 login\nAdded Connection.js from Module to Adapter\nBug fixes",
-                "de": "Fix korrekter Zähler für gesehen und unsichtbar\nZusätzliche Fähigkeiten\nÄnderung der Kriterien ohne Neustart\nAusblick.office365.com oauth2 login\nHinzugefügt Connection.js von Modul zu Adapter\nFehlerbehebungen",
-                "ru": "Исправьте правильный счетчик для видимых и невидимых\nДобавленные возможности\nКритерии меняются без перезапуска\nДобавлен Outlook.office365.com oauth2 логин\nДобавлено Connection.js из модуля к адаптеру\nИсправления ошибок",
-                "pt": "Corrigir o contador correto para visto e invisível\nRecursos adicionados\nAlteração de critérios sem reinício\nAdicionado outlook.office365.com oauth2 login\nAdicionado Connection.js do módulo ao adaptador\nCorreções de bugs",
-                "nl": "Vertaling:\nVermogens\nCriteria verandert zonder rust\nVertaling:\nToegevoegd Connection\nBug repareert",
-                "fr": "Fixer le compteur correct pour vu et invisible\nCapacités ajoutées\nChangement de critères sans redémarrage\nAjout du login Outlook.office365.com oauth2\nAjout de Connection.js de Module à Adaptateur\nCorrections",
-                "it": "Fissare corretto contatore per visto e invisibile\nCapacità aggiuntive\nCambiamento dei criteri senza riavvio\nAggiunto Outlook.office365.com oauth2 login\nAggiunto Connection.js dal modulo all'adattatore\nCorrezioni di bug",
-                "es": "Fijar el contador correcto para visto y no visto\nCapacidades adicionales\nLos criterios cambian sin reiniciar\nAñadido Outlook.office365.com oauth2 login\nAñadido Connection.js del módulo al adaptador\nCorrección de errores",
-                "pl": "Fix koryguje pole widzenia i niespodzianek\nZadaniowe możliwości\nPrzemiana kryzysowa bez restartu\nAdded outlook.office365.com oauth2 login\nAdded Connection.js from Module to Adapter\nBug",
-                "uk": "Фіксувати правильну лічильник для видимих і невидимих\nДодаткові можливості\nЗміни критерії без перезапуску\nEnglish, Українська, Français..\nДодано Connection.js від Module до адаптера\nВиправлення помилок",
-                "zh-cn": "Fix 纠正被发现和无见的反击\n增加能力\n2. 标准改变,而不恢复原状\n增加前景\nA. 添加了Anection.js from Module to Adapter\nBug fix"
-            }
-        },
-        "titleLang": {
-            "en": "imap",
-            "de": "imap",
-            "ru": "имап",
-            "pt": "imap",
-            "nl": "imap",
-            "fr": "imap",
-            "it": "imap",
-            "es": "imágen",
-            "pl": "mapa",
-            "zh-cn": "地图",
-            "uk": "imap"
-        },
-        "desc": {
-            "en": "imap to receive your emails",
-            "de": "IMAP, um Ihre E-Mails zu empfangen",
-            "ru": "imap для получения ваших писем",
-            "pt": "imap para receber seus e-mails",
-            "nl": "imap om je e-mails te ontvangen",
-            "fr": "imap pour recevoir vos emails",
-            "it": "imap per ricevere le tue email",
-            "es": "imap para recibir tus correos",
-            "pl": "imap, aby otrzymywać e-maile",
-            "zh-cn": "imap 接收您的电子邮件",
-            "uk": "imap для отримання ваших електронних листів"
-        },
-        "authors": ["Lucky-ESA <github@luckyskills.de>"],
-        "keywords": ["imap", "mail", "email", "receive"],
-        "licenseInformation": {
-            "license": "MIT",
-            "type": "free"
-        },
-        "tier": 3,
-        "platform": "Javascript/Node.js",
-        "icon": "imap.png",
-        "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/Lucky-ESA/ioBroker.imap/master/admin/imap.png",
-        "readme": "https://github.com/Lucky-ESA/ioBroker.imap/blob/master/README.md",
-        "loglevel": "info",
-        "mode": "daemon",
-        "type": "messaging",
-        "messagebox": true,
-        "blockly": true,
-        "compact": true,
-        "connectionType": "cloud",
-        "dataSource": "push",
-        "adminUI": {
-            "config": "json"
-        },
-        "docs": {
-            "en": ["docs/en/README.md"],
-            "de": ["docs/de/README.md"]
-        },
-        "dependencies": [
-            {
-                "js-controller": ">=5.0.19"
-            }
-        ],
-        "globalDependencies": [
-            {
-                "admin": ">=6.13.16"
-            }
-        ]
+  "common": {
+    "name": "imap",
+    "version": "0.2.0",
+    "news": {
+      "0.2.0": {
+        "en": "Updated Blockly definitions\nJS-Controller >= 5.0.19 required\nAdmin >=6.13.16 required",
+        "de": "Aktualisierte Blockly Definitionen\nJS-Controller >= 5.0.19 erforderlich\nAdmin >=6.13.16 erforderlich",
+        "ru": "Обновленные детальные определения\n JS 5.0.19\n>=6.13.16",
+        "pt": "Definições Blockly atualizadas\nJS-Controller >= 5.0.19 necessário\nAdmin >=6.13.16 necessário",
+        "nl": "Bijgewerkte blokdefinities\nJS-Controller < 5.01.19 vereist\nAdmin < 6.13.16 vereist",
+        "fr": "Mise à jour des définitions par blocs\nJS-Contrôleur >= 5.0.19 requis\nAdmin >=6.13.16 requis",
+        "it": "Aggiornate definizioni Blockly\nJS-Controller >= 5.0.19 richiesto\nAdmin >=6.13.16 richiesto",
+        "es": "Definiciones bloqueadas actualizadas\nJS-Controller ≤ 5.0.19 requerido\nPersonal obligatorio",
+        "pl": "Aktualizacja definicji blockly\nJS- Controller > = 5.0.19 wymagane\nWymagany dodatek > = 6.13.16",
+        "uk": "Оновлено блочні визначення\nJS-Controller >=5.0.19 потрібно\nAdmin >=6.13.16 потрібно",
+        "zh-cn": "更新的块状定义\n联合来文主计长\n所需行政经费"
+      },
+      "0.1.3": {
+        "en": "Fixed setFlag\nFixed sendTo error during instance deletion ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nMass email shift intercepted",
+        "de": "Fixed set Flagge\nFester Versand Fehler bei der Löschung von Instanzen ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nMassen-E-Mail-Schicht abgefangen",
+        "ru": "Фиксированный набор Флаг\nFixed send Ошибка во время удаления ([#57] (https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nМассовый смещение электронной почты перехвачено",
+        "pt": "Conjunto fixo Bandeira\nEnviar fixo Para erro durante a exclusão de instância ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nMudança de e-mail em massa interceptada",
+        "nl": "Vaste set Vlag\nVaste verzending Fout tijdens het verwijderen van instantie ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nOnderschepte massa-e-mailverschuiving",
+        "fr": "Set fixe Drapeau\nEnvoi fixe Erreur lors de la suppression de l'instance ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57)\nChangement d'email de masse intercepté",
+        "it": "Set fisso Bandiera\nInviato fisso Per errore durante la cancellazione delle istanze ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nSpostamento email di massa intercettato",
+        "es": "Juego fijo Bandera\nEnvío fijo To error during instance deletion ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nCambio de correo electrónico interceptado",
+        "pl": "Zestaw stały Flaga\nPoprawiono wysyłanie Do błędu podczas usuwania instancji ([# 57] (https: / / github.com / Lucky- ESA / ioBroker.imap / issues / 57))\nMass email przesunięcie przechwycone",
+        "uk": "Фіксований набір Прапор\nВиправлена відправка Помилки ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nМасова зміна електронної пошти",
+        "zh-cn": "固定设备 旗帜\n固定发送 删除实例时出现错误([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\n已截取大宗电子邮件"
+      },
+      "0.1.2": {
+        "en": "Added missing translate\nUpdated package\nBug fixes",
+        "de": "Hinzugefügt fehlende Übersetzung\nAktualisiertes Paket\nFehlerbehebungen",
+        "ru": "Добавить недостающий перевод\nОбновленный пакет\nЗапястья",
+        "pt": "Adicionado em falta traduzir\nPacote atualizado\nCorreções de bugs",
+        "nl": "Toegevoegde ontbrekende vertaling\nBijgewerkt pakket\nBugfixes",
+        "fr": "Ajoutée manquante traduire\nPaquet mis à jour\nCorrections des bogues",
+        "it": "Aggiunto traduttore mancante\nPacchetto aggiornato\nCorrezioni di bug",
+        "es": "Traducir desaparecido\nPaquete actualizado\nCorrección de errores",
+        "pl": "Dodano brak tłumaczenia\nAktualizacja pakietu\nPoprawki błędów",
+        "uk": "Додати відсутній переклад\nОновлений пакет\nВиправлення помилок",
+        "zh-cn": "缺少翻译\n更新软件包\n错误修正"
+      },
+      "0.1.1": {
+        "en": "Delete wrong error parse message",
+        "de": "Falsche Fehlermeldung löschen",
+        "ru": "Удалить неправильная ошибка parse сообщение",
+        "pt": "Excluir mensagem de análise de erro errada",
+        "nl": "Verwijder de verkeerde foute boodschap",
+        "fr": "Supprimer le message erroné",
+        "it": "Cancella messaggio di parse errore sbagliato",
+        "es": "Eliminar el mensaje de error incorrecto",
+        "pl": "Delete error pars",
+        "uk": "Видалити неправильне повідомлення про помилку",
+        "zh-cn": "删除错误的信息稀少"
+      },
+      "0.1.0": {
+        "en": "Added RAM consumption - Instance Settings\nAdded german documention\nAdded Mailparser options\nAdded counter history\nBug fixes",
+        "de": "RAM-Verbrauch hinzugefügt - Instanzeinstellungen\nDeutsche Dokumentation hinzugefügt\nMailparser Optionen hinzugefügt\nHinzufügen der Zählerhistorie\nFehlerbehebungen",
+        "ru": "Добавлено RAM потребление - Instance Settings\nДобавлен немецкий документ\nДобавлены опции Mailparser\nДобавлена история счетчиков\nИсправления ошибок",
+        "pt": "Consumo de RAM adicionado - Configurações de instância\nAdicionado documento alemão\nOpções de Mailparser adicionadas\nAdicionado história do contador\nCorreções de bugs",
+        "nl": "Vertaling:\nVermeldde Duitse documenten\nVermeldde Mailparser opties\nVertaling:\nBug repareert",
+        "fr": "Ajout de la consommation de RAM - Instance Settings\nAjouté German documention\nAjout des options Mailparser\nAjout de l ' historique\nCorrections",
+        "it": "Consumi RAM aggiunti - Impostazioni di ubicazione\nAggiunto tedesco documention\nOpzioni Mailparser\nAggiunto contatore storia\nCorrezioni di bug",
+        "es": "Consumo de RAM añadido - Ajustes de Instance\nSeñalación alemana\nOpciones adicionales de Mailparser\nHistoria del contador\nCorrección de errores",
+        "pl": "Zużycie pamięci RAM - Instance Settings (ang.)\nDokumentacja germanna\nAdded Mailparser option\nAdded counter history\nBug",
+        "uk": "Додано споживання оперативної пам'яті - Налаштування\nДодана німецька документація\nДодано параметри парсера електронної пошти\nІсторія лічильника\nВиправлення помилок",
+        "zh-cn": "增加分期消费-包装\n增 录\n增加无期选择\n增加反历史\nBug fix"
+      },
+      "0.0.9": {
+        "en": "Fixed RAM consumption of new emails\nAdded counter attachments in JSON",
+        "de": "Fester RAM-Verbrauch neuer E-Mails\nHinzufügen von Zähleraufsätzen in JSON",
+        "ru": "Фиксированное потребление RAM новых писем\nДобавлены вложения счетчиков в JSON",
+        "pt": "Consumo de RAM fixo de novos e-mails\nAdicionado contra anexos em JSON",
+        "nl": "Vertaling:\nVertaling:",
+        "fr": "Consommation de RAM fixe de nouveaux emails\nAjout de pièces jointes dans JSON",
+        "it": "Risolto consumo di RAM di nuove email\nAggiunto accessori contatore in JSON",
+        "es": "Consumo de RAM fijo de nuevos correos electrónicos\nAgregados contadores en JSON",
+        "pl": "Zużycie pamięci RAM nowej e-maili\nAdded counter przywiązania w JSON",
+        "uk": "Виправлено споживання оперативної пам'яті нових електронних листів\nДодано лічильник вкладення в JSON",
+        "zh-cn": "新电子邮件的分期消费\n增加联索行动内的反附属"
+      },
+      "0.0.8": {
+        "en": "Fix refresh crash\nAdded MB threshold",
+        "de": "Erfrischungsabsturz beheben\nMB Schwelle",
+        "ru": "Исправить освежающие аварии\nДобавлен MB порог",
+        "pt": "Corrigir acidente de atualização\nLimite de MB adicionado",
+        "nl": "Verfrissende crash\nVertaling:",
+        "fr": "Réparer un crash\nAjout du seuil de MB",
+        "it": "Fissare l'incidente di aggiornamento\nSoglia MB aggiuntiva",
+        "es": "Cierre de refresco\nUmbral de MB",
+        "pl": "Fixel crash\nAdded MB progym",
+        "uk": "Виправлення аварійних змін\nДодано поріг MB",
+        "zh-cn": "Fixtifresh c\nA. 增加MB门槛"
+      }
     },
-    "native": {
-        "hosts": [],
-        "icons": [],
-        "oauth_token": [],
-        "nodemailer_options": [],
-        "max_mb": 400,
-        "max_mb_selection": 2,
-        "max_mb_telegram": "",
-        "max_mb_telegram_user": "",
-        "max_mb_object": "",
-        "max_mb_last_restart": 0
+    "titleLang": {
+      "en": "imap",
+      "de": "imap",
+      "ru": "имап",
+      "pt": "imap",
+      "nl": "imap",
+      "fr": "imap",
+      "it": "imap",
+      "es": "imágen",
+      "pl": "mapa",
+      "zh-cn": "地图",
+      "uk": "imap"
     },
-    "encryptedNative": ["password", "secureid"],
-    "protectedNative": ["password", "secureid"],
-    "objects": [],
-    "instanceObjects": [
-        {
-            "_id": "info",
-            "type": "channel",
-            "common": {
-                "name": {
-                    "en": "Information",
-                    "de": "Informationen",
-                    "ru": "Информация",
-                    "pt": "Informação",
-                    "nl": "Informatie",
-                    "fr": "Information",
-                    "it": "Informazioni",
-                    "es": "Información",
-                    "pl": "Informacja",
-                    "uk": "Інформація",
-                    "zh-cn": "信息"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.connection",
-            "type": "state",
-            "common": {
-                "role": "indicator.connected",
-                "name": {
-                    "en": "Device or service connected",
-                    "de": "Geräte- oder Serviceanschluss",
-                    "ru": "Устройство или сервис подключены",
-                    "pt": "Dispositivo ou serviço conectado",
-                    "nl": "Device of dienst verbonden",
-                    "fr": "Appareil ou service connecté",
-                    "it": "Dispositivo o servizio collegato",
-                    "es": "Dispositivo o servicio conectado",
-                    "pl": "Urządzenie lub usługa połączona",
-                    "uk": "Пристрої або послуги підключені",
-                    "zh-cn": "证人或有关服务"
-                },
-                "type": "boolean",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
-        }
+    "desc": {
+      "en": "imap to receive your emails",
+      "de": "IMAP, um Ihre E-Mails zu empfangen",
+      "ru": "imap для получения ваших писем",
+      "pt": "imap para receber seus e-mails",
+      "nl": "imap om je e-mails te ontvangen",
+      "fr": "imap pour recevoir vos emails",
+      "it": "imap per ricevere le tue email",
+      "es": "imap para recibir tus correos",
+      "pl": "imap, aby otrzymywać e-maile",
+      "zh-cn": "imap 接收您的电子邮件",
+      "uk": "imap для отримання ваших електронних листів"
+    },
+    "authors": [
+      "Lucky-ESA <github@luckyskills.de>"
+    ],
+    "keywords": [
+      "imap",
+      "mail",
+      "email",
+      "receive"
+    ],
+    "licenseInformation": {
+      "license": "MIT",
+      "type": "free"
+    },
+    "tier": 3,
+    "platform": "Javascript/Node.js",
+    "icon": "imap.png",
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/Lucky-ESA/ioBroker.imap/master/admin/imap.png",
+    "readme": "https://github.com/Lucky-ESA/ioBroker.imap/blob/master/README.md",
+    "loglevel": "info",
+    "mode": "daemon",
+    "type": "messaging",
+    "messagebox": true,
+    "blockly": true,
+    "compact": true,
+    "connectionType": "cloud",
+    "dataSource": "push",
+    "adminUI": {
+      "config": "json"
+    },
+    "docs": {
+      "en": [
+        "docs/en/README.md"
+      ],
+      "de": [
+        "docs/de/README.md"
+      ]
+    },
+    "dependencies": [
+      {
+        "js-controller": ">=5.0.19"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=6.13.16"
+      }
     ]
+  },
+  "native": {
+    "hosts": [],
+    "icons": [],
+    "oauth_token": [],
+    "nodemailer_options": [],
+    "max_mb": 400,
+    "max_mb_selection": 2,
+    "max_mb_telegram": "",
+    "max_mb_telegram_user": "",
+    "max_mb_object": "",
+    "max_mb_last_restart": 0
+  },
+  "encryptedNative": [
+    "password",
+    "secureid"
+  ],
+  "protectedNative": [
+    "password",
+    "secureid"
+  ],
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "Information",
+          "de": "Informationen",
+          "ru": "Информация",
+          "pt": "Informação",
+          "nl": "Informatie",
+          "fr": "Information",
+          "it": "Informazioni",
+          "es": "Información",
+          "pl": "Informacja",
+          "uk": "Інформація",
+          "zh-cn": "信息"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "role": "indicator.connected",
+        "name": {
+          "en": "Device or service connected",
+          "de": "Geräte- oder Serviceanschluss",
+          "ru": "Устройство или сервис подключены",
+          "pt": "Dispositivo ou serviço conectado",
+          "nl": "Device of dienst verbonden",
+          "fr": "Appareil ou service connecté",
+          "it": "Dispositivo o servizio collegato",
+          "es": "Dispositivo o servicio conectado",
+          "pl": "Urządzenie lub usługa połączona",
+          "uk": "Пристрої або послуги підключені",
+          "zh-cn": "证人或有关服务"
+        },
+        "type": "boolean",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    }
+  ]
 }
