@@ -12,7 +12,8 @@
     "imap",
     "mail",
     "email",
-    "receive"
+    "receive",
+    "ioBroker"
   ],
   "repository": {
     "type": "git",
