@@ -58,8 +58,7 @@
 -->
 
 ## Changelog
-
-### **WORK IN PROGRESS**
+### 0.2.1 (2024-09-16)
 
 -   (Lucky-ESA) Update dependencies
 -   (Lucky-ESA) Changed Log info to debug

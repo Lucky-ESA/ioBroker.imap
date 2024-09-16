@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "imap",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "news": {
+      "0.2.1": {
+        "en": "Update dependencies\nChanged Log info to debug\nFixed blockly setFlag crash",
+        "de": "Abhängigkeiten aktualisieren\nGeändert Log info to debug\nFester Blocksatz Flaggenabsturz",
+        "ru": "Зависимости обновления\nИзменение Информация для отладки\nФиксированный блокированный Крушение флага",
+        "pt": "Dependências de atualização\nMudança Log info to debug\nConjunto bloqueado fixo Falha da bandeira",
+        "nl": "Afhankelijkheden bijwerken\nGewijzigd Log info om te debuggen\nVast gezet Vlagcrash",
+        "fr": "Mise à jour des dépendances\nChangement Log info pour déboguer\nFixé en bloc Crash du drapeau",
+        "it": "Dipendenze di aggiornamento\nVariazione Accedi a debug\nSet fisso blocco crash della bandiera",
+        "es": "Actualizar las dependencias\nCambios Información de registro para depurar\nSet de bloqueo fijo Accidente de bandera",
+        "pl": "Aktualizuj zależności\nZmieniono Log info to debug\nNaprawiony blokly set Katastrofa flagi",
+        "uk": "Оновлення залежності\nЗмінено Інформація про журнал\nФіксований блокнот Прапорна аварія",
+        "zh-cn": "更新依赖关系\n已更改 要调试的日志信息\n固定区块 旗舰崩溃"
+      },
       "0.2.0": {
         "en": "Updated Blockly definitions\nJS-Controller >= 5.0.19 required\nAdmin >=6.13.16 required",
         "de": "Aktualisierte Blockly Definitionen\nJS-Controller >= 5.0.19 erforderlich\nAdmin >=6.13.16 erforderlich",
@@ -80,19 +93,6 @@
         "pl": "Zużycie pamięci RAM nowej e-maili\nAdded counter przywiązania w JSON",
         "uk": "Виправлено споживання оперативної пам'яті нових електронних листів\nДодано лічильник вкладення в JSON",
         "zh-cn": "新电子邮件的分期消费\n增加联索行动内的反附属"
-      },
-      "0.0.8": {
-        "en": "Fix refresh crash\nAdded MB threshold",
-        "de": "Erfrischungsabsturz beheben\nMB Schwelle",
-        "ru": "Исправить освежающие аварии\nДобавлен MB порог",
-        "pt": "Corrigir acidente de atualização\nLimite de MB adicionado",
-        "nl": "Verfrissende crash\nVertaling:",
-        "fr": "Réparer un crash\nAjout du seuil de MB",
-        "it": "Fissare l'incidente di aggiornamento\nSoglia MB aggiuntiva",
-        "es": "Cierre de refresco\nUmbral de MB",
-        "pl": "Fixel crash\nAdded MB progym",
-        "uk": "Виправлення аварійних змін\nДодано поріг MB",
-        "zh-cn": "Fixtifresh c\nA. 增加MB门槛"
       }
     },
     "titleLang": {
