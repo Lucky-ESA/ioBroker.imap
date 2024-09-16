@@ -290,7 +290,6 @@
                     "sm": 12,
                     "md": 6,
                     "lg": 3,
-                    "adapter": "telegram",
                     "default": ""
                 },
                 "max_mb_telegram_user": {

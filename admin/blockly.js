@@ -836,6 +836,6 @@ Blockly.JavaScript['imap_flag'] = function (block) {
         `  flag: ${value_flag},\n` +
         `  uid: ${value_uid},\n` +
         `  flagtype: ${value_flagtype},\n` +
-        `  name: ${value_name},\n` +
+        `  name: '${value_name}',\n` +
         `});\n${logText}`;
 };
