@@ -266,7 +266,7 @@
                     "type": "number",
                     "newLine": true,
                     "xs": 12,
-                    "sm": 3,
+                    "sm": 12,
                     "md": 12,
                     "lg": 3,
                     "xl": 6,
@@ -372,8 +372,6 @@
                         {
                             "type": "image",
                             "attr": "picture",
-                            "width": "50%",
-                            "title": "upload",
                             "tooltip": "UPLOAD",
                             "accept": "image/*",
                             "base64": true,
