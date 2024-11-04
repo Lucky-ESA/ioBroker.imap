@@ -267,9 +267,9 @@
                     "newLine": true,
                     "xs": 12,
                     "sm": 12,
-                    "md": 12,
-                    "lg": 3,
-                    "xl": 6,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4,
                     "label": "MAX_MB",
                     "default": 400,
                     "min": 100,
@@ -281,9 +281,9 @@
                     "newLine": true,
                     "xs": 12,
                     "sm": 12,
-                    "md": 12,
-                    "lg": 3,
-                    "xl": 6,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4,
                     "label": "selection",
                     "default": 2,
                     "options": [
@@ -302,9 +302,9 @@
                     "hideOnlyControl": false,
                     "xs": 12,
                     "sm": 12,
-                    "md": 12,
-                    "lg": 3,
-                    "xl": 6,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4,
                     "default": ""
                 },
                 "max_mb_telegram_user": {
@@ -317,9 +317,9 @@
                     "hideOnlyControl": false,
                     "xs": 12,
                     "sm": 12,
-                    "md": 12,
-                    "lg": 3,
-                    "xl": 6,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4,
                     "default": ""
                 },
                 "max_mb_object": {
@@ -331,9 +331,9 @@
                     "hideOnlyControl": false,
                     "xs": 12,
                     "sm": 12,
-                    "md": 12,
-                    "lg": 3,
-                    "xl": 6,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4,
                     "default": ""
                 }
             }
