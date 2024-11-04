@@ -1,6 +1,9 @@
 {
     "i18n": true,
     "type": "tabs",
+    "tabsStyle": {
+        "width": "calc(100% - 100px)"
+    },
     "items": {
         "tab1": {
             "type": "panel",
@@ -13,9 +16,12 @@
                 },
                 "hosts": {
                     "newLine": true,
-                    "sm": 12,
                     "noDelete": false,
                     "type": "table",
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "xl": 12,
                     "items": [
                         {
                             "type": "checkbox",
@@ -258,7 +264,11 @@
                 "max_mb": {
                     "type": "number",
                     "newLine": true,
+                    "xs": 12,
                     "sm": 3,
+                    "md": 6,
+                    "lg": 3,
+                    "xl": 6,
                     "label": "MAX_MB",
                     "default": 400,
                     "min": 100,
@@ -268,9 +278,11 @@
                 "max_mb_selection": {
                     "type": "select",
                     "newLine": true,
+                    "xs": 12,
                     "sm": 12,
                     "md": 6,
                     "lg": 3,
+                    "xl": 6,
                     "label": "selection",
                     "default": 2,
                     "options": [
@@ -287,9 +299,11 @@
                     "disabled": "data.max_mb_selection !== 1",
                     "hidden": "data.max_mb_selection !== 1",
                     "hideOnlyControl": false,
+                    "xs": 12,
                     "sm": 12,
                     "md": 6,
                     "lg": 3,
+                    "xl": 6,
                     "default": ""
                 },
                 "max_mb_telegram_user": {
@@ -300,9 +314,11 @@
                     "disabled": "data.max_mb_selection !== 1",
                     "hidden": "data.max_mb_selection !== 1",
                     "hideOnlyControl": false,
+                    "xs": 12,
                     "sm": 12,
                     "md": 6,
                     "lg": 3,
+                    "xl": 6,
                     "default": ""
                 },
                 "max_mb_object": {
@@ -312,9 +328,11 @@
                     "disabled": "data.max_mb_selection !== 3",
                     "hidden": "data.max_mb_selection !== 3",
                     "hideOnlyControl": false,
+                    "xs": 12,
                     "sm": 12,
                     "md": 6,
                     "lg": 3,
+                    "xl": 6,
                     "default": ""
                 }
             }
@@ -332,6 +350,7 @@
                     "sm": 12,
                     "md": 12,
                     "lg": 12,
+                    "xl": 12,
                     "noDelete": false,
                     "type": "table",
                     "style": {
@@ -376,6 +395,7 @@
                     "sm": 12,
                     "md": 12,
                     "lg": 12,
+                    "xl": 12,
                     "noDelete": false,
                     "type": "table",
                     "style": {
@@ -459,6 +479,7 @@
                     "sm": 12,
                     "md": 12,
                     "lg": 12,
+                    "xl": 12,
                     "noDelete": false,
                     "type": "table",
                     "style": {

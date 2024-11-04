@@ -1808,7 +1808,7 @@ class Imap extends utils.Adapter {
             </tbody>
             `;
             const htmlEnd = `</table></div></body></html>`;
-            await this.setStateAsync(`${ident}.html`, {
+            await this.setState(`${ident}.html`, {
                 val: htmlStart + htmlEnd,
                 ack: true,
             });
@@ -2050,7 +2050,7 @@ class Imap extends utils.Adapter {
                 }
             } else if (this.config.max_mb_selection === 3) {
                 if (this.config.max_mb_object != "") {
-                    await this.setStateAsync(this.config.max_mb_object, true, false);
+                    await this.setState(this.config.max_mb_object, true, false);
                     this.log_translator("info", "Restart Adapter Text", memrss_value);
                 } else {
                     this.log_translator("info", "Restart Adapter Text NO DP", memrss_value);
