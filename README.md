@@ -59,7 +59,7 @@
 
 ## Changelog
 
-**WORK IN PROGRESS**
+### **WORK IN PROGRESS**
 
 -   (Lucky-ESA) New design for settings page added
 -   (Lucky-ESA) Crash if uid is empty for new emails
