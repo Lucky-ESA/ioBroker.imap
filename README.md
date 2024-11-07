@@ -62,6 +62,7 @@
 **WORK IN PROGRESS**
 
 -   (Lucky-ESA) New design for settings page added
+-   (Lucky-ESA) Crash if uid is empty for new emails
 
 ### 0.2.1 (2024-09-16)
 
