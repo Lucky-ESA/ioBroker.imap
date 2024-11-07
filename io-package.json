@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "imap",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "news": {
+      "0.2.2": {
+        "en": "New design for settings page added\nCrash if uid is empty for new emails",
+        "de": "Neues Design für Einstellungen Seite hinzugefügt\nCrash wenn uid für neue E-Mails leer ist",
+        "ru": "Новый дизайн добавлена страница настроек\nCrash, если uid пуст для новых электронных писем",
+        "pt": "Novo design para configurações página adicionada\nCrash se uid está vazio para novos e-mails",
+        "nl": "Nieuw ontwerp voor instellingen pagina toegevoegd\nCrashen als uid leeg is voor nieuwe e-mails",
+        "fr": "Nouvelle conception pour les paramètres page ajoutée\nCrash si uid est vide pour les nouveaux emails",
+        "it": "Nuovo design per le impostazioni pagina aggiunto\nCrash se uid è vuoto per nuove email",
+        "es": "Nuevo diseño para la página de configuración añadido\nCrash si uid está vacío para nuevos correos electrónicos",
+        "pl": "Dodano nowy projekt strony ustawień\nCrash jeśli uid jest pusty dla nowych e-maili",
+        "uk": "Новий дизайн для сторінки налаштувань\nЯкщо у вас є порожній для нових електронних листів",
+        "zh-cn": "添加了设置页面的新设计\n如果 uid 为新邮件空则崩溃"
+      },
       "0.2.1": {
         "en": "Update dependencies\nChanged Log info to debug\nFixed blockly setFlag crash",
         "de": "Abhängigkeiten aktualisieren\nGeändert Log info to debug\nFester Blocksatz Flaggenabsturz",
@@ -80,19 +93,6 @@
         "pl": "Zużycie pamięci RAM - Instance Settings (ang.)\nDokumentacja germanna\nAdded Mailparser option\nAdded counter history\nBug",
         "uk": "Додано споживання оперативної пам'яті - Налаштування\nДодана німецька документація\nДодано параметри парсера електронної пошти\nІсторія лічильника\nВиправлення помилок",
         "zh-cn": "增加分期消费-包装\n增 录\n增加无期选择\n增加反历史\nBug fix"
-      },
-      "0.0.9": {
-        "en": "Fixed RAM consumption of new emails\nAdded counter attachments in JSON",
-        "de": "Fester RAM-Verbrauch neuer E-Mails\nHinzufügen von Zähleraufsätzen in JSON",
-        "ru": "Фиксированное потребление RAM новых писем\nДобавлены вложения счетчиков в JSON",
-        "pt": "Consumo de RAM fixo de novos e-mails\nAdicionado contra anexos em JSON",
-        "nl": "Vertaling:\nVertaling:",
-        "fr": "Consommation de RAM fixe de nouveaux emails\nAjout de pièces jointes dans JSON",
-        "it": "Risolto consumo di RAM di nuove email\nAggiunto accessori contatore in JSON",
-        "es": "Consumo de RAM fijo de nuevos correos electrónicos\nAgregados contadores en JSON",
-        "pl": "Zużycie pamięci RAM nowej e-maili\nAdded counter przywiązania w JSON",
-        "uk": "Виправлено споживання оперативної пам'яті нових електронних листів\nДодано лічильник вкладення в JSON",
-        "zh-cn": "新电子邮件的分期消费\n增加联索行动内的反附属"
       }
     },
     "titleLang": {
