@@ -73,6 +73,8 @@ class Imap extends utils.Adapter {
         this.updateseqno = imap_event.updateseqno;
         this.updatemail = imap_event.updatemail;
         this.change_events = imap_event.change_events;
+        this.addBox = imap_event.addBox;
+        this.deleteBox = imap_event.deleteBox;
         this.changeFolder = imap_event.changeFolder;
         this.custom_search = imap_event.custom_search;
         this.loadUnseenSeqno = imap_event.loadUnseenSeqno;
@@ -1298,6 +1300,18 @@ class Imap extends utils.Adapter {
             }
             if (command === "uid") {
                 this.setAckFlag(id);
+                return;
+            }
+            if (command === "mailbox_folder_create") {
+                const val = state && typeof state.val === "string" ? state.val : "";
+                this.addBox(clientID, val);
+                this.setAckFlag(id, { val: "" });
+                return;
+            }
+            if (command === "mailbox_folder_delete") {
+                const val = state && typeof state.val === "string" ? state.val : "";
+                this.deleteBox(clientID, val);
+                this.setAckFlag(id, { val: "" });
                 return;
             }
             if (command === "apply_move" && state.val) {

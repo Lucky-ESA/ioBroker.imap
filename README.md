@@ -58,6 +58,12 @@
 -->
 
 ## Changelog
+
+### **WORK IN PROGRESS**
+
+-   (Lucky-ESA) Nailbox folder delete added
+-   (Lucky-ESA) Nailbox folder create added
+
 ### 0.2.2 (2024-11-07)
 
 -   (Lucky-ESA) New design for settings page added
