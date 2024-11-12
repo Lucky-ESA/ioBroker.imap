@@ -255,6 +255,22 @@
                             "style": {
                                 "width": 200
                             }
+                        },
+                        {
+                            "type": "selectSendTo",
+                            "attr": "token",
+                            "width": 200,
+                            "title": "token",
+                            "tooltip": "TOKEN",
+                            "disabled": "!data.activ",
+                            "filter": false,
+                            "sort": false,
+                            "jsonData": "{\"token\":{\"tokens\":${JSON.stringify(globalData.oauth_token)}}}",
+                            "command": "getTokenList",
+                            "alsoDependsOn": ["oauth_token"],
+                            "style": {
+                                "width": 200
+                            }
                         }
                     ]
                 },
@@ -384,7 +400,7 @@
         "tab3": {
             "type": "panel",
             "label": "Tab oauth",
-            "hidden": "true",
+            "hidden": "false",
             "items": {
                 "_headerAlexa": {
                     "type": "header",

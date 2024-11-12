@@ -13,7 +13,7 @@ const helper = require("./lib/helper");
 const tl = require("./lib/translator");
 const format = require("util").format;
 const { convert } = require("html-to-text");
-const imap_connect = require("./lib/Connection");
+const imap_connect = require("imap-iobroker");
 const imap_event = require("./lib/imap_event");
 const FORBIDDEN_CHARS = /[üäöÜÄÖ$@ß€*:.]|[^._\-/ :!#$%&()+=@^{}|~\p{Ll}\p{Lu}\p{Nd}]+/gu;
 const empty = {
@@ -75,6 +75,7 @@ class Imap extends utils.Adapter {
         this.change_events = imap_event.change_events;
         this.addBox = imap_event.addBox;
         this.deleteBox = imap_event.deleteBox;
+        this.rename = imap_event.rename;
         this.changeFolder = imap_event.changeFolder;
         this.custom_search = imap_event.custom_search;
         this.loadUnseenSeqno = imap_event.loadUnseenSeqno;
@@ -194,11 +195,10 @@ class Imap extends utils.Adapter {
             } else if (dev.password == "") {
                 this.log_translator("info", "missing password");
                 continue;
+            } else if (dev.token == "") {
+                this.log_translator("info", "missing password");
+                continue;
             }
-            //} else if (dev.token == "") {
-            //    this.log_translator("info", "missing password");
-            //    continue;
-            //}
             dev.node_option = config_array.find((node) => node.nodename === dev.node_option);
             if (
                 dev.node_option &&
@@ -468,7 +468,6 @@ class Imap extends utils.Adapter {
         }
     }
 
-    /**
     async loadToken(dev) {
         const search_token = {};
         search_token["token"] = this.config.oauth_token;
@@ -501,15 +500,26 @@ class Imap extends utils.Adapter {
             msalConfig = {
                 auth: {
                     clientId: isfind.clientid,
-                    authority: `https://login.microsoftonline.com/${isfind.pathid}/`,
+                    authority: `https://login.microsoftonline.com/${isfind.pathid}`,
                     clientSecret: isfind.secureid,
                 },
             };
-            const cca = new msal.ConfidentialClientApplication(msalConfig);
+            const cca = msal ? new msal.ConfidentialClientApplication(msalConfig) : null;
             const tokenRequest = {
                 scopes: ["https://graph.microsoft.com/.default"],
             };
-            const accessT = await cca.acquireTokenByClientCredential(tokenRequest);
+            let accessT;
+            if (cca) {
+                try {
+                    accessT = await cca.acquireTokenByClientCredential(tokenRequest);
+                } catch (e) {
+                    this.log.error(`TokenCredential error: ${e}`);
+                    dev.token = null;
+                }
+            } else {
+                this.log.debug(`Credential error!!`);
+                dev.token = null;
+            }
             if (accessT && accessT.accessToken) {
                 dev.token = Buffer.from(
                     [`user=${dev.user}`, `auth=Bearer ${accessT.accessToken}`, "", ""].join("\x01"),
@@ -522,7 +532,6 @@ class Imap extends utils.Adapter {
         }
         dev.token = null;
     }
-    */
 
     /**
      * @param {object} dev
@@ -535,7 +544,6 @@ class Imap extends utils.Adapter {
         }
         this.restartIMAPConnection[dev.user] && this.clearTimeout(this.restartIMAPConnection[dev.user]);
         this.restartIMAPConnection[dev.user] = null;
-        /**
         if (
             dev.token &&
             dev.token != "" &&
@@ -557,7 +565,6 @@ class Imap extends utils.Adapter {
         } else {
             dev.token = null;
         }
-        */
         try {
             if (typeof dev.flag === "object") {
                 this.clientsRaw[dev.user].flag = JSON.parse(JSON.stringify(dev.flag));
@@ -1312,6 +1319,12 @@ class Imap extends utils.Adapter {
                 const val = state && typeof state.val === "string" ? state.val : "";
                 this.deleteBox(clientID, val);
                 this.setAckFlag(id, { val: "" });
+                return;
+            }
+            if (command === "mailbox_folder_change_name") {
+                const val = state && typeof state.val === "string" ? JSON.parse(state.val) : [];
+                this.rename(clientID, val[0], val[1]);
+                this.setAckFlag(id, { val: JSON.stringify(["oldname", "newname"]) });
                 return;
             }
             if (command === "apply_move" && state.val) {

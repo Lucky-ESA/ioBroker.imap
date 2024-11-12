@@ -61,8 +61,10 @@
 
 ### **WORK IN PROGRESS**
 
--   (Lucky-ESA) Nailbox folder delete added
--   (Lucky-ESA) Nailbox folder create added
+-   (Lucky-ESA) Mailbox folder delete added
+-   (Lucky-ESA) Mailbox folder create added
+-   (Lucky-ESA) Change Mailbox Folder name added
+-   (Lucky-ESA) IMAP package changed
 
 ### 0.2.2 (2024-11-07)
 

@@ -224,17 +224,24 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 
 [Zusammenfassung](#zusammenfassung)
 
-| Objekt                          | Beschreibung                                                                                                                                                         |
-| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| imap.0.xxx.remote.apply_html    | Änderung von imap.0.xxx.remote.html anwenden.                                                                                                                        |
-| imap.0.xxx.remote.change_folder | Instanz Konfig: Postfolder wechseln der überwacht und angezeigt werden soll. Wird erst nach einem Neustart zurückgesetzt.                                            |
-| imap.0.xxx.remote.criteria      | Instanz Konfig: Suche ändern. Wird erst nach einem Neustart zurückgesetzt.                                                                                           |
-| imap.0.xxx.remote.reload_emails | Emails neu laden.                                                                                                                                                    |
-| imap.0.xxx.remote.search_start  | Änderungen von change_folder, criteria und show_mails anwenden                                                                                                       |
-| imap.0.xxx.remote.show_mails    | Instanz Konfig: Anzahl der eMails (max. HTML) die geladen werden sollen. Wird erst nach einem Neustart zurückgesetzt. Sollte natürlich grüßer sein als der Wert max. |
-| imap.0.xxx.remote.vis_command   | Kommando aus der VIS von den Auswahlboxen Mails zu verschieben. Wird nur von VIS verwendet.                                                                          |
+| Objekt                                       | Beschreibung                                                                                                                                                         |
+| -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| imap.0.xxx.remote.apply_html                 | Änderung von imap.0.xxx.remote.html anwenden.                                                                                                                        |
+| imap.0.xxx.remote.change_folder              | Instanz Konfig: Postfolder wechseln der überwacht und angezeigt werden soll. Wird erst nach einem Neustart zurückgesetzt.                                            |
+| imap.0.xxx.remote.criteria                   | Instanz Konfig: Suche ändern. Wird erst nach einem Neustart zurückgesetzt.                                                                                           |
+| imap.0.xxx.remote.mailbox_folder_change_name | Name vom Mailboxordner ändern Beispiel ["INBOX.imap", "INBOX.newimap"] [siehe](#ordnername)                                                                          |
+| imap.0.xxx.remote.mailbox_folder_create      | Mailboxordner anlegen                                                                                                                                                |
+| imap.0.xxx.remote.mailbox_folder_delete      | Mailboxordner mit Inhalt löschen                                                                                                                                     |
+| imap.0.xxx.remote.reload_emails              | Emails neu laden.                                                                                                                                                    |
+| imap.0.xxx.remote.search_start               | Änderungen von change_folder, criteria und show_mails anwenden                                                                                                       |
+| imap.0.xxx.remote.show_mails                 | Instanz Konfig: Anzahl der eMails (max. HTML) die geladen werden sollen. Wird erst nach einem Neustart zurückgesetzt. Sollte natürlich grüßer sein als der Wert max. |
+| imap.0.xxx.remote.vis_command                | Kommando aus der VIS von den Auswahlboxen Mails zu verschieben. Wird nur von VIS verwendet.                                                                          |
 
 ![imap_overview_remote.png](img/imap_overview_remote.png)
+
+### Ordnername
+
+Alte Ordnernamen können im Objekt imap.0.xxx.remote.change_folder eingesehen werden
 
 ### Datenpunkte `imap.0.benutzername.remote.copy`
 
