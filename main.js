@@ -284,7 +284,7 @@ class Imap extends utils.Adapter {
         if (dev.user != null && dev.user != "") {
             const isDP = await this.getStateAsync(`${dev.user}.online`);
             if (isDP != null) {
-                await this.setStateAsync(`${dev.user}.online`, {
+                await this.setState(`${dev.user}.online`, {
                     val: false,
                     ack: true,
                 });
@@ -738,7 +738,7 @@ class Imap extends utils.Adapter {
                             def: false,
                         };
                         await this.createDataPoint(`${dev}.infos.${dp_capability.toLowerCase()}`, common, "state");
-                        await this.setStateAsync(`${dev}.infos.${dp_capability.toLowerCase()}`, {
+                        await this.setState(`${dev}.infos.${dp_capability.toLowerCase()}`, {
                             val: sorts,
                             ack: true,
                         });
@@ -755,7 +755,7 @@ class Imap extends utils.Adapter {
                             def: "",
                         };
                         await this.createDataPoint(`${dev}.infos.all_capability`, common, "state");
-                        await this.setStateAsync(`${dev}.infos.all_capability`, {
+                        await this.setState(`${dev}.infos.all_capability`, {
                             val: JSON.stringify(caps),
                             ack: true,
                         });
@@ -830,15 +830,15 @@ class Imap extends utils.Adapter {
      */
     async setUpdate(clientID, info, trans) {
         const activity = this.helper_translator(trans) != null ? this.helper_translator(trans) : "";
-        await this.setStateAsync(`${clientID}.last_activity`, {
+        await this.setState(`${clientID}.last_activity`, {
             val: activity,
             ack: true,
         });
-        await this.setStateAsync(`${clientID}.last_activity_json`, {
+        await this.setState(`${clientID}.last_activity_json`, {
             val: typeof info === "object" ? JSON.stringify(info) : JSON.stringify({ seqno: "0" }),
             ack: true,
         });
-        await this.setStateAsync(`${clientID}.last_activity_timestamp`, {
+        await this.setState(`${clientID}.last_activity_timestamp`, {
             val: Date.now(),
             ack: true,
         });
@@ -855,24 +855,24 @@ class Imap extends utils.Adapter {
     async setStatesValue(mail, seqno, clientID, count, attrs, info) {
         try {
             const id = `${clientID}.email.email_${("0" + count).slice(-2)}`;
-            await this.setStateAsync(`${id}.subject`, {
+            await this.setState(`${id}.subject`, {
                 val: mail.subject != null ? mail.subject : this.helper_translator("Unknown"),
                 ack: true,
             });
             //const receive_date = mail.date.toISOString().replace("T", " ").replace(/\..+/, "");
-            await this.setStateAsync(`${id}.receive`, {
+            await this.setState(`${id}.receive`, {
                 val: mail.date != null ? mail.date.toString() : this.helper_translator("Unknown"),
                 ack: true,
             });
-            await this.setStateAsync(`${id}.content`, {
+            await this.setState(`${id}.content`, {
                 val: mail.html != null && mail.html ? mail.html : this.helper_translator("Unknown"),
                 ack: true,
             });
-            await this.setStateAsync(`${id}.text`, {
+            await this.setState(`${id}.text`, {
                 val: mail.text != null ? mail.text : this.helper_translator("Unknown"),
                 ack: true,
             });
-            await this.setStateAsync(`${id}.texthtml`, {
+            await this.setState(`${id}.texthtml`, {
                 val: mail.textAsHtml != null ? mail.textAsHtml : this.helper_translator("Unknown"),
                 ack: true,
             });
@@ -884,7 +884,7 @@ class Imap extends utils.Adapter {
                     }
                 }
             }
-            await this.setStateAsync(`${id}.to`, {
+            await this.setState(`${id}.to`, {
                 val: JSON.stringify(add),
                 ack: true,
             });
@@ -896,31 +896,31 @@ class Imap extends utils.Adapter {
                     }
                 }
             }
-            await this.setStateAsync(`${id}.from`, {
+            await this.setState(`${id}.from`, {
                 val: JSON.stringify(add),
                 ack: true,
             });
-            await this.setStateAsync(`${id}.flag`, {
+            await this.setState(`${id}.flag`, {
                 val: attrs.flags != null ? JSON.stringify(attrs.flags) : this.helper_translator("Unknown"),
                 ack: true,
             });
-            await this.setStateAsync(`${id}.uid`, {
+            await this.setState(`${id}.uid`, {
                 val: attrs.uid != null ? attrs.uid : 0,
                 ack: true,
             });
-            await this.setStateAsync(`${id}.seq`, {
+            await this.setState(`${id}.seq`, {
                 val: seqno != null ? seqno : 0,
                 ack: true,
             });
-            await this.setStateAsync(`${id}.size`, {
+            await this.setState(`${id}.size`, {
                 val: info.size != null ? info.size : 0,
                 ack: true,
             });
-            await this.setStateAsync(`${id}.attach`, {
+            await this.setState(`${id}.attach`, {
                 val: mail.attachments != null ? mail.attachments : 0,
                 ack: true,
             });
-            await this.setStateAsync(`${id}.attach_json`, {
+            await this.setState(`${id}.attach_json`, {
                 val: mail.attachments_info != null ? JSON.stringify(mail.attachments_info) : JSON.stringify([]),
                 ack: true,
             });
@@ -1166,15 +1166,15 @@ class Imap extends utils.Adapter {
      * @param {number} max
      */
     async setStateSearch(id, criteria, max) {
-        await this.setStateAsync(`${id}.remote.criteria`, {
+        await this.setState(`${id}.remote.criteria`, {
             val: criteria,
             ack: true,
         });
-        await this.setStateAsync(`${id}.remote.show_mails`, {
+        await this.setState(`${id}.remote.show_mails`, {
             val: max,
             ack: true,
         });
-        await this.setStateAsync(`${id}.remote.search_start`, {
+        await this.setState(`${id}.remote.search_start`, {
             val: true,
             ack: false,
         });
@@ -1900,16 +1900,16 @@ class Imap extends utils.Adapter {
                 new_json["flag"] = element.attrs && element.attrs.flags != null ? element.attrs.flags : "";
                 new_array.push(new_json);
             }
-            await this.setStateAsync(`${id}.json`, {
+            await this.setState(`${id}.json`, {
                 val: JSON.stringify(new_array),
                 ack: true,
             });
             if (!html) {
-                await this.setStateAsync(`json_table`, {
+                await this.setState(`json_table`, {
                     val: JSON.stringify(new_array),
                     ack: true,
                 });
-                await this.setStateAsync(`json_imap`, {
+                await this.setState(`json_imap`, {
                     val: id,
                     ack: true,
                 });
@@ -1977,7 +1977,7 @@ class Imap extends utils.Adapter {
                                         role = null;
                                     }
                                     if (quality[states.q] === "0x20 - substitute initial value") {
-                                        await this.setStateAsync(`${dp.id}`, {
+                                        await this.setState(`${dp.id}`, {
                                             ack: true,
                                             ...role,
                                         });
@@ -1989,7 +1989,7 @@ class Imap extends utils.Adapter {
                         }
                     }
                 }
-                await this.setStateAsync(`${deviceId}.quality`, {
+                await this.setState(`${deviceId}.quality`, {
                     val:
                         Object.keys(dp_array).length > 0
                             ? JSON.stringify(dp_array)
