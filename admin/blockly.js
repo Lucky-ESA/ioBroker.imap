@@ -632,7 +632,7 @@ Blockly.JavaScript['imap_request'] = function (block) {
         `  search: ${value_search},\n` +
         `  fetch: ${para_fetch || 'null'},\n` +
         `  bodie: ${value_bodie},\n` +
-        `  parse: ${value_bodie},\n` +
+        `  parse: ${value_parse},\n` +
         `}, async (result) => {\n` +
         statement +
         `});\n${logText}`;
