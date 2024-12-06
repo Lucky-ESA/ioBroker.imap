@@ -1310,13 +1310,13 @@ class Imap extends utils.Adapter {
                 return;
             }
             if (command === "mailbox_folder_create") {
-                const val = typeof state.val === "string" ? state.val : "";
+                const val = typeof state.val === "string" ? state.val : JSON.stringify(state.val);
                 this.addBox(clientID, val);
                 this.setAckFlag(id, { val: "" });
                 return;
             }
             if (command === "mailbox_folder_delete") {
-                const val = typeof state.val === "string" ? state.val : "";
+                const val = typeof state.val === "string" ? state.val : JSON.stringify(state.val);
                 this.deleteBox(clientID, val);
                 this.setAckFlag(id, { val: "" });
                 return;
