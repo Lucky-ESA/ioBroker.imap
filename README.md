@@ -58,8 +58,7 @@
 -->
 
 ## Changelog
-
-### **WORK IN PROGRESS**
+### 0.3.0 (2024-12-07)
 
 - (Lucky-ESA) Mailbox folder delete added
 - (Lucky-ESA) Mailbox folder create added

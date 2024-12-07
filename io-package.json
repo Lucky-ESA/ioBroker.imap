@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "imap",
-    "version": "0.2.2",
+    "version": "0.3.0",
     "news": {
+      "0.3.0": {
+        "en": "Mailbox folder delete added\nMailbox folder create added\nChange Mailbox Folder name added\nIMAP package changed\nMigration to ESLint9",
+        "de": "Mailbox Ordner löschen hinzugefügt\nMailbox Ordner erstellen hinzugefügt\nMailbox ändern Ordnername hinzugefügt\nIMAP Paket geändert\nMigration auf ESLint9",
+        "ru": "Папка папки удалена\nПапка папки\nИзменить папку Добавлено имя папки\nIMAP пакет изменился\nМиграция в ESLint9",
+        "pt": "Pasta de caixa de correio excluir adicionado\nPasta de caixa de correio criar adicionado\nAlterar caixa de correio Nome da pasta adicionado\nPacote IMAP alterado\nMigração para ESLint9",
+        "nl": "Mailbox map verwijderen toegevoegd\nMailbox-map aanmaken\nMailbox wijzigen Mapnaam toegevoegd\nIMAP-pakket gewijzigd\nMigratie naar ESLint9",
+        "fr": "Supprimer le dossier Boîte aux lettres ajouté\nBoîte aux lettres créer ajouté\nModifier la boîte aux lettres Nom du dossier ajouté\nPaquet IMAP modifié\nMigration vers ESLint9",
+        "it": "Mailbox cartella eliminare aggiunto\nMailbox cartella creare aggiunto\nCambia la casella di posta Nome della cartella aggiunto\nPacchetto IMAP cambiato\nMigrazione a ESLint9",
+        "es": "Borrar carpeta de correo añadido\nCarpeta de correo crear añadido\nCambio de correo Nombre de carpeta añadido\nPaquete IMAP cambiado\nMigración a ESLint9",
+        "pl": "Katalog skrzynki pocztowej Usuń dodany\nKatalog Mailbox utworzyć dodane\nZmień skrzynkę pocztową Dodano nazwę folderu\nZmieniony pakiet IMAP\nMigracja do ESLint9",
+        "uk": "Видалення папки поштових скриньок\nПапка поштових скриньок\nЗміна поштової скриньки Додано назву папки\nЗмінено пакет IMAP\nМіграція в ESLint9",
+        "zh-cn": "邮箱文件夹已删除\n已添加邮箱文件夹创建\n更改邮箱 文件夹名称已添加\nIMAP 软件包已更改\n迁移到ESLint9"
+      },
       "0.2.2": {
         "en": "New design for settings page added\nCrash if uid is empty for new emails",
         "de": "Neues Design für Einstellungen Seite hinzugefügt\nCrash wenn uid für neue E-Mails leer ist",
@@ -80,19 +93,6 @@
         "pl": "Delete error pars",
         "uk": "Видалити неправильне повідомлення про помилку",
         "zh-cn": "删除错误的信息稀少"
-      },
-      "0.1.0": {
-        "en": "Added RAM consumption - Instance Settings\nAdded german documention\nAdded Mailparser options\nAdded counter history\nBug fixes",
-        "de": "RAM-Verbrauch hinzugefügt - Instanzeinstellungen\nDeutsche Dokumentation hinzugefügt\nMailparser Optionen hinzugefügt\nHinzufügen der Zählerhistorie\nFehlerbehebungen",
-        "ru": "Добавлено RAM потребление - Instance Settings\nДобавлен немецкий документ\nДобавлены опции Mailparser\nДобавлена история счетчиков\nИсправления ошибок",
-        "pt": "Consumo de RAM adicionado - Configurações de instância\nAdicionado documento alemão\nOpções de Mailparser adicionadas\nAdicionado história do contador\nCorreções de bugs",
-        "nl": "Vertaling:\nVermeldde Duitse documenten\nVermeldde Mailparser opties\nVertaling:\nBug repareert",
-        "fr": "Ajout de la consommation de RAM - Instance Settings\nAjouté German documention\nAjout des options Mailparser\nAjout de l ' historique\nCorrections",
-        "it": "Consumi RAM aggiunti - Impostazioni di ubicazione\nAggiunto tedesco documention\nOpzioni Mailparser\nAggiunto contatore storia\nCorrezioni di bug",
-        "es": "Consumo de RAM añadido - Ajustes de Instance\nSeñalación alemana\nOpciones adicionales de Mailparser\nHistoria del contador\nCorrección de errores",
-        "pl": "Zużycie pamięci RAM - Instance Settings (ang.)\nDokumentacja germanna\nAdded Mailparser option\nAdded counter history\nBug",
-        "uk": "Додано споживання оперативної пам'яті - Налаштування\nДодана німецька документація\nДодано параметри парсера електронної пошти\nІсторія лічильника\nВиправлення помилок",
-        "zh-cn": "增加分期消费-包装\n增 录\n增加无期选择\n增加反历史\nBug fix"
       }
     },
     "titleLang": {
