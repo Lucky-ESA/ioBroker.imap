@@ -156,8 +156,8 @@ class Imap extends utils.Adapter {
                 check_name[jsons.nodename] = jsons.nodename;
             }
         }
-        devices["data"] = this.config.hosts;
-        selectbox["states"] = {};
+        devices.data = this.config.hosts;
+        selectbox.states = {};
         await this.createCounter();
         for (const dev of devices.data) {
             if (dev.inbox == "") {
@@ -176,7 +176,7 @@ class Imap extends utils.Adapter {
                 this.log_translator("info", "missing username");
                 continue;
             } else {
-                dev["username"] = dev.user;
+                dev.username = dev.user;
                 dev.user = dev.user.replace(FORBIDDEN_CHARS, "_");
             }
             if (dev.password != "" && dev.password.includes("<LUCKY-ESA>")) {
@@ -188,7 +188,7 @@ class Imap extends utils.Adapter {
                         this.log_translator("info", "Cannot found password", dev.user);
                         continue;
                     }
-                } catch (e) {
+                } catch {
                     this.log_translator("info", "decrypt pw", dev.user);
                     continue;
                 }
@@ -199,7 +199,7 @@ class Imap extends utils.Adapter {
                 this.log_translator("info", "missing password");
                 continue;
             }
-            dev.node_option = config_array.find((node) => node.nodename === dev.node_option);
+            dev.node_option = config_array.find(node => node.nodename === dev.node_option);
             if (
                 dev.node_option &&
                 dev.node_option.maxHtmlLengthToParse != null &&
@@ -209,8 +209,8 @@ class Imap extends utils.Adapter {
             }
             if (dev.node_option == -1) {
                 dev.node_option = {};
-            } else if (dev.node_option && dev.node_option["nodename"] != null) {
-                delete dev.node_option["nodename"];
+            } else if (dev.node_option && dev.node_option.nodename != null) {
+                delete dev.node_option.nodename;
             } else {
                 dev.node_option = {};
             }
@@ -218,8 +218,8 @@ class Imap extends utils.Adapter {
             dev.maxi_html = dev.maxi_html < 1 ? 1 : dev.maxi_html;
             dev.maxi = dev.maxi > 99 ? 99 : dev.maxi;
             dev.maxi = dev.maxi < 1 ? 1 : dev.maxi;
-            dev["max"] = dev.maxi_html > dev.maxi ? dev.maxi_html : dev.maxi;
-            dev["inbox_activ"] = dev.inbox;
+            dev.max = dev.maxi_html > dev.maxi ? dev.maxi_html : dev.maxi;
+            dev.inbox_activ = dev.inbox;
             this.clientsIDdelete.push(dev);
             if (!dev.activ) {
                 await this.cleanupDatapoints(dev);
@@ -233,7 +233,7 @@ class Imap extends utils.Adapter {
             this.boxfolder[dev.user] = {};
             this.restartIMAPConnection[dev.user] = null;
             this.clientsRows[dev.user] = "";
-            selectbox["states"][dev.user] = dev.user;
+            selectbox.states[dev.user] = dev.user;
             this.clients[dev.user] = null;
             this.clientsRaw[dev.user] = dev;
             this.all_seqno[dev.user] = [];
@@ -308,7 +308,7 @@ class Imap extends utils.Adapter {
     }
 
     /**
-     *
+     * connectionCheck
      */
     async connectionCheck() {
         for (const dev of this.clientsID) {
@@ -405,14 +405,14 @@ class Imap extends utils.Adapter {
     }
 
     /**
-     *
+     * checkDeviceFolder
      */
     async checkDeviceFolder() {
         try {
             const devices = await this.getDevicesAsync();
             for (const element of devices) {
                 const id = element["_id"].split(".").pop();
-                const isfind = this.clientsIDdelete.find((mes) => mes.user === id);
+                const isfind = this.clientsIDdelete.find(mes => mes.user === id);
                 if (isfind) {
                     this.log_translator("debug", "Found data point", element["_id"]);
                 } else {
@@ -426,7 +426,7 @@ class Imap extends utils.Adapter {
     }
 
     /**
-     *
+     * configcheck
      */
     async configcheck() {
         try {
@@ -463,8 +463,8 @@ class Imap extends utils.Adapter {
                 return true;
             }
             return false;
-        } catch (error) {
-            this.log_translator("error", "try", `configcheck: ${error}`);
+        } catch (e) {
+            this.log_translator("error", "try", `configcheck: ${e}`);
         }
     }
 
@@ -472,7 +472,7 @@ class Imap extends utils.Adapter {
         const search_token = {};
         search_token["token"] = this.config.oauth_token;
         let msalConfig;
-        const isfind = search_token["token"].find((tok) => tok.name === dev.token);
+        const isfind = search_token["token"].find(tok => tok.name === dev.token);
         if (
             isfind != null &&
             isfind.name != null &&
@@ -491,7 +491,7 @@ class Imap extends utils.Adapter {
                         this.log_translator("info", "Security-ID", isfind.user);
                         dev.token = null;
                     }
-                } catch (e) {
+                } catch {
                     return (dev.token = null);
                 }
             } else {
@@ -526,9 +526,8 @@ class Imap extends utils.Adapter {
                     "utf-8",
                 ).toString("base64");
                 return dev.token;
-            } else {
-                dev.token = null;
             }
+            dev.token = null;
         }
         dev.token = null;
     }
@@ -571,7 +570,7 @@ class Imap extends utils.Adapter {
             } else {
                 this.clientsRaw[dev.user].flag = JSON.parse(dev.flag);
             }
-        } catch (e) {
+        } catch {
             this.clientsRaw[dev.user].flag = ["ALL"];
         }
         //this.dir[dev.user] = `${__dirname}/lib/attachment`;
@@ -582,7 +581,7 @@ class Imap extends utils.Adapter {
             } else {
                 tlsoption = JSON.parse(dev.tlsoption);
             }
-        } catch (e) {
+        } catch {
             this.log_translator("warn", "TLSOPTION", dev.user);
         }
         this.clientsRaw[dev.user].inbox_activ = dev.inbox;
@@ -646,7 +645,7 @@ class Imap extends utils.Adapter {
             this.save_json[clientID] = this.save_json[clientID].sort((a, b) => b.date - a.date);
             this.updateseqno(clientID, del_seqno["seqno"], false);
         } else {
-            const merge = this.save_json[clientID].findIndex((merge) => merge.seqno === seqno);
+            const merge = this.save_json[clientID].findIndex(merge => merge.seqno === seqno);
             if (merge != -1) {
                 this.save_json[clientID][merge] = mail;
             }
@@ -692,7 +691,7 @@ class Imap extends utils.Adapter {
     }
 
     /**
-     *
+     * checksupport
      */
     async checksupport() {
         await this.sleep(5000);
@@ -726,7 +725,9 @@ class Imap extends utils.Adapter {
                 try {
                     for (const capability of capabilitys) {
                         const sorts = await this.clients[dev].serverSupports(capability);
-                        if (capability === "QUOTA") quota = sorts;
+                        if (capability === "QUOTA") {
+                            quota = sorts;
+                        }
                         const dp_capability = capability.replace(/[=|-|+]/g, "_");
                         common = {
                             type: "boolean",
@@ -854,7 +855,7 @@ class Imap extends utils.Adapter {
      */
     async setStatesValue(mail, seqno, clientID, count, attrs, info) {
         try {
-            const id = `${clientID}.email.email_${("0" + count).slice(-2)}`;
+            const id = `${clientID}.email.email_${`0${count}`.slice(-2)}`;
             await this.setState(`${id}.subject`, {
                 val: mail.subject != null ? mail.subject : this.helper_translator("Unknown"),
                 ack: true,
@@ -938,14 +939,11 @@ class Imap extends utils.Adapter {
         }
         this.double_call[obj._id] = true;
         this.log_translator("debug", "Message", JSON.stringify(obj));
-        let adapterconfigs = {};
         let _obj = {};
         try {
-            // @ts-ignore
-            adapterconfigs = this.adapterConfig;
             _obj = JSON.parse(JSON.stringify(obj));
-        } catch (error) {
-            this.log_translator("error", "catch", `onMessage: ${error}`);
+        } catch (e) {
+            this.log_translator("error", "catch", `onMessage: ${e}`);
             this.sendTo(obj.from, obj.command, [], obj.callback);
             delete this.double_call[obj._id];
             return;
@@ -958,8 +956,9 @@ class Imap extends utils.Adapter {
                         const icons = [];
                         if (_obj && _obj.message && _obj.message.icon && _obj.message.icon.icons) {
                             icon_array = _obj.message.icon.icons;
-                        } else if (adapterconfigs && adapterconfigs.native && adapterconfigs.native.icons) {
-                            icon_array = adapterconfigs.native.icons;
+                        } else {
+                            this.sendTo(obj.from, obj.command, [], obj.callback);
+                            return;
                         }
                         if (icon_array && Object.keys(icon_array).length > 0) {
                             for (const icon of icon_array) {
@@ -971,9 +970,9 @@ class Imap extends utils.Adapter {
                         } else {
                             this.sendTo(obj.from, obj.command, [], obj.callback);
                         }
-                    } catch (error) {
+                    } catch (e) {
                         delete this.double_call[obj._id];
-                        this.log_translator("error", "catch", `onMessage: ${error}`);
+                        this.log_translator("error", "catch", `onMessage: ${e}`);
                         this.sendTo(obj.from, obj.command, [], obj.callback);
                     }
                 }
@@ -986,8 +985,9 @@ class Imap extends utils.Adapter {
                         const tokens = [];
                         if (_obj && _obj.message && _obj.message.token && _obj.message.token.tokens) {
                             token_array = _obj.message.token.tokens;
-                        } else if (adapterconfigs && adapterconfigs.native && adapterconfigs.native.oauth_token) {
-                            token_array = adapterconfigs.native.oauth_token;
+                        } else {
+                            this.sendTo(obj.from, obj.command, [], obj.callback);
+                            return;
                         }
                         if (token_array && Object.keys(token_array).length > 0) {
                             for (const token of token_array) {
@@ -1001,9 +1001,9 @@ class Imap extends utils.Adapter {
                         } else {
                             this.sendTo(obj.from, obj.command, [], obj.callback);
                         }
-                    } catch (error) {
+                    } catch (e) {
                         delete this.double_call[obj._id];
-                        this.log_translator("error", "catch", `onMessage: ${error}`);
+                        this.log_translator("error", "catch", `onMessage: ${e}`);
                         this.sendTo(obj.from, obj.command, [], obj.callback);
                     }
                 }
@@ -1016,12 +1016,9 @@ class Imap extends utils.Adapter {
                         const mailers = [];
                         if (_obj && _obj.message && _obj.message.node_option && _obj.message.node_option.node_options) {
                             mailer_array = _obj.message.node_option.node_options;
-                        } else if (
-                            adapterconfigs &&
-                            adapterconfigs.native &&
-                            adapterconfigs.native.nodemailer_options
-                        ) {
-                            mailer_array = adapterconfigs.native.nodemailer_options;
+                        } else {
+                            this.sendTo(obj.from, obj.command, [], obj.callback);
+                            return;
                         }
                         if (mailer_array && Object.keys(mailer_array).length > 0) {
                             for (const mailer of mailer_array) {
@@ -1035,9 +1032,9 @@ class Imap extends utils.Adapter {
                         } else {
                             this.sendTo(obj.from, obj.command, [], obj.callback);
                         }
-                    } catch (error) {
+                    } catch (e) {
                         delete this.double_call[obj._id];
-                        this.log_translator("error", "catch", `onMessage: ${error}`);
+                        this.log_translator("error", "catch", `onMessage: ${e}`);
                         this.sendTo(obj.from, obj.command, [], obj.callback);
                     }
                 }
@@ -1046,31 +1043,31 @@ class Imap extends utils.Adapter {
             case "getBlockly":
                 if (
                     obj.message &&
-                    obj.message["search"] != "" &&
-                    obj.message["device"] != "" &&
-                    obj.message["max"] > 0 &&
-                    obj.message["max"] < 100
+                    obj.message.search != "" &&
+                    obj.message.device != "" &&
+                    obj.message.max > 0 &&
+                    obj.message.max < 100
                 ) {
-                    if (obj.message["device"] === "all") {
+                    if (obj.message.device === "all") {
                         for (const dev in this.clientsRaw) {
                             const userdev = this.clientsRaw[dev];
                             if (userdev.activ) {
-                                this.setStateSearch(userdev.user, obj.message["search"], obj.message["max"]);
+                                this.setStateSearch(userdev.user, obj.message.search, obj.message.max);
                             }
                         }
                     } else {
-                        const user = obj.message["device"].replace(FORBIDDEN_CHARS, "_");
+                        const user = obj.message.device.replace(FORBIDDEN_CHARS, "_");
                         if (this.clientsRaw[user]) {
                             if (this.clientsRaw[user].activ) {
-                                this.setStateSearch(user, obj.message["search"], obj.message["max"]);
+                                this.setStateSearch(user, obj.message.search, obj.message.max);
                             } else {
-                                this.log_translator("info", "IMAP disabled", `${user} - ${obj.message["device"]}`);
+                                this.log_translator("info", "IMAP disabled", `${user} - ${obj.message.device}`);
                             }
                         } else {
-                            this.log_translator("info", "not found imap", `${user} - ${obj.message["device"]}`);
+                            this.log_translator("info", "not found imap", `${user} - ${obj.message.device}`);
                         }
                     }
-                } else if (obj.message && obj.message["max"] < 1 && obj.message["max"] > 100) {
+                } else if (obj.message && obj.message.max < 1 && obj.message.max > 100) {
                     this.log_translator("info", "max_mail");
                 } else {
                     this.sendTo(obj.from, obj.command, [], obj.callback);
@@ -1080,18 +1077,18 @@ class Imap extends utils.Adapter {
                 if (obj.callback) {
                     if (
                         obj.message &&
-                        obj.message["search"] != "" &&
-                        obj.message["name"] != "" &&
-                        obj.message["bodie"] != "" &&
-                        obj.message["parse"] != null &&
-                        obj.message["max"] > 0 &&
-                        obj.message["max"] < 100
+                        obj.message.search != "" &&
+                        obj.message.name != "" &&
+                        obj.message.bodie != "" &&
+                        obj.message.parse != null &&
+                        obj.message.max > 0 &&
+                        obj.message.max < 100
                     ) {
-                        if (obj.message["name"] !== "all") {
-                            const user = obj.message["name"].replace(FORBIDDEN_CHARS, "_");
+                        if (obj.message.name !== "all") {
+                            const user = obj.message.name.replace(FORBIDDEN_CHARS, "_");
                             try {
                                 this.custom_search(user, _obj);
-                            } catch (e) {
+                            } catch {
                                 this.sendTo(obj.from, obj.command, [], obj.callback);
                             }
                         } else {
@@ -1099,7 +1096,7 @@ class Imap extends utils.Adapter {
                             this.sendTo(obj.from, obj.command, [], obj.callback);
                         }
                     }
-                } else if (obj.message && obj.message["max"] < 1 && obj.message["max"] > 100) {
+                } else if (obj.message && obj.message.max < 1 && obj.message.max > 100) {
                     this.log_translator("info", "max_mail");
                 } else {
                     this.sendTo(obj.from, obj.command, [], obj.callback);
@@ -1107,10 +1104,10 @@ class Imap extends utils.Adapter {
                 break;
             case "getIMAPData":
                 if (obj.callback) {
-                    if (obj.message && obj.message["name"] != "" && obj.message["value"] != "") {
-                        if (obj.message["name"] !== "all") {
-                            const user = obj.message["name"].replace(FORBIDDEN_CHARS, "_");
-                            if (obj.message["value"] === "data") {
+                    if (obj.message && obj.message.name != "" && obj.message.value != "") {
+                        if (obj.message.name !== "all") {
+                            const user = obj.message.name.replace(FORBIDDEN_CHARS, "_");
+                            if (obj.message.value === "data") {
                                 this.sendTo(obj.from, obj.command, this.save_json[user], obj.callback);
                             } else {
                                 this.sendTo(obj.from, obj.command, this.save_seqno[user], obj.callback);
@@ -1125,32 +1122,26 @@ class Imap extends utils.Adapter {
             case "getFlags":
                 if (
                     obj.message &&
-                    obj.message["flag"] != "" &&
-                    obj.message["uid"] > 0 &&
-                    obj.message["name"] != "" &&
-                    obj.message["flagtype"] != "" &&
-                    obj.message["name"] !== "all"
+                    obj.message.flag != "" &&
+                    obj.message.uid > 0 &&
+                    obj.message.name != "" &&
+                    obj.message.flagtype != "" &&
+                    obj.message.name !== "all"
                 ) {
-                    const user = obj.message["name"].replace(FORBIDDEN_CHARS, "_");
-                    const check_flag = obj.message["flag"];
-                    this.log_translator(
-                        "info",
-                        "Set Flags",
-                        obj.message["flag"],
-                        obj.message["uid"],
-                        obj.message["flagtype"],
-                    );
+                    const user = obj.message.name.replace(FORBIDDEN_CHARS, "_");
+                    const check_flag = obj.message.flag;
+                    this.log_translator("info", "Set Flags", obj.message.flag, obj.message.uid, obj.message.flagtype);
                     const flags = [];
                     const types = obj.message["flagtype"].replace(/ /g, "").split(",");
                     for (const flag of types) {
                         if (check_flag == "setFlags" || check_flag == "addFlags" || check_flag == "delFlags") {
-                            flags.push("\\" + flag);
+                            flags.push(`\\${flag}`);
                         } else {
                             flags.push(flag);
                         }
                     }
                     if (typeof this.clients[user] === "object") {
-                        this.change_events(user, obj.message["flag"], obj.message["uid"], flags);
+                        this.change_events(user, obj.message.flag, obj.message.uid, flags);
                     }
                 }
                 break;
@@ -1184,7 +1175,7 @@ class Imap extends utils.Adapter {
      * @param {number} ms
      */
     sleep(ms) {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             this.sleepTimer = this.setTimeout(() => {
                 resolve(true);
             }, ms);
@@ -1193,6 +1184,7 @@ class Imap extends utils.Adapter {
 
     /**
      * Is called when adapter shuts down - callback has to be called under any circumstances!
+     *
      * @param {() => void} callback
      */
     onUnload(callback) {
@@ -1214,6 +1206,7 @@ class Imap extends utils.Adapter {
             this.setState("info.connection", false, true);
             callback();
         } catch (e) {
+            this.log.error(`onunload - ${e}`);
             callback();
         }
     }
@@ -1233,7 +1226,7 @@ class Imap extends utils.Adapter {
             } else {
                 history_value = [];
             }
-        } catch (e) {
+        } catch {
             history_value = [];
         }
         if (Object.keys(history_value).length > limited_history) {
@@ -1253,8 +1246,7 @@ class Imap extends utils.Adapter {
         this.setState("online_history", JSON.stringify(history_value), true);
     }
     /**
-     * Is called if a subscribed state changes
-     * @param {string} id
+     * @param {string} id Is called if a subscribed state changes
      * @param {ioBroker.State | null | undefined} state
      */
     async onStateChange(id, state) {
@@ -1424,7 +1416,9 @@ class Imap extends utils.Adapter {
      * @param {ioBroker.State | null | undefined} state
      */
     async setJson_table(state) {
-        if (state == null) return;
+        if (state == null) {
+            return;
+        }
         const jsons = await this.getStateAsync(`${state.val}.json`);
         if (jsons && jsons.val) {
             this.setState(`json_table`, {
@@ -1532,7 +1526,9 @@ class Imap extends utils.Adapter {
     log_translator(level, text, merge_1, merge_2, merge_3) {
         try {
             let loglevel = true;
-            if (this.loglevel !== "debug" && level === "debug") loglevel = false;
+            if (this.loglevel !== "debug" && level === "debug") {
+                loglevel = false;
+            }
             if (loglevel) {
                 if (tl.trans[text] != null) {
                     if (merge_3) {
@@ -1565,12 +1561,10 @@ class Imap extends utils.Adapter {
                     return format(tl.trans[text][this.lang], merge, merge_1);
                 } else if (merge) {
                     return format(tl.trans[text][this.lang], merge);
-                } else {
-                    return tl.trans[text][this.lang];
                 }
-            } else {
-                return tl.trans["Unknown"][this.lang];
+                return tl.trans[text][this.lang];
             }
+            return tl.trans["Unknown"][this.lang];
         } catch (e) {
             this.log.error(`try helper_translator: ${e} - ${text}`);
         }
@@ -1590,8 +1584,8 @@ class Imap extends utils.Adapter {
             this.clientsRows[clientID] = "";
         }
         const id = this.clientsHTML[clientID];
-        const isEven = count % 2 != 0 ? id["mails_even_color"] : id["mails_odd_color"];
-        const isToday = (someDate) => {
+        const isEven = count % 2 != 0 ? id.mails_even_color : id.mails_odd_color;
+        const isToday = someDate => {
             const today = new Date();
             return (
                 someDate.getDate() == today.getDate() &&
@@ -1607,9 +1601,9 @@ class Imap extends utils.Adapter {
         let flags_add = "";
         let flags_del = "";
         if (isToday(new Date(mail.date))) {
-            days = count % 2 != 0 ? id["mails_today_color"] : id["mails_today_color_odd"];
+            days = count % 2 != 0 ? id.mails_today_color : id.mails_today_color_odd;
         } else {
-            days = count % 2 != 0 ? id["mails_nextday_color_even"] : id["mails_nextday_color_odd"];
+            days = count % 2 != 0 ? id.mails_nextday_color_even : id.mails_nextday_color_odd;
         }
         const weight = attrs && attrs.flags != "" ? "normal" : "bold";
         let from = this.helper_translator("Unknown");
@@ -1629,43 +1623,43 @@ class Imap extends utils.Adapter {
         const org_subject = mail.subject;
         let subject = mail.subject;
         let content = mail.text != null ? mail.text : convert(mail.html);
-        if (id["choose_content"] == "html") {
+        if (id.choose_content == "html") {
             content = mail.html != null ? mail.html : "";
-        } else if (id["choose_content"] == "text") {
+        } else if (id.choose_content == "text") {
             content = mail.text != null ? mail.text : convert(mail.html);
-        } else if (id["choose_content"] == "textAsHtml") {
+        } else if (id.choose_content == "textAsHtml") {
             content = mail.textAsHtml != null ? mail.textAsHtml : mail.text;
-        } else if (id["choose_content"] == "html_convert") {
+        } else if (id.choose_content == "html_convert") {
             content = mail.html != null ? convert(mail.html) : mail.text;
-        } else if (id["choose_content"] == "textAsHtml_convert") {
+        } else if (id.choose_content == "textAsHtml_convert") {
             content = mail.textAsHtml != null ? convert(mail.textAsHtml) : mail.text;
         }
         let org_content = content;
         if (org_content != null && org_content != "") {
             org_content = convert(org_content).replace(/["]+|[']+/g, "");
         }
-        if (mail.subject && mail.subject.toString().length > id["short_subject"] && id["short_subject"] > 0) {
-            subject = mail.subject.substring(0, id["short_subject"]);
+        if (mail.subject && mail.subject.toString().length > id.short_subject && id.short_subject > 0) {
+            subject = mail.subject.substring(0, id.short_subject);
         }
-        if (content && content.toString().length > id["short_content"] && id["short_content"] > 0) {
-            content = content.substring(0, id["short_content"]);
+        if (content && content.toString().length > id.short_content && id.short_content > 0) {
+            content = content.substring(0, id.short_content);
         }
         attrs.flags = attrs && attrs.flags != "" ? attrs.flags.toString().replace(/\\/g, "") : "unseen";
         action = `<option value="" selected="selected"></option>`;
         for (const inbox of this.boxfolder[clientID]) {
             if (inbox != this.clientsRaw[clientID].inbox_activ) {
-                action_copy += `<option value="copy<L>${attrs.uid}<L>${inbox}">${id["text_select_copy"]}${inbox}</option>`;
-                action += `<option value="move<L>${attrs.uid}<L>${inbox}">${id["text_select_move"]}${inbox}</option>`;
+                action_copy += `<option value="copy<L>${attrs.uid}<L>${inbox}">${id.text_select_copy}${inbox}</option>`;
+                action += `<option value="move<L>${attrs.uid}<L>${inbox}">${id.text_select_move}${inbox}</option>`;
             }
         }
         action += action_copy;
         flags = `<option value="" selected="selected"></option>`;
         for (const key of all_flags) {
             if (attrs.flags.indexOf(key) !== -1) {
-                flags_del += `<option value="delFlags<L>${attrs.uid}<L>${key}">${id["text_select_delflag"]}${key}</option>`;
+                flags_del += `<option value="delFlags<L>${attrs.uid}<L>${key}">${id.text_select_delflag}${key}</option>`;
             } else {
-                flags += `<option value="setFlags<L>${attrs.uid}<L>${key}">${id["text_select_setflag"]}${key}</option>`;
-                flags_add += `<option value="addFlags<L>${attrs.uid}<L>${key}">${id["text_select_addflag"]}${key}</option>`;
+                flags += `<option value="setFlags<L>${attrs.uid}<L>${key}">${id.text_select_setflag}${key}</option>`;
+                flags_add += `<option value="addFlags<L>${attrs.uid}<L>${key}">${id.text_select_addflag}${key}</option>`;
             }
         }
         flags += flags_add;
@@ -1674,20 +1668,20 @@ class Imap extends utils.Adapter {
         <tr style="background-color:${isEven}; 
         color:${days};
         font-weight:${weight};
-        font-size:${id["header_font_size"]}px;">
-        <td style="text-align:${id["headline_align_column_1"]}">${count}</td>
-        <td title="${org_from}" style="text-align:${id["headline_align_column_2"]}">${from}</td>
-        <td title="${org_subject}" style="text-align:${id["headline_align_column_3"]}">${subject}</td>
-        <td style="text-align:${id["headline_align_column_4"]}">
+        font-size:${id.header_font_size}px;">
+        <td style="text-align:${id.headline_align_column_1}">${count}</td>
+        <td title="${org_from}" style="text-align:${id.headline_align_column_2}">${from}</td>
+        <td title="${org_subject}" style="text-align:${id.headline_align_column_3}">${subject}</td>
+        <td style="text-align:${id.headline_align_column_4}">
         ${this.formatDate(new Date(mail.date).getTime(), "TT.MM.JJ - SS:mm")}</td>
-        <td title="${org_content}" style="text-align:${id["headline_align_column_5"]}">${content}</td>
-        <td style="text-align:${id["headline_align_column_6"]}">${seqno}</td>
-        <td style="text-align:${id["headline_align_column_7"]}">${attrs.flags}</td>
-        <td style="text-align:${id["headline_align_column_8"]}">${attrs.uid}</td>
-        <td style="text-align:${id["headline_align_column_9"]}">
+        <td title="${org_content}" style="text-align:${id.headline_align_column_5}">${content}</td>
+        <td style="text-align:${id.headline_align_column_6}">${seqno}</td>
+        <td style="text-align:${id.headline_align_column_7}">${attrs.flags}</td>
+        <td style="text-align:${id.headline_align_column_8}">${attrs.uid}</td>
+        <td style="text-align:${id.headline_align_column_9}">
         <select onchange="setState('${this.namespace}.${clientID}.remote.vis_command', this.value)">
         ${action}</select></td>
-        <td style="text-align:${id["headline_align_column_10"]}">
+        <td style="text-align:${id.headline_align_column_10}">
         <select onchange="setState('${this.namespace}.${clientID}.remote.vis_command', this.value)">
         ${flags}</select></td>
         </tr>`;
@@ -1714,7 +1708,7 @@ class Imap extends utils.Adapter {
                 justify-content: center
             }`;
             let min = "";
-            if (id["jarvis"]) {
+            if (id.jarvis) {
                 div = "<div>";
                 div_css = "";
                 min = "min-width:100%;";
@@ -1731,28 +1725,28 @@ class Imap extends utils.Adapter {
                 margin: 0;
             }
             body {
-                background-color: ${id["body_background"]}; margin: 0 auto;
+                background-color: ${id.body_background}; margin: 0 auto;
             }
             p {
-                padding-top: 10px; padding-bottom: 10px; text-align: ${id["p_tag_text_align"]}
+                padding-top: 10px; padding-bottom: 10px; text-align: ${id.p_tag_text_align}
             }
             td {
-                padding:${id["td_tag_cell"]}px; border:0px solid ${id["td_tag_border_color"]}; 
-                border-right:${id["td_tag_border_right"]}px solid ${id["td_tag_border_color"]};
-                border-bottom:${id["td_tag_border_bottom"]}px solid ${id["td_tag_border_color"]};
+                padding:${id.td_tag_cell}px; border:0px solid ${id.td_tag_border_color}; 
+                border-right:${id.td_tag_border_right}px solid ${id.td_tag_border_color};
+                border-bottom:${id.td_tag_border_bottom}px solid ${id.td_tag_border_color};
             }
             table {
-                width: ${id["table_tag_width"]};
-                margin: ${id["table_tag_text_align"]};
-                border:1px solid ${id["table_tag_border_color"]};
-                border-spacing: ${id["table_tag_cell"]}px;
+                width: ${id.table_tag_width};
+                margin: ${id.table_tag_text_align};
+                border:1px solid ${id.table_tag_border_color};
+                border-spacing: ${id.table_tag_cell}px;
                 border-collapse: collapse;
             }
             td:nth-child(1) {
-                width: ${id["td_tag_2_colums"]}
+                width: ${id.td_tag_2_colums}
             }
             td:nth-child(2) {
-                width:${id["td_tag_2_colums"]}
+                width:${id.td_tag_2_colums}
             }
             ${div_css}
             thread {
@@ -1773,60 +1767,60 @@ class Imap extends utils.Adapter {
             </head>
             <body>
             ${div}
-            <table style="${min} width:${id["header_width"]};
-            border:${id["header_border"]}px; border-color:${id["header_tag_border_color"]}; 
-            color:${id["header_text_color"]}; font-size:${id["header_font_size"]}px; 
-            font-family:${id["header_font"]}; 
-            background-image: linear-gradient(42deg,${id["header_linear_color_2"]},
-            ${id["header_linear_color_1"]});">
+            <table style="${min} width:${id.header_width};
+            border:${id.header_border}px; border-color:${id.header_tag_border_color}; 
+            color:${id.header_text_color}; font-size:${id.header_font_size}px; 
+            font-family:${id.header_font}; 
+            background-image: linear-gradient(42deg,${id.header_linear_color_2},
+            ${id.header_linear_color_1});">
             <thead>
             <tr>
             <th colspan="10" scope="colgroup">
-            <p style="color:${id["top_text_color"]}; font-family:${id["top_font"]}; 
-            font-size:${id["top_font_size"]}px; font-weight:${id["top_font_weight"]}">
-            ${id["top_text"]}&ensp;&ensp;${this.helper_translator("top_last_update")} 
+            <p style="color:${id.top_text_color}; font-family:${id.top_font}; 
+            font-size:${id.top_font_size}px; font-weight:${id.top_font_weight}">
+            ${id.top_text}&ensp;&ensp;${this.helper_translator("top_last_update")} 
             ${this.formatDate(new Date(), "TT.MM.JJJJ hh:mm:ss")}</p></th>
             </tr>
-            <tr style="color:${id["headline_color"]}; height:${id["headline_height"]}px;
-            font-size: ${id["headline_font_size"]}px; font-weight: ${id["headline_style"]}; 
-            border-bottom: ${id["headline_underlined"]}px solid ${id["headline_underlined_color"]}">
-            <th style="text-align:${id["headline_align_column_1"]}; width:${id["headline_column_width_1"]}">
-            ${id["text_id"]}
+            <tr style="color:${id.headline_color}; height:${id.headline_height}px;
+            font-size: ${id.headline_font_size}px; font-weight: ${id.headline_style}; 
+            border-bottom: ${id.headline_underlined}px solid ${id.headline_underlined_color}">
+            <th style="text-align:${id.headline_align_column_1}; width:${id.headline_column_width_1}">
+            ${id.text_id}
             </th>
-            <th style="text-align:${id["headline_align_column_2"]}; width:${id["headline_column_width_2"]}">
-            ${id["text_from"]}
+            <th style="text-align:${id.headline_align_column_2}; width:${id.headline_column_width_2}">
+            ${id.text_from}
             </th>
-            <th style="text-align:${id["headline_align_column_3"]}; width:${id["headline_column_width_3"]}">
-            ${id["text_subject"]}
+            <th style="text-align:${id.headline_align_column_3}; width:${id.headline_column_width_3}">
+            ${id.text_subject}
             </th>
-            <th style="text-align:${id["headline_align_column_4"]}; width:${id["headline_column_width_4"]}">
-            ${id["text_date"]}
+            <th style="text-align:${id.headline_align_column_4}; width:${id.headline_column_width_4}">
+            ${id.text_date}
             </th>
-            <th style="text-align:${id["headline_align_column_5"]}; width:${id["headline_column_width_5"]}">
-            ${id["text_content"]}
+            <th style="text-align:${id.headline_align_column_5}; width:${id.headline_column_width_5}">
+            ${id.text_content}
             </th>
-            <th style="text-align:${id["headline_align_column_6"]}; width:${id["headline_column_width_6"]}">
-            ${id["text_seq"]}
+            <th style="text-align:${id.headline_align_column_6}; width:${id.headline_column_width_6}">
+            ${id.text_seq}
             </th>
-            <th style="text-align:${id["headline_align_column_7"]}; width:${id["headline_column_width_7"]}">
-            ${id["text_flag"]}
+            <th style="text-align:${id.headline_align_column_7}; width:${id.headline_column_width_7}">
+            ${id.text_flag}
             </th>
-            <th style="text-align:${id["headline_align_column_8"]}; width:${id["headline_column_width_8"]}">
-            ${id["text_uid"]}
+            <th style="text-align:${id.headline_align_column_8}; width:${id.headline_column_width_8}">
+            ${id.text_uid}
             </th>
-            <th style="text-align:${id["headline_align_column_9"]}; width:${id["headline_column_width_9"]}">
-            ${id["text_move_or_copy"]}
+            <th style="text-align:${id.headline_align_column_9}; width:${id.headline_column_width_9}">
+            ${id.text_move_or_copy}
             </th>
-            <th style="text-align:${id["headline_align_column_10"]}; width:${id["headline_column_width_10"]}">
-            ${id["text_setflag"]}
+            <th style="text-align:${id.headline_align_column_10}; width:${id.headline_column_width_10}">
+            ${id.text_setflag}
             </th>
             </tr>
             </thead>
             <tfoot>
             <tr>
             <th colspan="10" scope="colgroup">
-            <p style="color:${id["top_text_color"]}; font-family:${id["top_font"]}; 
-            font-size:${id["top_font_size"]}px; font-weight:${id["top_font_weight"]}">
+            <p style="color:${id.top_text_color}; font-family:${id.top_font}; 
+            font-size:${id.top_font_size}px; font-weight:${id.top_font_weight}">
             ${this.helper_translator("footer", count, all)}</p></th>
             </tr>
             </tfoot>
@@ -1956,7 +1950,7 @@ class Imap extends utils.Adapter {
                             if (states && states.q != null && states.q != 0) {
                                 this.log_translator("debug", "Datapoint", `${dp.id} - ${JSON.stringify(states)}`);
                                 if (quality[states.q]) {
-                                    const isfind = dp_array.find((mes) => mes.message === quality[states.q]);
+                                    const isfind = dp_array.find(mes => mes.message === quality[states.q]);
                                     if (isfind) {
                                         this.log_translator("debug", "Found", JSON.stringify(isfind));
                                         ++isfind.counter;
@@ -2094,7 +2088,7 @@ if (require.main !== module) {
     /**
      * @param {Partial<utils.AdapterOptions>} [options={}]
      */
-    module.exports = (options) => new Imap(options);
+    module.exports = options => new Imap(options);
 } else {
     // otherwise start the instance directly
     new Imap();
