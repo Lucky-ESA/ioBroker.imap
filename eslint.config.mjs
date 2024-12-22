@@ -9,15 +9,12 @@ export default [
         // specify files to exclude from linting here
         ignores: [
             ".dev-server/",
+            ".github/*",
             ".vscode/",
             "*.test.js",
             "test/**/*.js",
             "*.config.mjs",
-            "build",
-            "admin/build",
-            "admin/words.js",
             "admin/blockly.js",
-            "admin/admin.d.ts",
             "**/adapter-config.d.ts",
         ],
     },

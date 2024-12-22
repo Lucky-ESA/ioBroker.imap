@@ -3,6 +3,16 @@ import prettierConfig from "@iobroker/eslint-config/prettier.config.mjs";
 
 export default {
     ...prettierConfig,
+    ignores: [
+        ".dev-server/",
+        ".github/*",
+        ".vscode/",
+        "*.test.js",
+        "test/**/*.js",
+        "*.config.mjs",
+        "admin/blockly.js",
+        "**/adapter-config.d.ts",
+    ],
     semi: true,
     trailingComma: "all",
     singleQuote: false,
