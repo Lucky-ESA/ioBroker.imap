@@ -1914,7 +1914,7 @@ class Imap extends utils.Adapter {
     }
 
     /**
-     * Datapoint qualitiy clean up
+     * Object qualitiy clean up
      */
     async cleanupQuality() {
         this.log_translator("debug", "Data point quality is cleaned up");
