@@ -41,7 +41,7 @@
 - gmail [app-password](https://support.google.com/mail/answer/185833?hl=de)
 - vodafone
 - strato
-- outlook (e. g. [outlook 2Factor authentication](https://mcuiobroker.gitbook.io/jarvis-infos/tipps/allgemein/microsoft-windows/2-fach-authentifizierung))
+- outlook (e. g. [OAuth 2.0 authorization](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app?tabs=certificate))
 
 ## Description
 
@@ -58,6 +58,11 @@
 -->
 
 ## Changelog
+
+### **WORK IN PROGRESS**
+
+- (Lucky-ESA) Description revised
+
 ### 0.3.0 (2024-12-07)
 
 - (Lucky-ESA) Mailbox folder delete added

@@ -71,7 +71,7 @@
     "selection": "Selection",
     "TELEGRAM": "Send",
     "RESTART": "Restart",
-    "DATAPOINT": "Datapoint",
+    "DATAPOINT": "Object-ID",
     "telegram_tooltip": "Instance (separate multiples with a comma - e.g. telegram.0, telegram.1)",
     "Tab Nodemailer": "Mailparser options",
     "Info Nodemailer": "Mailparser options",
