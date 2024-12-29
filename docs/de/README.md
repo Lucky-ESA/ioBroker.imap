@@ -14,7 +14,7 @@
 - [Instanz Einstellungen](#instanz-einstellungen)
     - [Einstellungen TAB IMAP](#instanz-konfiguration-tab-imap-erstellen)
     - [Einstellungen TAB Symbole](#instanz-konfiguration-tab-symbole-erstellen)
-    - [Outlook oauth2](#instanz-konfiguration-tab-oauth2-erstellen)
+    - [Einstellungen TAB Oauth2](#instanz-konfiguration-tab-oauth2-erstellen)
     - [Einstellungen TAB Mailparser](#instanz-konfiguration-tab-mailparser-optionen-erstellen)
 - [Datenpunkte](#zustände-objekte)
     - [Datenpunkte imap.0](#zustände-imap0)

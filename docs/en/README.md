@@ -14,6 +14,7 @@
 - [Instance Settings](#instance-settings)
     - [Settings TAB IMAP](#instance-settings-tab---create-imaps)
     - [Settings TAB Icons](#instance-settings-tab---create-icons)
+    - [Settings TAB Oauth2](#instance-settings-tab---oauth2)
     - [Settings TAB Mailparser](#instance-settings-tab---mailparser-options)
 - [States](#states)
     - [States imap.0](#state-imap0)
