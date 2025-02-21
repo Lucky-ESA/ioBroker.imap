@@ -62,6 +62,8 @@
 ### **WORK IN PROGRESS**
 
 - (Lucky-ESA) Description revised
+- (Lucky-ESA) Admin 7.4.10 required
+- (Lucky-ESA) Added meta object for attachments
 
 ### 0.3.0 (2024-12-07)
 
