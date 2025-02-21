@@ -1,241 +1,245 @@
 {
-  "common": {
-    "name": "imap",
-    "version": "0.3.0",
-    "news": {
-      "0.3.0": {
-        "en": "Mailbox folder delete added\nMailbox folder create added\nChange Mailbox Folder name added\nIMAP package changed\nMigration to ESLint9",
-        "de": "Mailbox Ordner löschen hinzugefügt\nMailbox Ordner erstellen hinzugefügt\nMailbox ändern Ordnername hinzugefügt\nIMAP Paket geändert\nMigration auf ESLint9",
-        "ru": "Папка папки удалена\nПапка папки\nИзменить папку Добавлено имя папки\nIMAP пакет изменился\nМиграция в ESLint9",
-        "pt": "Pasta de caixa de correio excluir adicionado\nPasta de caixa de correio criar adicionado\nAlterar caixa de correio Nome da pasta adicionado\nPacote IMAP alterado\nMigração para ESLint9",
-        "nl": "Mailbox map verwijderen toegevoegd\nMailbox-map aanmaken\nMailbox wijzigen Mapnaam toegevoegd\nIMAP-pakket gewijzigd\nMigratie naar ESLint9",
-        "fr": "Supprimer le dossier Boîte aux lettres ajouté\nBoîte aux lettres créer ajouté\nModifier la boîte aux lettres Nom du dossier ajouté\nPaquet IMAP modifié\nMigration vers ESLint9",
-        "it": "Mailbox cartella eliminare aggiunto\nMailbox cartella creare aggiunto\nCambia la casella di posta Nome della cartella aggiunto\nPacchetto IMAP cambiato\nMigrazione a ESLint9",
-        "es": "Borrar carpeta de correo añadido\nCarpeta de correo crear añadido\nCambio de correo Nombre de carpeta añadido\nPaquete IMAP cambiado\nMigración a ESLint9",
-        "pl": "Katalog skrzynki pocztowej Usuń dodany\nKatalog Mailbox utworzyć dodane\nZmień skrzynkę pocztową Dodano nazwę folderu\nZmieniony pakiet IMAP\nMigracja do ESLint9",
-        "uk": "Видалення папки поштових скриньок\nПапка поштових скриньок\nЗміна поштової скриньки Додано назву папки\nЗмінено пакет IMAP\nМіграція в ESLint9",
-        "zh-cn": "邮箱文件夹已删除\n已添加邮箱文件夹创建\n更改邮箱 文件夹名称已添加\nIMAP 软件包已更改\n迁移到ESLint9"
-      },
-      "0.2.2": {
-        "en": "New design for settings page added\nCrash if uid is empty for new emails",
-        "de": "Neues Design für Einstellungen Seite hinzugefügt\nCrash wenn uid für neue E-Mails leer ist",
-        "ru": "Новый дизайн добавлена страница настроек\nCrash, если uid пуст для новых электронных писем",
-        "pt": "Novo design para configurações página adicionada\nCrash se uid está vazio para novos e-mails",
-        "nl": "Nieuw ontwerp voor instellingen pagina toegevoegd\nCrashen als uid leeg is voor nieuwe e-mails",
-        "fr": "Nouvelle conception pour les paramètres page ajoutée\nCrash si uid est vide pour les nouveaux emails",
-        "it": "Nuovo design per le impostazioni pagina aggiunto\nCrash se uid è vuoto per nuove email",
-        "es": "Nuevo diseño para la página de configuración añadido\nCrash si uid está vacío para nuevos correos electrónicos",
-        "pl": "Dodano nowy projekt strony ustawień\nCrash jeśli uid jest pusty dla nowych e-maili",
-        "uk": "Новий дизайн для сторінки налаштувань\nЯкщо у вас є порожній для нових електронних листів",
-        "zh-cn": "添加了设置页面的新设计\n如果 uid 为新邮件空则崩溃"
-      },
-      "0.2.1": {
-        "en": "Update dependencies\nChanged Log info to debug\nFixed blockly setFlag crash",
-        "de": "Abhängigkeiten aktualisieren\nGeändert Log info to debug\nFester Blocksatz Flaggenabsturz",
-        "ru": "Зависимости обновления\nИзменение Информация для отладки\nФиксированный блокированный Крушение флага",
-        "pt": "Dependências de atualização\nMudança Log info to debug\nConjunto bloqueado fixo Falha da bandeira",
-        "nl": "Afhankelijkheden bijwerken\nGewijzigd Log info om te debuggen\nVast gezet Vlagcrash",
-        "fr": "Mise à jour des dépendances\nChangement Log info pour déboguer\nFixé en bloc Crash du drapeau",
-        "it": "Dipendenze di aggiornamento\nVariazione Accedi a debug\nSet fisso blocco crash della bandiera",
-        "es": "Actualizar las dependencias\nCambios Información de registro para depurar\nSet de bloqueo fijo Accidente de bandera",
-        "pl": "Aktualizuj zależności\nZmieniono Log info to debug\nNaprawiony blokly set Katastrofa flagi",
-        "uk": "Оновлення залежності\nЗмінено Інформація про журнал\nФіксований блокнот Прапорна аварія",
-        "zh-cn": "更新依赖关系\n已更改 要调试的日志信息\n固定区块 旗舰崩溃"
-      },
-      "0.2.0": {
-        "en": "Updated Blockly definitions\nJS-Controller >= 5.0.19 required\nAdmin >=6.13.16 required",
-        "de": "Aktualisierte Blockly Definitionen\nJS-Controller >= 5.0.19 erforderlich\nAdmin >=6.13.16 erforderlich",
-        "ru": "Обновленные детальные определения\n JS 5.0.19\n>=6.13.16",
-        "pt": "Definições Blockly atualizadas\nJS-Controller >= 5.0.19 necessário\nAdmin >=6.13.16 necessário",
-        "nl": "Bijgewerkte blokdefinities\nJS-Controller < 5.01.19 vereist\nAdmin < 6.13.16 vereist",
-        "fr": "Mise à jour des définitions par blocs\nJS-Contrôleur >= 5.0.19 requis\nAdmin >=6.13.16 requis",
-        "it": "Aggiornate definizioni Blockly\nJS-Controller >= 5.0.19 richiesto\nAdmin >=6.13.16 richiesto",
-        "es": "Definiciones bloqueadas actualizadas\nJS-Controller ≤ 5.0.19 requerido\nPersonal obligatorio",
-        "pl": "Aktualizacja definicji blockly\nJS- Controller > = 5.0.19 wymagane\nWymagany dodatek > = 6.13.16",
-        "uk": "Оновлено блочні визначення\nJS-Controller >=5.0.19 потрібно\nAdmin >=6.13.16 потрібно",
-        "zh-cn": "更新的块状定义\n联合来文主计长\n所需行政经费"
-      },
-      "0.1.3": {
-        "en": "Fixed setFlag\nFixed sendTo error during instance deletion ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nMass email shift intercepted",
-        "de": "Fixed set Flagge\nFester Versand Fehler bei der Löschung von Instanzen ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nMassen-E-Mail-Schicht abgefangen",
-        "ru": "Фиксированный набор Флаг\nFixed send Ошибка во время удаления ([#57] (https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nМассовый смещение электронной почты перехвачено",
-        "pt": "Conjunto fixo Bandeira\nEnviar fixo Para erro durante a exclusão de instância ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nMudança de e-mail em massa interceptada",
-        "nl": "Vaste set Vlag\nVaste verzending Fout tijdens het verwijderen van instantie ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nOnderschepte massa-e-mailverschuiving",
-        "fr": "Set fixe Drapeau\nEnvoi fixe Erreur lors de la suppression de l'instance ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57)\nChangement d'email de masse intercepté",
-        "it": "Set fisso Bandiera\nInviato fisso Per errore durante la cancellazione delle istanze ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nSpostamento email di massa intercettato",
-        "es": "Juego fijo Bandera\nEnvío fijo To error during instance deletion ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nCambio de correo electrónico interceptado",
-        "pl": "Zestaw stały Flaga\nPoprawiono wysyłanie Do błędu podczas usuwania instancji ([# 57] (https: / / github.com / Lucky- ESA / ioBroker.imap / issues / 57))\nMass email przesunięcie przechwycone",
-        "uk": "Фіксований набір Прапор\nВиправлена відправка Помилки ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nМасова зміна електронної пошти",
-        "zh-cn": "固定设备 旗帜\n固定发送 删除实例时出现错误([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\n已截取大宗电子邮件"
-      },
-      "0.1.2": {
-        "en": "Added missing translate\nUpdated package\nBug fixes",
-        "de": "Hinzugefügt fehlende Übersetzung\nAktualisiertes Paket\nFehlerbehebungen",
-        "ru": "Добавить недостающий перевод\nОбновленный пакет\nЗапястья",
-        "pt": "Adicionado em falta traduzir\nPacote atualizado\nCorreções de bugs",
-        "nl": "Toegevoegde ontbrekende vertaling\nBijgewerkt pakket\nBugfixes",
-        "fr": "Ajoutée manquante traduire\nPaquet mis à jour\nCorrections des bogues",
-        "it": "Aggiunto traduttore mancante\nPacchetto aggiornato\nCorrezioni di bug",
-        "es": "Traducir desaparecido\nPaquete actualizado\nCorrección de errores",
-        "pl": "Dodano brak tłumaczenia\nAktualizacja pakietu\nPoprawki błędów",
-        "uk": "Додати відсутній переклад\nОновлений пакет\nВиправлення помилок",
-        "zh-cn": "缺少翻译\n更新软件包\n错误修正"
-      },
-      "0.1.1": {
-        "en": "Delete wrong error parse message",
-        "de": "Falsche Fehlermeldung löschen",
-        "ru": "Удалить неправильная ошибка parse сообщение",
-        "pt": "Excluir mensagem de análise de erro errada",
-        "nl": "Verwijder de verkeerde foute boodschap",
-        "fr": "Supprimer le message erroné",
-        "it": "Cancella messaggio di parse errore sbagliato",
-        "es": "Eliminar el mensaje de error incorrecto",
-        "pl": "Delete error pars",
-        "uk": "Видалити неправильне повідомлення про помилку",
-        "zh-cn": "删除错误的信息稀少"
-      }
-    },
-    "titleLang": {
-      "en": "imap",
-      "de": "imap",
-      "ru": "имап",
-      "pt": "imap",
-      "nl": "imap",
-      "fr": "imap",
-      "it": "imap",
-      "es": "imágen",
-      "pl": "mapa",
-      "zh-cn": "地图",
-      "uk": "imap"
-    },
-    "desc": {
-      "en": "imap to receive your emails",
-      "de": "IMAP, um Ihre E-Mails zu empfangen",
-      "ru": "imap для получения ваших писем",
-      "pt": "imap para receber seus e-mails",
-      "nl": "imap om je e-mails te ontvangen",
-      "fr": "imap pour recevoir vos emails",
-      "it": "imap per ricevere le tue email",
-      "es": "imap para recibir tus correos",
-      "pl": "imap, aby otrzymywać e-maile",
-      "zh-cn": "imap 接收您的电子邮件",
-      "uk": "imap для отримання ваших електронних листів"
-    },
-    "authors": [
-      "Lucky-ESA <github@luckyskills.de>"
-    ],
-    "keywords": [
-      "imap",
-      "mail",
-      "email",
-      "receive"
-    ],
-    "licenseInformation": {
-      "license": "MIT",
-      "type": "free"
-    },
-    "tier": 3,
-    "platform": "Javascript/Node.js",
-    "icon": "imap.png",
-    "enabled": true,
-    "extIcon": "https://raw.githubusercontent.com/Lucky-ESA/ioBroker.imap/master/admin/imap.png",
-    "readme": "https://github.com/Lucky-ESA/ioBroker.imap/blob/master/README.md",
-    "loglevel": "info",
-    "mode": "daemon",
-    "type": "messaging",
-    "messagebox": true,
-    "blockly": true,
-    "compact": true,
-    "connectionType": "cloud",
-    "dataSource": "push",
-    "adminUI": {
-      "config": "json"
-    },
-    "docs": {
-      "en": [
-        "docs/en/README.md"
-      ],
-      "de": [
-        "docs/de/README.md"
-      ]
-    },
-    "dependencies": [
-      {
-        "js-controller": ">=5.0.19"
-      }
-    ],
-    "globalDependencies": [
-      {
-        "admin": ">=6.13.16"
-      }
-    ]
-  },
-  "native": {
-    "hosts": [],
-    "icons": [],
-    "oauth_token": [],
-    "nodemailer_options": [],
-    "max_mb": 400,
-    "max_mb_selection": 2,
-    "max_mb_telegram": "",
-    "max_mb_telegram_user": "",
-    "max_mb_object": "",
-    "max_mb_last_restart": 0
-  },
-  "encryptedNative": [
-    "password",
-    "secureid"
-  ],
-  "protectedNative": [
-    "password",
-    "secureid"
-  ],
-  "objects": [],
-  "instanceObjects": [
-    {
-      "_id": "info",
-      "type": "channel",
-      "common": {
-        "name": {
-          "en": "Information",
-          "de": "Informationen",
-          "ru": "Информация",
-          "pt": "Informação",
-          "nl": "Informatie",
-          "fr": "Information",
-          "it": "Informazioni",
-          "es": "Información",
-          "pl": "Informacja",
-          "uk": "Інформація",
-          "zh-cn": "信息"
-        }
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.connection",
-      "type": "state",
-      "common": {
-        "role": "indicator.connected",
-        "name": {
-          "en": "Device or service connected",
-          "de": "Geräte- oder Serviceanschluss",
-          "ru": "Устройство или сервис подключены",
-          "pt": "Dispositivo ou serviço conectado",
-          "nl": "Device of dienst verbonden",
-          "fr": "Appareil ou service connecté",
-          "it": "Dispositivo o servizio collegato",
-          "es": "Dispositivo o servicio conectado",
-          "pl": "Urządzenie lub usługa połączona",
-          "uk": "Пристрої або послуги підключені",
-          "zh-cn": "证人或有关服务"
+    "common": {
+        "name": "imap",
+        "version": "0.3.0",
+        "news": {
+            "0.3.0": {
+                "en": "Mailbox folder delete added\nMailbox folder create added\nChange Mailbox Folder name added\nIMAP package changed\nMigration to ESLint9",
+                "de": "Mailbox Ordner löschen hinzugefügt\nMailbox Ordner erstellen hinzugefügt\nMailbox ändern Ordnername hinzugefügt\nIMAP Paket geändert\nMigration auf ESLint9",
+                "ru": "Папка папки удалена\nПапка папки\nИзменить папку Добавлено имя папки\nIMAP пакет изменился\nМиграция в ESLint9",
+                "pt": "Pasta de caixa de correio excluir adicionado\nPasta de caixa de correio criar adicionado\nAlterar caixa de correio Nome da pasta adicionado\nPacote IMAP alterado\nMigração para ESLint9",
+                "nl": "Mailbox map verwijderen toegevoegd\nMailbox-map aanmaken\nMailbox wijzigen Mapnaam toegevoegd\nIMAP-pakket gewijzigd\nMigratie naar ESLint9",
+                "fr": "Supprimer le dossier Boîte aux lettres ajouté\nBoîte aux lettres créer ajouté\nModifier la boîte aux lettres Nom du dossier ajouté\nPaquet IMAP modifié\nMigration vers ESLint9",
+                "it": "Mailbox cartella eliminare aggiunto\nMailbox cartella creare aggiunto\nCambia la casella di posta Nome della cartella aggiunto\nPacchetto IMAP cambiato\nMigrazione a ESLint9",
+                "es": "Borrar carpeta de correo añadido\nCarpeta de correo crear añadido\nCambio de correo Nombre de carpeta añadido\nPaquete IMAP cambiado\nMigración a ESLint9",
+                "pl": "Katalog skrzynki pocztowej Usuń dodany\nKatalog Mailbox utworzyć dodane\nZmień skrzynkę pocztową Dodano nazwę folderu\nZmieniony pakiet IMAP\nMigracja do ESLint9",
+                "uk": "Видалення папки поштових скриньок\nПапка поштових скриньок\nЗміна поштової скриньки Додано назву папки\nЗмінено пакет IMAP\nМіграція в ESLint9",
+                "zh-cn": "邮箱文件夹已删除\n已添加邮箱文件夹创建\n更改邮箱 文件夹名称已添加\nIMAP 软件包已更改\n迁移到ESLint9"
+            },
+            "0.2.2": {
+                "en": "New design for settings page added\nCrash if uid is empty for new emails",
+                "de": "Neues Design für Einstellungen Seite hinzugefügt\nCrash wenn uid für neue E-Mails leer ist",
+                "ru": "Новый дизайн добавлена страница настроек\nCrash, если uid пуст для новых электронных писем",
+                "pt": "Novo design para configurações página adicionada\nCrash se uid está vazio para novos e-mails",
+                "nl": "Nieuw ontwerp voor instellingen pagina toegevoegd\nCrashen als uid leeg is voor nieuwe e-mails",
+                "fr": "Nouvelle conception pour les paramètres page ajoutée\nCrash si uid est vide pour les nouveaux emails",
+                "it": "Nuovo design per le impostazioni pagina aggiunto\nCrash se uid è vuoto per nuove email",
+                "es": "Nuevo diseño para la página de configuración añadido\nCrash si uid está vacío para nuevos correos electrónicos",
+                "pl": "Dodano nowy projekt strony ustawień\nCrash jeśli uid jest pusty dla nowych e-maili",
+                "uk": "Новий дизайн для сторінки налаштувань\nЯкщо у вас є порожній для нових електронних листів",
+                "zh-cn": "添加了设置页面的新设计\n如果 uid 为新邮件空则崩溃"
+            },
+            "0.2.1": {
+                "en": "Update dependencies\nChanged Log info to debug\nFixed blockly setFlag crash",
+                "de": "Abhängigkeiten aktualisieren\nGeändert Log info to debug\nFester Blocksatz Flaggenabsturz",
+                "ru": "Зависимости обновления\nИзменение Информация для отладки\nФиксированный блокированный Крушение флага",
+                "pt": "Dependências de atualização\nMudança Log info to debug\nConjunto bloqueado fixo Falha da bandeira",
+                "nl": "Afhankelijkheden bijwerken\nGewijzigd Log info om te debuggen\nVast gezet Vlagcrash",
+                "fr": "Mise à jour des dépendances\nChangement Log info pour déboguer\nFixé en bloc Crash du drapeau",
+                "it": "Dipendenze di aggiornamento\nVariazione Accedi a debug\nSet fisso blocco crash della bandiera",
+                "es": "Actualizar las dependencias\nCambios Información de registro para depurar\nSet de bloqueo fijo Accidente de bandera",
+                "pl": "Aktualizuj zależności\nZmieniono Log info to debug\nNaprawiony blokly set Katastrofa flagi",
+                "uk": "Оновлення залежності\nЗмінено Інформація про журнал\nФіксований блокнот Прапорна аварія",
+                "zh-cn": "更新依赖关系\n已更改 要调试的日志信息\n固定区块 旗舰崩溃"
+            },
+            "0.2.0": {
+                "en": "Updated Blockly definitions\nJS-Controller >= 5.0.19 required\nAdmin >=6.13.16 required",
+                "de": "Aktualisierte Blockly Definitionen\nJS-Controller >= 5.0.19 erforderlich\nAdmin >=6.13.16 erforderlich",
+                "ru": "Обновленные детальные определения\n JS 5.0.19\n>=6.13.16",
+                "pt": "Definições Blockly atualizadas\nJS-Controller >= 5.0.19 necessário\nAdmin >=6.13.16 necessário",
+                "nl": "Bijgewerkte blokdefinities\nJS-Controller < 5.01.19 vereist\nAdmin < 6.13.16 vereist",
+                "fr": "Mise à jour des définitions par blocs\nJS-Contrôleur >= 5.0.19 requis\nAdmin >=6.13.16 requis",
+                "it": "Aggiornate definizioni Blockly\nJS-Controller >= 5.0.19 richiesto\nAdmin >=6.13.16 richiesto",
+                "es": "Definiciones bloqueadas actualizadas\nJS-Controller ≤ 5.0.19 requerido\nPersonal obligatorio",
+                "pl": "Aktualizacja definicji blockly\nJS- Controller > = 5.0.19 wymagane\nWymagany dodatek > = 6.13.16",
+                "uk": "Оновлено блочні визначення\nJS-Controller >=5.0.19 потрібно\nAdmin >=6.13.16 потрібно",
+                "zh-cn": "更新的块状定义\n联合来文主计长\n所需行政经费"
+            },
+            "0.1.3": {
+                "en": "Fixed setFlag\nFixed sendTo error during instance deletion ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nMass email shift intercepted",
+                "de": "Fixed set Flagge\nFester Versand Fehler bei der Löschung von Instanzen ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nMassen-E-Mail-Schicht abgefangen",
+                "ru": "Фиксированный набор Флаг\nFixed send Ошибка во время удаления ([#57] (https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nМассовый смещение электронной почты перехвачено",
+                "pt": "Conjunto fixo Bandeira\nEnviar fixo Para erro durante a exclusão de instância ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nMudança de e-mail em massa interceptada",
+                "nl": "Vaste set Vlag\nVaste verzending Fout tijdens het verwijderen van instantie ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nOnderschepte massa-e-mailverschuiving",
+                "fr": "Set fixe Drapeau\nEnvoi fixe Erreur lors de la suppression de l'instance ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57)\nChangement d'email de masse intercepté",
+                "it": "Set fisso Bandiera\nInviato fisso Per errore durante la cancellazione delle istanze ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nSpostamento email di massa intercettato",
+                "es": "Juego fijo Bandera\nEnvío fijo To error during instance deletion ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nCambio de correo electrónico interceptado",
+                "pl": "Zestaw stały Flaga\nPoprawiono wysyłanie Do błędu podczas usuwania instancji ([# 57] (https: / / github.com / Lucky- ESA / ioBroker.imap / issues / 57))\nMass email przesunięcie przechwycone",
+                "uk": "Фіксований набір Прапор\nВиправлена відправка Помилки ([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\nМасова зміна електронної пошти",
+                "zh-cn": "固定设备 旗帜\n固定发送 删除实例时出现错误([#57](https://github.com/Lucky-ESA/ioBroker.imap/issues/57))\n已截取大宗电子邮件"
+            },
+            "0.1.2": {
+                "en": "Added missing translate\nUpdated package\nBug fixes",
+                "de": "Hinzugefügt fehlende Übersetzung\nAktualisiertes Paket\nFehlerbehebungen",
+                "ru": "Добавить недостающий перевод\nОбновленный пакет\nЗапястья",
+                "pt": "Adicionado em falta traduzir\nPacote atualizado\nCorreções de bugs",
+                "nl": "Toegevoegde ontbrekende vertaling\nBijgewerkt pakket\nBugfixes",
+                "fr": "Ajoutée manquante traduire\nPaquet mis à jour\nCorrections des bogues",
+                "it": "Aggiunto traduttore mancante\nPacchetto aggiornato\nCorrezioni di bug",
+                "es": "Traducir desaparecido\nPaquete actualizado\nCorrección de errores",
+                "pl": "Dodano brak tłumaczenia\nAktualizacja pakietu\nPoprawki błędów",
+                "uk": "Додати відсутній переклад\nОновлений пакет\nВиправлення помилок",
+                "zh-cn": "缺少翻译\n更新软件包\n错误修正"
+            },
+            "0.1.1": {
+                "en": "Delete wrong error parse message",
+                "de": "Falsche Fehlermeldung löschen",
+                "ru": "Удалить неправильная ошибка parse сообщение",
+                "pt": "Excluir mensagem de análise de erro errada",
+                "nl": "Verwijder de verkeerde foute boodschap",
+                "fr": "Supprimer le message erroné",
+                "it": "Cancella messaggio di parse errore sbagliato",
+                "es": "Eliminar el mensaje de error incorrecto",
+                "pl": "Delete error pars",
+                "uk": "Видалити неправильне повідомлення про помилку",
+                "zh-cn": "删除错误的信息稀少"
+            }
         },
-        "type": "boolean",
-        "read": true,
-        "write": false,
-        "def": false
-      },
-      "native": {}
-    }
-  ]
+        "titleLang": {
+            "en": "imap",
+            "de": "imap",
+            "ru": "имап",
+            "pt": "imap",
+            "nl": "imap",
+            "fr": "imap",
+            "it": "imap",
+            "es": "imágen",
+            "pl": "mapa",
+            "zh-cn": "地图",
+            "uk": "imap"
+        },
+        "desc": {
+            "en": "imap to receive your emails",
+            "de": "IMAP, um Ihre E-Mails zu empfangen",
+            "ru": "imap для получения ваших писем",
+            "pt": "imap para receber seus e-mails",
+            "nl": "imap om je e-mails te ontvangen",
+            "fr": "imap pour recevoir vos emails",
+            "it": "imap per ricevere le tue email",
+            "es": "imap para recibir tus correos",
+            "pl": "imap, aby otrzymywać e-maile",
+            "zh-cn": "imap 接收您的电子邮件",
+            "uk": "imap для отримання ваших електронних листів"
+        },
+        "authors": ["Lucky-ESA <github@luckyskills.de>"],
+        "keywords": ["imap", "mail", "email", "receive"],
+        "licenseInformation": {
+            "license": "MIT",
+            "type": "free"
+        },
+        "tier": 3,
+        "platform": "Javascript/Node.js",
+        "icon": "imap.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/Lucky-ESA/ioBroker.imap/master/admin/imap.png",
+        "readme": "https://github.com/Lucky-ESA/ioBroker.imap/blob/master/README.md",
+        "loglevel": "info",
+        "mode": "daemon",
+        "type": "messaging",
+        "messagebox": true,
+        "blockly": true,
+        "compact": true,
+        "connectionType": "cloud",
+        "dataSource": "push",
+        "adminUI": {
+            "config": "json"
+        },
+        "docs": {
+            "en": ["docs/en/README.md"],
+            "de": ["docs/de/README.md"]
+        },
+        "dependencies": [
+            {
+                "js-controller": ">=5.0.19"
+            }
+        ],
+        "globalDependencies": [
+            {
+                "admin": ">=7.4.10"
+            }
+        ]
+    },
+    "native": {
+        "hosts": [],
+        "icons": [],
+        "oauth_token": [],
+        "nodemailer_options": [],
+        "max_mb": 400,
+        "max_mb_selection": 2,
+        "max_mb_telegram": "",
+        "max_mb_telegram_user": "",
+        "max_mb_object": "",
+        "max_mb_last_restart": 0
+    },
+    "encryptedNative": ["password", "secureid", "oauth_token"],
+    "protectedNative": ["password", "secureid", "oauth_token"],
+    "objects": [],
+    "instanceObjects": [
+        {
+            "_id": "",
+            "type": "meta",
+            "common": {
+                "name": {
+                    "en": "Meta storage for user files",
+                    "de": "Meta-Speicher für Benutzerdateien",
+                    "ru": "Meta Storage для файлов пользователей",
+                    "pt": "Meta de armazenamento para arquivos de usuário",
+                    "nl": "Meta opslag voor gebruikersbestanden",
+                    "fr": "Stockage Meta pour les fichiers utilisateur",
+                    "it": "Meta storage per i file utente",
+                    "es": "Meta almacenamiento para archivos de usuario",
+                    "pl": "Meta storage for user files",
+                    "uk": "Зберігання мета для файлів користувачів",
+                    "zh-cn": "用户档案的储存"
+                },
+                "type": "meta.user"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": {
+                    "en": "Information",
+                    "de": "Informationen",
+                    "ru": "Информация",
+                    "pt": "Informação",
+                    "nl": "Informatie",
+                    "fr": "Information",
+                    "it": "Informazioni",
+                    "es": "Información",
+                    "pl": "Informacja",
+                    "uk": "Інформація",
+                    "zh-cn": "信息"
+                }
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": {
+                    "en": "Device or service connected",
+                    "de": "Geräte- oder Serviceanschluss",
+                    "ru": "Устройство или сервис подключены",
+                    "pt": "Dispositivo ou serviço conectado",
+                    "nl": "Device of dienst verbonden",
+                    "fr": "Appareil ou service connecté",
+                    "it": "Dispositivo o servizio collegato",
+                    "es": "Dispositivo o servicio conectado",
+                    "pl": "Urządzenie lub usługa połączona",
+                    "uk": "Пристрої або послуги підключені",
+                    "zh-cn": "证人或有关服务"
+                },
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        }
+    ]
 }
