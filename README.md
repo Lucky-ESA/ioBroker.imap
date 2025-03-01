@@ -31,8 +31,8 @@
 ## Requirements
 
 - Node 18 or 20
-- JS-Controller >= 5.0.19
-- Admin >= 6.13.16
+- JS-Controller >= 6.0.11
+- Admin >= 7.4.10
 - ~150 MB free ram
 
 ## Tested with
@@ -63,6 +63,7 @@
 
 - (Lucky-ESA) Description revised
 - (Lucky-ESA) Admin 7.4.10 required
+- (Lucky-ESA) JS-Controller 6.0.11 required
 - (Lucky-ESA) Added meta object for attachments
 
 ### 0.3.0 (2024-12-07)
