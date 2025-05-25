@@ -30,7 +30,7 @@
 
 ## Requirements
 
-- Node 18 or 20
+- Node 20 or 22
 - JS-Controller >= 7.0.7
 - Admin >= 7.4.10
 - ~150 MB free ram
