@@ -31,7 +31,7 @@
 ## Requirements
 
 - Node 18 or 20
-- JS-Controller >= 6.0.11
+- JS-Controller >= 7.0.7
 - Admin >= 7.4.10
 - ~150 MB free ram
 
