@@ -53,6 +53,7 @@
 - `Aktiv`: IMAP Verbindung aktivieren
 - `Host`: z. Bsp. imap.gmail.com
 - `Posteingang`: Standard INBOX - Box die Überwacht werden soll - Mögliche Auswahl siehe imap.0.xxx.remote.change_folder
+Beispiel: INBOX.unterordner (punkt als seperator)
 - `Port`: Standard 993
 - `Nutzername`: Benutzername - Instanz muss aktiviert sein!!!
 - `Passwort`: Passwort - Instanz muss aktiviert sein!!! - [gmail login](https://support.google.com/mail/answer/185833?hl=de) - [outlook Oauth2-Authentifizierung](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app?tabs=certificate)
