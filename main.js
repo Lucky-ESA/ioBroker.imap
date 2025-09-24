@@ -83,8 +83,10 @@ class Imap extends utils.Adapter {
         this.startReadMails = imap_event.startReadMails;
         this.readAllMails = imap_event.readAllMails;
         this.updateattachments = imap_event.updateattachments;
+        this.updateTotal = imap_event.updateTotal;
         this.qualityInterval = null;
         this.statusInterval = null;
+        this.totalTimeout = {};
         this.sleepTimer = null;
         this.double_call = {};
         this.boxfolder = {};
@@ -235,6 +237,7 @@ class Imap extends utils.Adapter {
             this.clientsRows[dev.user] = "";
             selectbox.states[dev.user] = dev.user;
             this.clients[dev.user] = null;
+            this.totalTimeout[dev.user] = null;
             this.clientsRaw[dev.user] = dev;
             this.all_seqno[dev.user] = [];
             this.reconnect_count[dev.user] = 0;
@@ -1193,6 +1196,7 @@ class Imap extends utils.Adapter {
                 this.clientsRaw[dev].onExpungeTimer && this.clearTimeout(this.clientsRaw[dev].onExpungeTimer);
                 this.clients[dev] = null;
                 this.restartIMAPConnection[dev] && this.clearTimeout(this.restartIMAPConnection[dev]);
+                this.totalTimeout[dev] && this.clearTimeout(this.totalTimeout[dev]);
                 this.setState(`${dev}.online`, {
                     val: false,
                     ack: true,
