@@ -39,7 +39,7 @@
         "@tsconfig/node18": "^18.2.4",
         "@types/imap": "^0.8.42",
         "@types/node": "^24.5.2",
-        "typescript": "~5.8.2"
+        "typescript": "~5.9.3"
     },
     "main": "main.js",
     "files": [
