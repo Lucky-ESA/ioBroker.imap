@@ -389,7 +389,7 @@
                             "type": "image",
                             "attr": "picture",
                             "tooltip": "UPLOAD",
-                            "accept": "image/*",
+                            "accept": { "image/**": [] },
                             "base64": true,
                             "crop": true
                         }
