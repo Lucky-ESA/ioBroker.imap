@@ -11,7 +11,7 @@ const utils = require("@iobroker/adapter-core");
 // Load your modules here, e.g.:
 const helper = require("./lib/helper");
 const tl = require("./lib/translator");
-const format = require("util").format;
+const format = require("node:util").format;
 const { convert } = require("html-to-text");
 const imap_connect = require("imap-iobroker");
 const imap_event = require("./lib/imap_event");
