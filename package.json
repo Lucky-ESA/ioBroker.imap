@@ -20,7 +20,7 @@
         "url": "git@github.com:Lucky-ESA/ioBroker.imap.git"
     },
     "engines": {
-        "node": ">= 20"
+        "node": ">= 22"
     },
     "dependencies": {
         "@azure/msal-node": "^3.8.4",

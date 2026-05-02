@@ -60,6 +60,7 @@
 ## Changelog
 
 ### **WORK IN PROGRESS**
+- (copilot) Adapter requires node.js >= 22 now
 
 - (Lucky-ESA) Description revised
 - (Lucky-ESA) Admin 7.6.17 required
