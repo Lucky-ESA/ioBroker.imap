@@ -30,9 +30,9 @@
 
 ## Requirements
 
-- Node 20 or 22
+- Node 22 or 24
 - JS-Controller >= 7.0.7
-- Admin >= 7.6.17
+- Admin >= 7.8.23
 - ~150 MB free ram
 
 ## Tested with
@@ -60,12 +60,11 @@
 ## Changelog
 
 ### **WORK IN PROGRESS**
-- (copilot) Adapter requires node.js >= 22 now
 
+- (copilot) Adapter requires node.js >= 22 now
 - (Lucky-ESA) Description revised
-- (Lucky-ESA) Admin 7.6.17 required
+- (Lucky-ESA) Admin 7.8.23 required
 - (Lucky-ESA) JS-Controller 7.0.7 required
-- (Lucky-ESA) Node 20 required
 - (Lucky-ESA) Added meta object for attachments
 
 ### 0.3.0 (2024-12-07)

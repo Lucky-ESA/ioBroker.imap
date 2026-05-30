@@ -66,7 +66,6 @@ class Imap extends utils.Adapter {
         this.findmail_wo_att = imap_event.findmail_wo_att;
         this.loadAllSeqno = imap_event.loadAllSeqno;
         this.setTotal = imap_event.setTotal;
-        this.newMailsSort = imap_event.newMailsSort;
         this.newMails = imap_event.newMails;
         this.readMails = imap_event.readMails;
         this.diffArray = imap_event.diffArray;
