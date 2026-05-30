@@ -20,13 +20,13 @@
         "url": "git@github.com:Lucky-ESA/ioBroker.imap.git"
     },
     "engines": {
-        "node": ">= 20"
+        "node": ">= 22"
     },
     "dependencies": {
         "@azure/msal-node": "^3.8.4",
         "@iobroker/adapter-core": "^3.3.2",
         "imap-iobroker": "^0.1.1",
-        "mailparser": "^3.9.1"
+        "mailparser": "^3.9.8"
     },
     "devDependencies": {
         "@alcalzone/release-script": "^5.0.0",
