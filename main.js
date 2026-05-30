@@ -1369,7 +1369,7 @@ class Imap extends utils.Adapter {
                 this.setAckFlag(id, { val: false });
                 return;
             }
-            if (command === "change_folder" && state.val != "") {
+            if (command === "change_folder" && typeof state.val === "string" && state.val != "") {
                 if (this.clients[clientID]) {
                     this.changeFolder(clientID, state.val);
                     this.clientsRaw[clientID].inbox_activ = state.val;
