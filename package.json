@@ -25,6 +25,7 @@
   "dependencies": {
     "@azure/msal-node": "^3.8.4",
     "@iobroker/adapter-core": "^3.3.2",
+    "html-to-text": "^10.0.0",
     "imap-iobroker": "^0.1.1",
     "mailparser": "^3.9.8"
   },
