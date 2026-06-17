@@ -32,7 +32,7 @@
 
 - Node 22 or 24
 - JS-Controller >= 7.0.7
-- Admin >= 7.8.23
+- Admin >= 7.6.20
 - ~150 MB free ram
 
 ## Tested with
@@ -58,6 +58,10 @@
 -->
 
 ## Changelog
+
+### **WORK IN PROGRESS**
+
+- (Lucky-ESA) Admin 7.6.20 required
 
 ### 0.4.0 (2026-05-30)
 
