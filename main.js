@@ -104,6 +104,7 @@ class Imap extends utils.Adapter {
         this.lang = "de";
         this.loglevel = "info";
         this.seen = { struct: true, markSeen: false };
+        this.js = "";
     }
 
     /**
@@ -431,47 +432,103 @@ class Imap extends utils.Adapter {
      * configcheck
      */
     async configcheck() {
-        try {
-            let isdecode = false;
-            const adapterconfigs = await this.getForeignObjectAsync(`system.adapter.${this.namespace}`);
-            if (adapterconfigs && adapterconfigs.native && adapterconfigs.native.hosts) {
-                for (const pw of adapterconfigs.native.hosts) {
-                    if (pw.password != "" && !pw.password.includes("<LUCKY-ESA>")) {
-                        pw.password = `<LUCKY-ESA>${this.encrypt(pw.password)}`;
-                        isdecode = true;
+        if (this.host) {
+            const getHost = await this.getForeignObjectAsync(`system.host.${this.host}`);
+            if (getHost && getHost.common && getHost.common.installedVersion) {
+                this.js = getHost.common.installedVersion;
+            }
+        }
+        if (this.js == "") {
+            const host = await this.getObjectListAsync({
+                startkey: `system.host`,
+                endkey: `system.host\u9999`,
+            });
+            const type = host.rows.find(node => node.value && node.value.type === "host");
+            if (type && type.value && type.value.common && type.value.common.installedVersion) {
+                this.js = type.value.common.installedVersion;
+            }
+        }
+        if (this.js == "") {
+            this.log.error(`JS-Controller version not found!!!`);
+            return true;
+        }
+        this.log.debug(this.js);
+        const less = this.compareVersions(this.js, "<", "7.2.4");
+        let isdecode = false;
+        const adapterconfigs = await this.getForeignObjectAsync(`system.adapter.${this.namespace}`);
+        if (!less) {
+            try {
+                if (adapterconfigs && adapterconfigs.native && adapterconfigs.native.hosts) {
+                    for (const pw of adapterconfigs.native.hosts) {
+                        if (pw.password != null && pw.password != "" && pw.password.includes("<LUCKY-ESA>")) {
+                            pw.password = pw.password.replace("<LUCKY-ESA>", "");
+                            isdecode = true;
+                        }
+                        if (pw.password != null && pw.password != "" && !pw.password.includes("aes-192-cbc")) {
+                            pw.password = this.encrypt(pw.password);
+                            isdecode = true;
+                        }
                     }
                 }
-            }
-            if (adapterconfigs && adapterconfigs.native && adapterconfigs.native.oauth_token) {
-                for (const pw of adapterconfigs.native.oauth_token) {
-                    if (pw.secureid != "" && !pw.secureid.includes("<LUCKY-ESA>")) {
-                        pw.secureid = `<LUCKY-ESA>${this.encrypt(pw.secureid)}`;
-                        isdecode = true;
+                if (adapterconfigs && adapterconfigs.native && adapterconfigs.native.oauth_token) {
+                    for (const pw of adapterconfigs.native.oauth_token) {
+                        if (pw.secureid != null && pw.secureid != "" && pw.secureid.includes("<LUCKY-ESA>")) {
+                            pw.secureid = pw.secureid.replace("<LUCKY-ESA>", "");
+                            isdecode = true;
+                        }
+                        if (pw.secureid != null && pw.secureid != "" && !pw.secureid.includes("aes-192-cbc")) {
+                            pw.secureid = this.encrypt(pw.secureid);
+                            isdecode = true;
+                        }
                     }
                 }
-            }
-            if (isdecode) {
-                this.log_translator("info", "Encrypt");
-                if (adapterconfigs && adapterconfigs.native.hosts[0] === null) {
-                    adapterconfigs.native.hosts = [];
-                }
-                if (adapterconfigs && adapterconfigs.native.oauth_token[0] === null) {
-                    adapterconfigs.native.oauth_token = [];
-                }
-                await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
-                    native: adapterconfigs ? adapterconfigs.native : [],
-                });
-                //this.updateConfig(adapterconfigs);
+            } catch (e) {
+                this.log_translator("error", "try", `configcheck: ${e}`);
                 return true;
             }
-            return false;
-        } catch (e) {
-            this.log_translator("error", "try", `configcheck: ${e}`);
+        } else {
+            try {
+                if (adapterconfigs && adapterconfigs.native && adapterconfigs.native.hosts) {
+                    for (const pw of adapterconfigs.native.hosts) {
+                        if (pw.password != "" && !pw.password.includes("<LUCKY-ESA>")) {
+                            pw.password = `<LUCKY-ESA>${this.encrypt(pw.password)}`;
+                            isdecode = true;
+                        }
+                    }
+                }
+                if (adapterconfigs && adapterconfigs.native && adapterconfigs.native.oauth_token) {
+                    for (const pw of adapterconfigs.native.oauth_token) {
+                        if (pw.secureid != null && pw.secureid != "" && !pw.secureid.includes("<LUCKY-ESA>")) {
+                            pw.secureid = `<LUCKY-ESA>${this.encrypt(pw.secureid)}`;
+                            isdecode = true;
+                        }
+                    }
+                }
+            } catch (e) {
+                this.log_translator("error", "try", `configcheck: ${e}`);
+                return true;
+            }
         }
+        if (isdecode) {
+            this.log_translator("info", "Encrypt");
+            if (adapterconfigs && adapterconfigs.native.hosts[0] === null) {
+                adapterconfigs.native.hosts = [];
+            }
+            if (adapterconfigs && adapterconfigs.native.oauth_token[0] === null) {
+                adapterconfigs.native.oauth_token = [];
+            }
+            await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
+                native: adapterconfigs ? adapterconfigs.native : [],
+            });
+            //this.updateConfig(adapterconfigs);
+            return true;
+        }
+        return false;
     }
 
     async loadToken(dev) {
         const search_token = {};
+        const less = this.compareVersions(this.js, "<", "7.2.4");
         search_token["token"] = this.config.oauth_token;
         let msalConfig;
         const isfind = search_token["token"].find(tok => tok.name === dev.token);
@@ -484,7 +541,7 @@ class Imap extends utils.Adapter {
             isfind.pathid != ""
         ) {
             const msal = require("@azure/msal-node");
-            if (isfind.secureid != "" && isfind.secureid.includes("<LUCKY-ESA>")) {
+            if (less && isfind.secureid != "" && isfind.secureid.includes("<LUCKY-ESA>")) {
                 try {
                     const decrypt_pw = isfind.secureid.split("<LUCKY-ESA>")[1];
                     if (decrypt_pw != "") {
@@ -497,7 +554,16 @@ class Imap extends utils.Adapter {
                     return (dev.token = null);
                 }
             } else {
-                dev.token = null;
+                if (isfind.secureid != null && isfind.secureid != "" && isfind.secureid.includes("<LUCKY-ESA>")) {
+                    isfind.secureid = isfind.secureid.replace("<LUCKY-ESA>", "");
+                    isfind.secureid = this.decrypt(isfind.secureid);
+                }
+                if (isfind.secureid != null && isfind.secureid != "" && isfind.secureid.includes("aes-192-cbc")) {
+                    isfind.secureid = this.decrypt(isfind.secureid);
+                }
+                if (isfind.secureid == null || isfind.secureid == "") {
+                    dev.token = null;
+                }
             }
             msalConfig = {
                 auth: {
@@ -2082,6 +2148,76 @@ class Imap extends utils.Adapter {
             }
         } else {
             this.log_translator("info", "No threshold", memrss_value);
+        }
+    }
+
+    /**
+     * @param {string} v1
+     * @param {string} operator
+     * @param {string} v2
+     */
+    compareVersions(v1, operator, v2) {
+        if (v1 === undefined || v2 === undefined) {
+            return false;
+        }
+        operator = operator == "=" ? "==" : operator;
+        if (["==", "===", "<", "<=", ">", ">=", "!=", "!=="].indexOf(operator) == -1) {
+            throw new Error(`Invalid operator: ${operator}`);
+        }
+        const part1 = v1.split(".");
+        const part2 = v2.split(".");
+        let a = [];
+        let b = [];
+        const maxLen = Math.max(part1.length, part1.length);
+        for (let i = 0; i < part1.length; i++) {
+            a.push(parseInt(part1[i].replace(/\D/g, ""), 10));
+            b.push(parseInt(part2[i].replace(/\D/g, ""), 10));
+        }
+        for (let i = 0; i < maxLen; i++) {
+            switch (operator) {
+                case ">":
+                case ">=":
+                    if (a[i] === b[i]) {
+                        continue;
+                    }
+                    if (a[i] > b[i]) {
+                        return true;
+                    }
+                    if (a[i] < b[i]) {
+                        return false;
+                    }
+                    break;
+                case "<":
+                case "<=":
+                    if (a[i] === b[i]) {
+                        continue;
+                    }
+                    if (a[i] > b[i]) {
+                        return false;
+                    }
+                    if (a[i] < b[i]) {
+                        return true;
+                    }
+                    break;
+                case "=":
+                    if (a[i] > b[i]) {
+                        return false;
+                    }
+                    if (a[i] < b[i]) {
+                        return false;
+                    }
+                    break;
+            }
+        }
+        switch (operator) {
+            case ">":
+                return false;
+            case "<":
+                return false;
+            case "=":
+            case ">=":
+            case "<=":
+                return true;
         }
     }
 }

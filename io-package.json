@@ -171,8 +171,8 @@
         "max_mb_object": "",
         "max_mb_last_restart": 0
     },
-    "encryptedNative": ["hosts.password", "oauth_token.secureid"],
-    "protectedNative": ["hosts.password", "oauth_token.secureid"],
+    "encryptedNative": ["hosts.password", "oauth_token.secureid", "host.token"],
+    "protectedNative": ["hosts.password", "oauth_token.secureid", "host.token"],
     "objects": [],
     "instanceObjects": [
         {

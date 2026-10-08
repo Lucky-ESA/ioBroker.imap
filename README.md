@@ -62,6 +62,7 @@
 ### **WORK IN PROGRESS**
 
 - (Lucky-ESA) Admin 7.6.20 required
+- (Lucky-ESA) Fixed password encryption error with JS Controller (>=v.7.2.4) and admin (<v.8.1.1)
 
 ### 0.4.0 (2026-05-30)
 
