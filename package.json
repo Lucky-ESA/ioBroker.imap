@@ -27,7 +27,7 @@
     "@iobroker/adapter-core": "^3.4.3",
     "html-to-text": "^10.0.1",
     "imap-iobroker": "^0.1.1",
-    "mailparser": "^3.9.31"
+    "mailparser": "^3.9.38"
   },
   "devDependencies": {
     "@alcalzone/release-script": "^5.2.1",
