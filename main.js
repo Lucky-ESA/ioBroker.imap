@@ -181,26 +181,31 @@ class Imap extends utils.Adapter {
                 dev.username = dev.user;
                 dev.user = dev.user.replace(FORBIDDEN_CHARS, "_");
             }
-            if (dev.password != "" && dev.password.includes("<LUCKY-ESA>")) {
-                try {
-                    const decrypt_pw = dev.password.split("<LUCKY-ESA>")[1];
-                    if (decrypt_pw != "") {
-                        dev.password = this.decrypt(decrypt_pw);
-                    } else {
+            let password = dev.password == null ? "" : String(dev.password);
+            try {
+                if (password.includes("<LUCKY-ESA>")) {
+                    const decrypt_pw = password.split("<LUCKY-ESA>")[1];
+                    if (decrypt_pw == "") {
                         this.log_translator("info", "Cannot found password", dev.user);
                         continue;
                     }
-                } catch {
-                    this.log_translator("info", "decrypt pw", dev.user);
-                    continue;
+                    password = this.decrypt(decrypt_pw);
                 }
-            } else if (dev.password == "") {
-                this.log_translator("info", "missing password");
+                // Encrypted twice (0.4.0 with JS-Controller >= 7.2.4): remove the remaining layer
+                if (password.startsWith("$/aes-192-cbc:")) {
+                    password = this.decrypt(password);
+                }
+            } catch {
+                this.log_translator("info", "decrypt pw", dev.user);
                 continue;
-            } else if (dev.token == "") {
+            }
+            // JS-Controller >= 7.2.4 delivers the password already decrypted, so a plain
+            // password is valid - it must not be rejected because of an empty token.
+            if (password == "") {
                 this.log_translator("info", "missing password");
                 continue;
             }
+            dev.password = password;
             dev.node_option = config_array.find(node => node.nodename === dev.node_option);
             if (
                 dev.node_option &&
@@ -490,7 +495,7 @@ class Imap extends utils.Adapter {
             try {
                 if (adapterconfigs && adapterconfigs.native && adapterconfigs.native.hosts) {
                     for (const pw of adapterconfigs.native.hosts) {
-                        if (pw.password != "" && !pw.password.includes("<LUCKY-ESA>")) {
+                        if (pw.password != null && pw.password != "" && !pw.password.includes("<LUCKY-ESA>")) {
                             pw.password = `<LUCKY-ESA>${this.encrypt(pw.password)}`;
                             isdecode = true;
                         }
