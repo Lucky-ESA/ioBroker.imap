@@ -53,14 +53,15 @@
 - `Aktiv`: IMAP Verbindung aktivieren
 - `Host`: z. Bsp. imap.gmail.com
 - `Posteingang`: Standard INBOX - Box die Überwacht werden soll - Mögliche Auswahl siehe imap.0.xxx.remote.change_folder
-Beispiel: INBOX.unterordner (punkt als seperator)
+  Beispiel: INBOX.unterordner (punkt als seperator)
 - `Port`: Standard 993
 - `Nutzername`: Benutzername - Instanz muss aktiviert sein!!!
 - `Passwort`: Passwort - Instanz muss aktiviert sein!!! - [gmail login](https://support.google.com/mail/answer/185833?hl=de) - [outlook Oauth2-Authentifizierung](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app?tabs=certificate)
-  ![imap_create_1.png](img/imap_create_1.png)
-
 - `max.`: Maximale Anlage als Datenpunkte email_01...email_02... (1-99)
 - `max. HTML`: Maximale Anzahl von eMails als HTML. Muss größer sein als max. Datenpunkte (1-99)
+- `Intervall (in Sekunden)`: Dies ist das Intervall, in dem NOOPs gesendet werden, und das Intervall, in dem „idleInterval“ überprüft wird. (in Sekunden)
+- `IdleInterval (in Sekunden)`: Dies ist das Intervall, in dem ein IDLE-Befehl (für Server, die IDLE unterstützen) erneut gesendet wird. (in Sekunden)
+- `Auf „true“ setzen, um die Verwendung von NOOP zu erzwingen.`: Auf „true“ setzen, um die Verwendung von NOOP-Keepalive auf Servern zu erzwingen, die auch IDLE unterstützen.
 - `TLS`: TLS-Verbindung verwenden - Standard ist true
 - `Flaggen`: Flag für die IMAP Abfrage. Mögliche Flags:
 
@@ -88,13 +89,12 @@ UNSEEN - ungesehen – Nachrichten, bei denen das Flag „Gesehen“ nicht geset
 - `tls-Option`: Standard ist {"rejectUnauthorized": false}
 - `Auto-TLS`: Mögliche Auswahl ist `always`, `required` and `never`. Standard ist never
   **Für mehr Informationen bitte [hier](https://www.npmjs.com/package/node-imap) lesen.**
-
-![imap_create_2.png](img/imap_create_2.png)
-
 - `Att.`: Um das Feld HTML zu füllen müssen Anhänge mit geladen werden. Das verbraucht sehr viel RAM!!! Daher Standard `false`
 - `Mailparser-Option`: Mailparser-Option (erst unter TAB `MAILPARSER-OPTIONEN` erstellen)
 - `Token`: Token [hier erst anlegen](#instanz-konfiguration-tab-oauth2-erstellen)
 
+![imap_create_1.png](img/imap_create_1.png)
+![imap_create_2.png](img/imap_create_2.png)
 ![imap_create_3.png](img/imap_create_3.png)
 
 - `max. MEMRSS-Limit:` Ab wann die u. a. Aktion ausgelöst wird.

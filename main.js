@@ -162,6 +162,23 @@ class Imap extends utils.Adapter {
         selectbox.states = {};
         await this.createCounter();
         for (const dev of devices.data) {
+            if (dev.interval == null) {
+                dev.interval = 60;
+            }
+            if (dev.interval < 1 || dev.interval > 3600) {
+                dev.interval = 60;
+            }
+            dev.interval = dev.interval * 1000;
+            if (dev.interval == null) {
+                dev.interval = 300;
+            }
+            if (dev.idelInterval < 1 || dev.idelInterval > 3600) {
+                dev.idelInterval = 300;
+            }
+            dev.idelInterval = dev.idelInterval * 1000;
+            if (typeof dev.forceNoop !== "boolean") {
+                dev.forceNoop = 300;
+            }
             if (dev.inbox == "") {
                 this.log_translator("info", "no inbox");
                 continue;
@@ -678,9 +695,9 @@ class Imap extends utils.Adapter {
             debug: this.log.debug,
             socketTimeout: 0,
             keepalive: {
-                interval: 10000,
-                idleInterval: 0,
-                forceNoop: true,
+                interval: dev.interval,
+                idleInterval: dev.idelInterval,
+                forceNoop: dev.forceNoop,
             },
         });
         this.clients[dev.user].once("isready", imap_event.onReadyImap.bind(this));

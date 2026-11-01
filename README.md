@@ -31,7 +31,7 @@
 ## Requirements
 
 - Node 22 or 24
-- JS-Controller >= 7.0.7
+- JS-Controller >= 7.2.5
 - Admin >= 7.6.20
 - ~150 MB free ram
 
@@ -61,6 +61,8 @@
 
 ### **WORK IN PROGRESS**
 
+- (Lucky-ESA) JS-Controller 7.2.5 required
+- (Lucky-ESA) Added keepalive settings
 - (ipod86) Fixed accounts being skipped with "No password entered" (JS-Controller >= 7.2.4)
 - (ipod86) Fixed doubly encrypted passwords from 0.4.0
 

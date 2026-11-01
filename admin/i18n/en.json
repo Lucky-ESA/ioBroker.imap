@@ -88,5 +88,11 @@
     "tls_option": "tls option",
     "token": "Token",
     "upload": "ICON",
-    "username": "Username"
+    "username": "Username",
+    "keepAlive": "Interval (in seconds)",
+    "KeepAlive": "This is the interval at which NOOPs are sent and the interval at which idleInterval is checked. (in seconds)",
+    "IdlekeepAlive": "IdleInterval (in seconds)",
+    "IdleKeepAlive": "This is the interval at which an IDLE command (for servers that support IDLE) is re-sent. (in seconds)",
+    "forceNoop": "Set to true to force use of NOOP.",
+    "forceNoop_tip": "Set to true to force use of NOOP keepalive on servers also support IDLE."
 }

@@ -16,147 +16,187 @@
                 },
                 "hosts": {
                     "newLine": true,
-                    "noDelete": false,
-                    "type": "table",
                     "xs": 12,
                     "sm": 12,
                     "md": 12,
                     "lg": 12,
                     "xl": 12,
+                    "noDelete": false,
+                    "type": "accordion",
+                    "titleAttr": "user",
                     "items": [
                         {
                             "type": "checkbox",
                             "attr": "activ",
-                            "width": 60,
-                            "title": "activ",
+                            "label": "activ",
                             "tooltip": "ACTIV",
-                            "filter": true,
-                            "sort": true,
                             "default": false,
-                            "style": {
-                                "textAlign": "center",
-                                "width": 60
-                            }
+                            "newLine": true,
+                            "xs": 12,
+                            "sm": 12,
+                            "md": 12,
+                            "lg": 12,
+                            "xl": 12
                         },
                         {
                             "type": "text",
                             "attr": "host",
-                            "width": 200,
-                            "title": "host",
+                            "newLine": true,
+                            "xs": 12,
+                            "sm": 12,
+                            "md": 12,
+                            "lg": 12,
+                            "xl": 12,
+                            "label": "host",
                             "tooltip": "HOST",
-                            "filter": false,
-                            "sort": false,
-                            "default": "",
-                            "style": {
-                                "width": 200
-                            }
+                            "default": ""
                         },
                         {
                             "type": "text",
                             "attr": "inbox",
-                            "width": 100,
-                            "title": "inbox",
+                            "newLine": true,
+                            "xs": 12,
+                            "sm": 12,
+                            "md": 12,
+                            "lg": 12,
+                            "xl": 12,
+                            "label": "inbox",
                             "tooltip": "INBOX",
-                            "filter": false,
-                            "sort": false,
-                            "default": "INBOX",
-                            "style": {
-                                "width": 100
-                            }
+                            "default": "INBOX"
                         },
                         {
                             "type": "number",
                             "attr": "port",
-                            "width": 60,
-                            "title": "port",
+                            "newLine": true,
+                            "xs": 12,
+                            "sm": 12,
+                            "md": 12,
+                            "lg": 12,
+                            "xl": 12,
+                            "label": "port",
                             "tooltip": "PORT",
-                            "filter": false,
-                            "sort": false,
-                            "default": 993,
-                            "style": {
-                                "width": 60
-                            }
+                            "default": 993
                         },
                         {
                             "type": "text",
                             "attr": "user",
-                            "width": 200,
-                            "title": "username",
+                            "newLine": true,
+                            "xs": 12,
+                            "sm": 12,
+                            "md": 12,
+                            "lg": 12,
+                            "xl": 12,
+                            "label": "username",
                             "tooltip": "USERNAME",
-                            "filter": false,
-                            "sort": false,
                             "hidden": "_alive",
-                            "default": "",
-                            "style": {
-                                "width": 200
-                            }
+                            "default": ""
                         },
                         {
                             "type": "password",
                             "attr": "password",
-                            "width": 200,
-                            "title": "password",
+                            "newLine": true,
+                            "xs": 12,
+                            "sm": 12,
+                            "md": 12,
+                            "lg": 12,
+                            "xl": 12,
+                            "label": "password",
                             "tooltip": "PASSWORD",
-                            "filter": false,
-                            "sort": false,
                             "hidden": "_alive",
-                            "default": "",
-                            "style": {
-                                "width": 200
-                            }
+                            "default": ""
                         },
                         {
                             "type": "number",
                             "attr": "maxi",
-                            "width": 60,
-                            "title": "max",
+                            "label": "max",
                             "tooltip": "MAX",
+                            "newLine": true,
                             "min": 1,
                             "max": 99,
-                            "filter": false,
-                            "sort": false,
-                            "default": 10,
-                            "style": {
-                                "textAlign": "center",
-                                "width": 60
-                            }
+                            "xs": 12,
+                            "sm": 12,
+                            "md": 12,
+                            "lg": 12,
+                            "xl": 12,
+                            "default": 10
                         },
                         {
                             "type": "number",
                             "attr": "maxi_html",
-                            "width": 60,
-                            "title": "max_html",
+                            "label": "max_html",
                             "tooltip": "MAX_HTML",
+                            "newLine": true,
                             "min": 1,
                             "max": 99,
-                            "filter": false,
-                            "sort": false,
+                            "xs": 12,
+                            "sm": 12,
+                            "md": 12,
+                            "lg": 12,
+                            "xl": 12,
+                            "default": 10
+                        },
+                        {
+                            "type": "number",
+                            "attr": "interval",
+                            "label": "keepAlive",
+                            "tooltip": "KeepAlive",
+                            "newLine": true,
+                            "xs": 12,
+                            "sm": 12,
+                            "md": 12,
+                            "lg": 12,
+                            "xl": 12,
                             "default": 10,
-                            "style": {
-                                "textAlign": "center",
-                                "width": 60
-                            }
+                            "min": 1,
+                            "max": 3600
+                        },
+                        {
+                            "type": "number",
+                            "attr": "idleInterval",
+                            "label": "IdlekeepAlive",
+                            "tooltip": "IdleKeepAlive",
+                            "newLine": true,
+                            "xs": 12,
+                            "sm": 12,
+                            "md": 12,
+                            "lg": 12,
+                            "xl": 12,
+                            "default": 300,
+                            "min": 1,
+                            "max": 3600
+                        },
+                        {
+                            "type": "checkbox",
+                            "attr": "forceNoop",
+                            "label": "forceNoop",
+                            "tooltip": "forceNoop_tip",
+                            "default": false,
+                            "newLine": true,
+                            "xs": 12,
+                            "sm": 12,
+                            "md": 12,
+                            "lg": 12,
+                            "xl": 12
                         },
                         {
                             "type": "checkbox",
                             "attr": "tls",
-                            "width": 30,
-                            "title": "tls",
+                            "label": "tls",
                             "tooltip": "TLS",
-                            "filter": false,
-                            "sort": false,
-                            "default": true,
-                            "style": {
-                                "textAlign": "center",
-                                "width": 30
-                            }
+                            "newLine": true,
+                            "xs": 12,
+                            "sm": 12,
+                            "md": 12,
+                            "lg": 12,
+                            "xl": 12,
+                            "default": true
                         },
                         {
                             "type": "select",
                             "attr": "flag",
-                            "width": 200,
-                            "title": "flag",
+                            "label": "flag",
                             "tooltip": "FLAG",
+                            "newLine": true,
                             "options": [
                                 { "label": "ALL", "value": "[\"ALL\"]" },
                                 { "label": "ANSWERED", "value": "[\"ANSWERED\"]" },
@@ -173,104 +213,104 @@
                                 { "label": "UNSEEN", "value": "[\"UNSEEN\"]" },
                                 { "label": "RECENT", "value": "[\"RECENT\"]" }
                             ],
-                            "filter": false,
-                            "sort": false,
                             "default": "[\"ALL\"]",
-                            "style": {
-                                "textAlign": "center",
-                                "width": 200
-                            }
+                            "xs": 12,
+                            "sm": 12,
+                            "md": 12,
+                            "lg": 12,
+                            "xl": 12
                         },
                         {
                             "type": "selectSendTo",
-                            "title": "icon64",
+                            "label": "icon64",
                             "tooltip": "ICON64",
                             "attr": "picture",
+                            "newLine": true,
+                            "xs": 12,
+                            "sm": 12,
+                            "md": 12,
+                            "lg": 12,
+                            "xl": 12,
                             "disabled": "!data.activ",
                             "jsonData": "{\"icon\":{\"icons\":${JSON.stringify(globalData.icons)}}}",
                             "command": "getIconList",
-                            "width": 200,
-                            "alsoDependsOn": ["icons"],
-                            "style": {
-                                "textAlign": "center",
-                                "width": 200
-                            }
+                            "alsoDependsOn": ["icons"]
                         },
                         {
                             "type": "text",
                             "attr": "tlsoption",
-                            "width": 200,
-                            "title": "tls_option",
+                            "label": "tls_option",
                             "tooltip": "TLS_OPTION",
-                            "filter": false,
-                            "sort": false,
-                            "default": "{\"rejectUnauthorized\": false}",
-                            "style": {
-                                "width": 200
-                            }
+                            "newLine": true,
+                            "xs": 12,
+                            "sm": 12,
+                            "md": 12,
+                            "lg": 12,
+                            "xl": 12,
+                            "default": "{\"rejectUnauthorized\": false}"
                         },
                         {
                             "type": "select",
                             "attr": "autotls",
-                            "width": 100,
-                            "title": "auto_tls",
+                            "label": "auto_tls",
                             "tooltip": "AUTO_TLS",
-                            "filter": false,
-                            "sort": false,
+                            "newLine": true,
+                            "xs": 12,
+                            "sm": 12,
+                            "md": 12,
+                            "lg": 12,
+                            "xl": 12,
                             "options": [
                                 { "label": "never", "value": "never" },
                                 { "label": "always", "value": "always" },
                                 { "label": "required", "value": "required" }
                             ],
-                            "default": "never",
-                            "style": {
-                                "width": 100
-                            }
+                            "default": "never"
                         },
                         {
                             "type": "checkbox",
                             "attr": "att",
-                            "width": 60,
-                            "title": "attach",
+                            "label": "attach",
                             "tooltip": "ATTACH",
-                            "filter": false,
-                            "sort": false,
-                            "default": false,
-                            "style": {
-                                "width": 60
-                            }
+                            "newLine": true,
+                            "xs": 12,
+                            "sm": 12,
+                            "md": 12,
+                            "lg": 12,
+                            "xl": 12,
+                            "default": false
                         },
                         {
                             "type": "selectSendTo",
                             "attr": "node_option",
-                            "width": 200,
-                            "title": "node_option",
+                            "label": "node_option",
                             "tooltip": "node_option_tt",
                             "disabled": "!data.activ",
-                            "filter": false,
-                            "sort": false,
+                            "newLine": true,
+                            "xs": 12,
+                            "sm": 12,
+                            "md": 12,
+                            "lg": 12,
+                            "xl": 12,
                             "jsonData": "{\"node_option\":{\"node_options\":${JSON.stringify(globalData.nodemailer_options)}}}",
                             "command": "getNodeList",
-                            "alsoDependsOn": ["nodemailer_options"],
-                            "style": {
-                                "width": 200
-                            }
+                            "alsoDependsOn": ["nodemailer_options"]
                         },
                         {
                             "type": "selectSendTo",
                             "attr": "token",
-                            "width": 200,
-                            "title": "token",
+                            "label": "token",
                             "tooltip": "TOKEN",
                             "disabled": "!data.activ",
-                            "filter": false,
-                            "sort": false,
+                            "newLine": true,
+                            "xs": 12,
+                            "sm": 12,
+                            "md": 12,
+                            "lg": 12,
+                            "xl": 12,
                             "jsonData": "{\"token\":{\"tokens\":${JSON.stringify(globalData.oauth_token)}}}",
                             "command": "getTokenList",
-                            "alsoDependsOn": ["oauth_token"],
-                            "style": {
-                                "width": 200
-                            }
+                            "alsoDependsOn": ["oauth_token"]
                         }
                     ]
                 },
