@@ -174,6 +174,9 @@ class Imap extends utils.Adapter {
                 dev.port = 993;
                 this.log_translator("info", "missing port");
             }
+            if (typeof dev.token === "string" && dev.token == "") {
+                dev.token = null;
+            }
             if (dev.user == "") {
                 this.log_translator("info", "missing username");
                 continue;
@@ -181,7 +184,7 @@ class Imap extends utils.Adapter {
                 dev.username = dev.user;
                 dev.user = dev.user.replace(FORBIDDEN_CHARS, "_");
             }
-            if (dev.password != "" && dev.password.includes("<LUCKY-ESA>")) {
+            if (typeof dev.password === "string" && dev.password != "" && dev.password.includes("<LUCKY-ESA>")) {
                 try {
                     const decrypt_pw = dev.password.split("<LUCKY-ESA>")[1];
                     if (decrypt_pw != "") {
@@ -196,9 +199,13 @@ class Imap extends utils.Adapter {
                 }
             } else if (dev.password == "") {
                 this.log_translator("info", "missing password");
-                continue;
-            } else if (dev.token == "") {
-                this.log_translator("info", "missing password");
+                if (!dev.token) {
+                    this.log_translator("info", "missing token");
+                    continue;
+                }
+            }
+            if (dev.password == null && dev.token == null) {
+                this.log_translator("info", "missing token and password");
                 continue;
             }
             dev.node_option = config_array.find(node => node.nodename === dev.node_option);
@@ -490,7 +497,7 @@ class Imap extends utils.Adapter {
             try {
                 if (adapterconfigs && adapterconfigs.native && adapterconfigs.native.hosts) {
                     for (const pw of adapterconfigs.native.hosts) {
-                        if (pw.password != "" && !pw.password.includes("<LUCKY-ESA>")) {
+                        if (pw.password != null && pw.password != "" && !pw.password.includes("<LUCKY-ESA>")) {
                             pw.password = `<LUCKY-ESA>${this.encrypt(pw.password)}`;
                             isdecode = true;
                         }
