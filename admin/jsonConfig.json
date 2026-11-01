@@ -398,7 +398,7 @@
             "type": "panel",
             "label": "Tab icons",
             "items": {
-                "_headerAlexa": {
+                "_headerIcon": {
                     "type": "header",
                     "text": "Info icons",
                     "size": 2
@@ -442,7 +442,7 @@
             "label": "Tab oauth",
             "hidden": "false",
             "items": {
-                "_headerAlexa": {
+                "_headerOauth": {
                     "type": "header",
                     "text": "Tab oauth2",
                     "size": 2
