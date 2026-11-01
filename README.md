@@ -30,7 +30,7 @@
 
 ## Requirements
 
-- Node 22, 24 or 26
+- Node >= 22.19.0, 24 or 26
 - JS-Controller >= 7.2.5
 - Admin >= 7.6.20
 - ~150 MB free ram
@@ -61,6 +61,7 @@
 
 ### **WORK IN PROGRESS**
 
+- (Lucky-ESA) Adapter requires node.js >= 22.19.0 now
 - (Lucky-ESA) JS-Controller 7.2.5 required
 - (Lucky-ESA) Added keepalive settings
 - (Lucky-ESA) Changed to accordion view
