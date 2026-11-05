@@ -169,15 +169,15 @@ class Imap extends utils.Adapter {
                 dev.interval = 60;
             }
             dev.interval = dev.interval * 1000;
-            if (dev.interval == null) {
-                dev.interval = 300;
+            if (dev.idelInterval == null) {
+                dev.idelInterval = 300;
             }
             if (dev.idelInterval < 1 || dev.idelInterval > 3600) {
                 dev.idelInterval = 300;
             }
             dev.idelInterval = dev.idelInterval * 1000;
             if (typeof dev.forceNoop !== "boolean") {
-                dev.forceNoop = 300;
+                dev.forceNoop = false;
             }
             if (dev.inbox == "") {
                 this.log_translator("info", "no inbox");
