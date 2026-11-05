@@ -215,8 +215,8 @@ class Imap extends utils.Adapter {
                     continue;
                 }
             } else if (dev.password == "") {
-                this.log_translator("info", "missing password");
                 if (!dev.token || (typeof dev.token === "string" && dev.token == "")) {
+                    this.log_translator("info", "missing password");
                     this.log_translator("info", "missing token");
                     continue;
                 }
