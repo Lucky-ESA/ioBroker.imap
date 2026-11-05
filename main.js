@@ -216,7 +216,7 @@ class Imap extends utils.Adapter {
                 }
             } else if (dev.password == "") {
                 this.log_translator("info", "missing password");
-                if (!dev.token) {
+                if (!dev.token || (typeof dev.token === "string" && dev.token == "")) {
                     this.log_translator("info", "missing token");
                     continue;
                 }
@@ -224,6 +224,14 @@ class Imap extends utils.Adapter {
             if (dev.password == null && dev.token == null) {
                 this.log_translator("info", "missing token and password");
                 continue;
+            }
+            if (typeof dev.password === "string" && dev.password.startsWith("$/aes-192-cbc:")) {
+                try {
+                    dev.password = this.decrypt(dev.password);
+                } catch {
+                    this.log_translator("info", "decrypt pw", dev.user);
+                    continue;
+                }
             }
             dev.node_option = config_array.find(node => node.nodename === dev.node_option);
             if (
