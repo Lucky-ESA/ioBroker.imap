@@ -1,4 +1,10 @@
 # Older changes
+## 0.2.1 (2024-09-16)
+
+- (Lucky-ESA) Update dependencies
+- (Lucky-ESA) Changed Log info to debug
+- (Lucky-ESA) Fixed blockly setFlag crash
+
 ## 0.2.0 (2024-06-15)
 
 - (Lucky-ESA) Updated Blockly definitions
