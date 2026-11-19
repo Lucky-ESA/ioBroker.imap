@@ -15,6 +15,7 @@ const format = require("node:util").format;
 const { convert } = require("html-to-text");
 const imap_connect = require("imap-iobroker");
 const imap_event = require("./lib/imap_event");
+const { COMMANDS, HELP } = require("./lib/help");
 const FORBIDDEN_CHARS = /[üäöÜÄÖ$@ß€*:.]|[^._\-/ :!#$%&()+=@^{}|~\p{Ll}\p{Lu}\p{Nd}]+/gu;
 const empty = {
     subject: "",
@@ -1034,6 +1035,12 @@ class Imap extends utils.Adapter {
      * @param {ioBroker.Message} obj
      */
     async onMessage(obj) {
+        if (obj?.command === "help") {
+            if (obj.callback) {
+                this.sendTo(obj.from, obj.command, { help: HELP, commands: COMMANDS }, obj.callback);
+            }
+            return;
+        }
         if (this.double_call[obj._id] != null) {
             return;
         }

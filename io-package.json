@@ -144,6 +144,10 @@
     "mode": "daemon",
     "type": "messaging",
     "messagebox": true,
+    "supportedMessages": {
+      "help": true,
+      "custom": true
+    },
     "blockly": true,
     "compact": true,
     "connectionType": "cloud",
